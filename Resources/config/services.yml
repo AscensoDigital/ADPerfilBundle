@@ -1,0 +1,21 @@
+parameters:
+#    ad_perfil.example.class: AscensoDigital\PerfilBundle\Example
+
+services:
+    ad_perfil.authentication_listener:
+        class: AscensoDigital\PerfilBundle\EventListener\AuthenticationListener
+        arguments: [ %ad_perfil.session_name% ]
+        tags:
+            - { name: kernel.event_listener, event: security.authentication.success, method: onSuccess }
+            - { name: kernel.event_listener, event: security.interactive_login, method: onFormLogin }
+            - { name: kernel.event_listener, event: security.switch_user, method: onSwitchUser }
+
+    ad_perfil.permiso_voter:
+        class: AscensoDigital\PerfilBundle\Security\PermisoVoter
+        arguments:
+          - '@session'
+          - '@doctrine.orm.entity_manager'
+          - %ad_perfil.session_name%
+        public: false
+        tags:
+            - { name: security.voter }

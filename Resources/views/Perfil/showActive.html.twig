@@ -1,0 +1,5 @@
+{% if multiple === true%}
+    <a class="navbar-link" href="#ad_perfil_modalPerfil" data-toggle="modal" title="Cambiar Perfil"><span class="fa fa-expeditedssl"></span> {{ perfil }} <span class="caret"></span></a>
+{% elseif multiple === false %}
+    <span class="navbar-text"><i class="fa fa-expeditedssl"></i> {{ perfil }}</span>
+{% endif %}
