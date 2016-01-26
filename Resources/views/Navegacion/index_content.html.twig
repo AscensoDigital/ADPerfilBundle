@@ -1,0 +1,32 @@
+{{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs')) }}
+
+{{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
+
+{% for menu in menus %}
+    <div class="col-sm-6 col-md-3">
+        <div class="thumbnail text-center">
+            <a href="{% if menu.route != '' %}{{ path(menu.route) }}{% else %}{{ path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}{% endif %}">
+                <span class="icono {{ menu.icono!='' ? menu.icono : 'fa fa-square' }} icono-{{ menu.color!='' ? menu.color | lower : 'blanco' }}" title="{{ menu.nombre }}"></span>
+            </a>
+            <div class="caption text-left">
+                <a href="{% if menu.route != '' %}{{ path(menu.route) }}{% else %}{{ path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}{% endif %}"><h3>{{ menu.nombre | title }}</h3></a>
+                <p>{{ menu.descripcion }}</p>
+            </div>
+        </div>
+    </div>
+{% else%}
+    <div class="alert alert-warning">No hay menús disponibles en la sección {{ menuActual }}</div>
+{% endfor %}
+{%  if is_granted('ROLE_SUPER_ADMIN') %}
+    <div class="col-sm-6 col-md-3">
+        <div class="thumbnail text-center">
+            <a href="{{ path('ad_perfil_menu_new', {'menu_slug': (menuActual is null ? null : menuActual.slug)}) }}">
+                <i class="icono fa fa-plus icono-new" title="Nuevo Menu"></i>
+            </a>
+            <div class="caption text-left">
+                <a href="{{ path('ad_perfil_menu_new', {'menu_slug': (menuActual is null ? null : menuActual.slug)}) }}"><h3>Nuevo Menú</h3></a>
+                <p>Agregar un nuevo menu a la sección</p>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -3,6 +3,7 @@
 namespace AscensoDigital\PerfilBundle\Controller;
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
+use AscensoDigital\PerfilBundle\Form\MenuFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -47,11 +48,32 @@ class NavegacionController extends Controller
             'icono' => $menu->getIcono(),
             'color' => $menu->getColor()->getNombre(),
             'title' => $menu->getMenuBase()->getNombre(),
-            'subtitle' => $menu->getNombre(),
+            'subtitle' => $menu->getNombre()
         ]);
     }
 
-    public function createAction(Request $request){
-
+    /**
+     * @param Request $request
+     * @Route("/menu/new/{menu_slug}", name="ad_perfil_menu_new", defaults={"menu_slug" : null})
+     * @ParamConverter("menuSuperior", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     */
+    public function createAction(Request $request, Menu $menuSuperior = null){
+        $menu=new Menu();
+        $menu->setMenuSuperior($menuSuperior)
+            ->setOrden($this->get('ad_perfil.menu_manager')->countItems($menuSuperior)+1);
+        $form=$this->createForm(new MenuFormType(),$menu);
+        $form->handleRequest($request);
+        if($form->isSubmitted() and $form->isValid()){
+            $em=$this->getDoctrine()->getManager();
+            $em->persist($menu);
+            $em->flush();
+            $this->addFlash('success','Se creo correctamente el Menú '.$menu);
+            return $this->redirectToRoute('ad_perfil_menu',[ 'menu_slug' => $this->get('ad_perfil.menu_manager')->getSlugActual()]);
+        }
+        return $this->render('ADPerfilBundle:Navegacion:menu-new.html.twig', [
+            'form' => $form->createView(),
+            'menuSuperior' => $menuSuperior
+        ]);
     }
 }

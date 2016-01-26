@@ -33,6 +33,13 @@ class MenuManager {
         $this->perfil_id = $session->get($sessionName,null);
     }
 
+    public function countItems(Menu $menu = null) {
+        $menu_id=is_null($menu) ? null : $menu->getId();
+        $this->setMenuActual($menu);
+        $cant=$this->em->getRepository('ADPerfilBundle:Menu')->countItems($menu_id);
+        return $cant;
+    }
+
     public function getMenusByMenuId($menu_id){
         $menu_sav_id=is_null($menu_id) ? 0 : $menu_id;
         if(!isset($this->seccion[$menu_sav_id])) {
@@ -47,6 +54,10 @@ class MenuManager {
             $this->menuActual=isset($menuActual[0]) ? $menuActual[0] : null;
         }
         return $this->menuActual;
+    }
+
+    public function getSlugActual(){
+        return is_null($this->menuActual) ? null : $this->menuActual->getSlug();
     }
 
     public function setMenuActual(Menu $menu = null){

@@ -15,6 +15,20 @@ use Doctrine\ORM\EntityRepository;
 
 class MenuRepository extends EntityRepository {
 
+    public function countItems($menu_id) {
+        $qb=$this->getEntityManager()->createQueryBuilder();
+        $qb->select('COUNT(adp_m.id)')
+            ->from('ADPerfilBundle:Menu','adp_m');
+        if(is_null($menu_id)){
+            $qb->where('adp_m.menuSuperior IS NULL');
+        }
+        else {
+            $qb->where('adp_m.menuSuperior=:menu')
+                ->setParameter(':menu',$menu_id);
+        }
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
     public function findArrayPermisoByPerfil($perfil_id) {
         $ms=$this->getEntityManager()->createQueryBuilder()
             ->select('adp_m.route')

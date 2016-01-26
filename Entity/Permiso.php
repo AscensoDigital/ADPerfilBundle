@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Permiso
  *
  * @ORM\Table(name="ad_perfil_permiso")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AscensoDigital\PerfilBundle\Repository\PermisoRepository")
  */
 class Permiso
 {
@@ -49,6 +49,10 @@ class Permiso
 
     public function __construct() {
         $this->perfilXPermisos = new ArrayCollection();
+    }
+
+    public function __toString() {
+        return $this->getDescripcion();
     }
 
     /**

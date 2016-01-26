@@ -36,6 +36,12 @@ html {
     padding-top: 12px;
     text-align: center;
 }
+.icono-new {
+    border-style: dashed;
+    background-color: #c4e3f3;
+    color: #7a869d;
+}
+
 .icono-blanco {
     background-color: #ffffff;
     color: #000000;

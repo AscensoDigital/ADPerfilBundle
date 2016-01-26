@@ -1,0 +1,5 @@
+{{ include('ADPerfilBundle:Navegacion:page-title.html.twig', {'icono': 'fa fa-plus', 'color': 'blanco', 'title': 'Crear Menu', 'subtitle': menuSuperior }) }}
+<form method="post" class="form-horizontal">
+    {{ form_widget(form) }}
+    <button class="btn btn-primary" type="submit">Crear</button>
+</form>
