@@ -17,7 +17,7 @@ class ReporteSeccion
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\SequenceGenerator(sequenceName="reporte_seccion_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;

@@ -18,7 +18,7 @@ class PerfilXPermiso
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\SequenceGenerator(sequenceName="perfil_x_permiso_id_seq", allocationSize=1, initialValue=1)
      */
     protected $id;
