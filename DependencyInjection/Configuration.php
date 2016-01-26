@@ -26,6 +26,13 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('route_redirect')->defaultValue('homepage')->end()
                 ->scalarNode('session_name')->defaultValue('ad_perfil.perfil_id')->end()
                 ->scalarNode('perfil_manager')->defaultValue('ad_perfil.perfil_manager')->end()
+                ->arrayNode('navegacion')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('homepage_route')->defaultValue('homepage')->cannotBeEmpty()->end()
+                        ->scalarNode('homepage_name')->defaultValue('Inicio')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
             ->end()
         ->end();
 

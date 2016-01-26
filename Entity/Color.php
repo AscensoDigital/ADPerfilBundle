@@ -36,6 +36,11 @@ class Color
      */
     protected $codigo;
 
+
+    public function __toString() {
+        return $this->getNombre();
+    }
+
     /**
      * @return int
      */

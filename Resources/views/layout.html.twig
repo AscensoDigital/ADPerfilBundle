@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('bundles/adperfil/css/ad_perfil_main.css') }}">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!--[if !IE 7]>
+    <style type="text/css">#wrap {display:table;height:100%}</style>
+    <![endif]-->
+</head>
+<body>
+<div id="wrap">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ts-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="ts-navbar-collapse">
+            {% if is_granted('ROLE_USER') %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li>{{ render(controller('ADPerfilBundle:Perfil:showActive')) }}</li>
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle navbar-usuario" data-toggle="dropdown"><i class="fa fa-user"></i> {{ app.user }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out fa-fw"></i> Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle navbar-nav" data-toggle="dropdown">Menú <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            {# MENU LISTADO #}
+                        </ul>
+                    </li>
+                </ul>
+            {% else %}
+                <a href="{{ path('fos_user_security_login') }}" class="btn btn-default navbar-btn navbar-right">Iniciar Sesión</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        {{ include('@ADPerfil/Navegacion/alert-flashes.html.twig') }}
+        {% block ad_perfil_content %}
+        {% endblock ad_perfil_content %}
+    </div>
+
+    {%  if app.user %}
+        {{  render(controller('ADPerfilBundle:Perfil:showOption')) }}
+    {% endif %}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</body>
+</html>

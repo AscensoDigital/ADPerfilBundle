@@ -1,0 +1,6 @@
+{% if menu is not null %}
+<ol class="breadcrumb">
+    {{ include('@ADPerfil/Navegacion/breadcrumb-item.html.twig',{ 'menu' :  menu.menuSuperior }) }}
+    <li class="active">{{ menu.nombre | title }}</li>
+</ol>
+{% endif %}

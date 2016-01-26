@@ -1,0 +1,22 @@
+{% extends 'ADPerfilBundle::layout.html.twig' %}
+
+{% block ad_perfil_content %}
+
+    {{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs', {'menu' : menuActual})) }}
+
+    {% for menu in menus %}
+        <div class="col-sm-6 col-md-3">
+            <div class="thumbnail text-center">
+                <a href="{% if menu.route != '' %}{{ path(menu.route) }}{% else %}{{ path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}{% endif %}">
+                    <span class="icono {{ menu.icono!='' ? menu.icono : 'fa fa-square' }} icono-{{ menu.color!='' ? menu.color | lower : 'blanco' }}" title="{{ menu.nombre }}"></span>
+                </a>
+                <div class="caption text-left">
+                    <a href="{% if menu.route != '' %}{{ path(menu.route) }}{% else %}{{ path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}{% endif %}"><h3>{{ menu.nombre | title }}</h3></a>
+                    <p>{{ menu.descripcion }}</p>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">No hay menús disponibles en la sección {{ menuActual }}</div>
+    {% endfor %}
+{% endblock ad_perfil_content %}

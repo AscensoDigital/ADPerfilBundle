@@ -1,0 +1,6 @@
+{% if menu is null %}
+    <li><a href="{{ path(homepage_route) }}">{{ homepage_name }}</a></li>
+{% else %}
+    {{ include('@ADPerfil/Navegacion/breadcrumb-item.html.twig',{ 'menu' :  menu.menuSuperior }) }}
+    <li><a href="{{ menu.route!='' ? path(menu.route) : path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}">{{ menu | title }}</a></li>
+{% endif %}

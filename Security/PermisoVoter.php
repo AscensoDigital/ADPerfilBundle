@@ -9,6 +9,7 @@
 namespace AscensoDigital\PerfilBundle\Security;
 
 
+use AscensoDigital\PerfilBundle\Entity\Menu;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -56,6 +57,10 @@ class PermisoVoter extends Voter
             return false;
         }
 
+        if (in_array($attribute, array(self::MENU, self::ROUTE)) and !is_null($subject) and !$subject instanceof Menu) {
+            return false;
+        }
+
         return true;
     }
 
@@ -70,8 +75,34 @@ class PermisoVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        if(isset($this->permisos[$attribute][Permiso::LIBRE]) and in_array($subject, $this->permisos[$attribute][Permiso::LIBRE])){
+        if(is_null($subject)){
             return true;
+        }
+
+        switch($attribute){
+            case self::ROUTE:
+                /** @var Menu $subject */
+                if(isset($this->permisos[$attribute][Permiso::LIBRE]) and in_array($subject->getRoute(), $this->permisos[$attribute][Permiso::LIBRE])){
+                    return true;
+                }
+                if(!isset($this->permisos[$attribute][Permiso::RESTRICT])){
+                    return false;
+                }
+                return in_array($subject->getRoute(), $this->permisos[$attribute][Permiso::RESTRICT]);
+            case self::MENU:
+                /** @var Menu $subject */
+                if(isset($this->permisos[$attribute][Permiso::LIBRE]) and in_array($subject->getSlug(), $this->permisos[$attribute][Permiso::LIBRE])){
+                    return true;
+                }
+                if(!isset($this->permisos[$attribute][Permiso::RESTRICT])){
+                    return false;
+                }
+                return in_array($subject->getSlug(), $this->permisos[$attribute][Permiso::RESTRICT]);
+            case self::PERMISO:
+                if(!isset($this->permisos[$attribute])){
+                    return false;
+                }
+                return in_array($subject, $this->permisos[$attribute]);
         }
 
         $user = $token->getUser();
@@ -82,17 +113,6 @@ class PermisoVoter extends Voter
 
         if(is_null($this->perfil_id)){
             return false;
-        }
-
-        switch($attribute){
-            case self::ROUTE:
-            case self::MENU:
-                if(!isset($this->permisos[$attribute][Permiso::RESTRICT])){
-                    return false;
-                }
-                return in_array($subject, $this->permisos[$attribute][Permiso::RESTRICT]);
-            case self::PERMISO:
-                return in_array($subject, $this->permisos[$attribute]);
         }
 
         throw new \LogicException('El código no es reconocido!');

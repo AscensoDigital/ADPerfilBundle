@@ -1,0 +1,95 @@
+body{
+    padding-top: 70px;
+    height: 100%;
+    min-height: 100%;
+    margin-bottom: 0px;
+    position: relative;
+}
+html {
+    height: 100%;
+}
+#wrap {
+    min-height: 100%;
+}
+#main {
+    overflow: auto;
+    padding-bottom: 50px;
+}
+/* MENUS */
+.thumbnail {
+    padding-top: 5px;
+    height: 310px;
+}
+/*Icono*/
+.icono {
+    font-size: 8em;
+    height: 150px;
+    width: 150px;
+    border-radius: 180px;
+    padding-top: 20px;
+}
+.icono-title {
+    font-size: 1.6em;
+    height: 80px;
+    width: 80px;
+    border-radius: 180px;
+    padding-top: 12px;
+    text-align: center;
+}
+.icono-blanco {
+    background-color: #ffffff;
+    color: #000000;
+    border: solid 1px;
+}
+.icono-negro {
+    background-color: #000000;
+    color: #ffffff;
+}
+.icono-rojo {
+    background-color: #e8121d;
+    color: #000000;
+}
+.icono-naranjo{
+    background-color: #ff8922;
+    color: #000000;
+}
+.icono-amarillo{
+    background-color: #fff647;
+    color: #000000;
+}
+.icono-verde{
+    background-color: #76ff61;
+    color: #000000;
+}
+.icono-azul{
+    background-color: #0000ff;
+    color: #000000;
+}
+.icono-celeste{
+    background-color: #3875d7;
+    color: #000000;
+}
+.icono-violeta{
+    background-color: #bc12e6;
+    color: #000000;
+}
+.icono-cafe{
+    background-color: #9d7050;
+    color: #000000;
+}
+.icono-gris{
+    background-color: #8c8c78;
+    color: #000000;
+}
+.icono-morado{
+    background-color: #7a0c5d;
+    color: #000000;
+}
+.icono-cian{
+    background-color: #5ae0d9;
+    color: #000000;
+}
+.icono-rosado{
+    background-color: #ff6be1;
+    color: #000000;
+}

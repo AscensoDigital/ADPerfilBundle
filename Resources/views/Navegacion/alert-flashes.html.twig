@@ -1,0 +1,14 @@
+{% if app.session.flashbag %}
+    <div class="row">
+        {% for flashType, flashMessages in app.session.flashbag.all() %}
+            <div class="alert alert-{{ flashType }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <ul>
+                    {% for flashMessage in flashMessages %}
+                        <li>{{ flashMessage | raw }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

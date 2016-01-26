@@ -87,6 +87,11 @@ class Menu
      */
     protected $color;
 
+
+    public function __toString() {
+        return $this->getNombre();
+    }
+
     /**
      * @return int
      */

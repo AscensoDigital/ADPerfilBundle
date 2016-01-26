@@ -28,6 +28,9 @@ class ADPerfilExtension extends Extension
         $container->setParameter('ad_perfil.session_name',$config['session_name']);
         $container->setParameter('ad_perfil.route_redirect',$config['route_redirect']);
 
+        $container->setParameter('ad_perfil.navegacion.homepage_route',$config['navegacion']['homepage_route']);
+        $container->setParameter('ad_perfil.navegacion.homepage_name',$config['navegacion']['homepage_name']);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
