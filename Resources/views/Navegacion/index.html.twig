@@ -2,7 +2,9 @@
 
 {% block ad_perfil_content %}
 
-    {{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs', {'menu' : menuActual})) }}
+    {{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs')) }}
+
+    {{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
 
     {% for menu in menus %}
         <div class="col-sm-6 col-md-3">

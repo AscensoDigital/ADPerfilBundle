@@ -16,22 +16,39 @@ class NavegacionController extends Controller
      * @ParamConverter("menu", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
      * @Security("is_granted('menu',menu)")
      */
-    public function indexAction(Request $request, Menu $menu = null) {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Menu $menu = null) {
+        $this->get('ad_perfil.menu_manager')->setMenuActual($menu);
         $menu_id=is_null($menu) ? null : $menu->getId();
-        $perfil_id=$request->getSession()->get($this->getParameter('ad_perfil.session_name'));
-        $menus=$em->getRepository('ADPerfilBundle:Menu')->findByPerfilMenu($perfil_id, $menu_id);
+        $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
         return $this->render('ADPerfilBundle:Navegacion:index.html.twig', [
             'menus' => $menus,
             'menuActual' => $menu
         ]);
     }
 
-    public function breadcrumbsAction($menu){
+    public function breadcrumbsAction(Menu $menu = null){
+        $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
         return $this->render('ADPerfilBundle:Navegacion:breadcrumbs.html.twig', [
             'menu' => $menu,
             'homepage_route' => $this->getParameter('ad_perfil.navegacion.homepage_route'),
             'homepage_name' => $this->getParameter('ad_perfil.navegacion.homepage_name')]);
+    }
+
+    public function menuAction() {
+        $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId(null);
+        return $this->render('ADPerfilBundle:Navegacion:menu.html.twig', [
+            'menus' => $menus
+        ]);
+    }
+
+    public function pageTitleAction(Menu $menu = null){
+        $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
+        return $this->render('ADPerfilBundle:Navegacion:page-title.html.twig', [
+            'icono' => $menu->getIcono(),
+            'color' => $menu->getColor()->getNombre(),
+            'title' => $menu->getMenuBase()->getNombre(),
+            'subtitle' => $menu->getNombre(),
+        ]);
     }
 
     public function createAction(Request $request){

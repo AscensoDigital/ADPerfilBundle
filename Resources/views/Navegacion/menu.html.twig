@@ -1,0 +1,7 @@
+{% for menu in menus %}
+    <li>
+        <a href="{{ menu.route != '' ? path(menu.route) : path('ad_perfil_menu', { 'menu_slug' : menu.slug}) }}">
+            <i class="{{ menu.icono!='' ? menu.icono : 'fa fa-square' }} fa-fw"></i> {{ menu.nombre | title | raw }}
+        </a>
+    </li>
+{% endfor %}

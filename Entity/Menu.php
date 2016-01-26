@@ -2,6 +2,7 @@
 
 namespace AscensoDigital\PerfilBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +43,13 @@ class Menu
      * @ORM\Column(name="descripcion", type="text", nullable=true)
      */
     protected $descripcion;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=false)
+     */
+    protected $orden;
 
     /**
      * @var string
@@ -90,6 +98,10 @@ class Menu
 
     public function __toString() {
         return $this->getNombre();
+    }
+
+    public function getMenuBase(){
+        return is_null($this->getMenuSuperior()) ? $this : $this->getMenuSuperior()->getMenuBase();
     }
 
     /**
@@ -242,6 +254,24 @@ class Menu
     public function getColor()
     {
         return $this->color;
+    }
+
+    /**
+     * @param int $orden
+     * @return Menu
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 
 

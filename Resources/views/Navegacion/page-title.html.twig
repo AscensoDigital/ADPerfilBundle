@@ -1,0 +1,7 @@
+<div class="row">
+    <div class="page-header">
+        <h1><i class="icono-title {{ icono!='' ? icono : 'fa fa-square' }} icono-{{ color!='' ? color | lower : 'blanco' }}"></i> {{ title }}{% if subtitle!='' %} - <small>{{ subtitle }}</small>{% endif %}</h1>
+    </div>
+</div>
+
+{# include('sitio/page-title.html.twig', {'icono': '', 'color': '', 'title': block('title'), 'subtitle': block('subtitle')}) #}
