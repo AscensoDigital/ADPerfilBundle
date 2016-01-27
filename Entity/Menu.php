@@ -104,6 +104,13 @@ class Menu
         return is_null($this->getMenuSuperior()) ? $this : $this->getMenuSuperior()->getMenuBase();
     }
 
+    public function isActual(Menu $menu = null) {
+        if(is_null($menu)){
+            return false;
+        }
+        return $this->getId()== $menu->getId();
+    }
+
     /**
      * @return int
      */

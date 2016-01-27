@@ -13,8 +13,8 @@ use Doctrine\ORM\EntityRepository;
 
 class PermisoRepository extends EntityRepository {
 
-    public function getQueryBuilderOrderDescripcion() {
+    public function getQueryBuilderOrderNombre() {
         return $this->createQueryBuilder('adp_prm')
-            ->orderBy('adp_prm.descripcion');
+            ->orderBy('adp_prm.nombre');
     }
 }

@@ -10,7 +10,7 @@
             </a>
             <div class="caption text-left">
                 <a href="{% if menu.route != '' %}{{ path(menu.route) }}{% else %}{{ path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}{% endif %}"><h3>{{ menu.nombre | title }}</h3></a>
-                <p>{{ menu.descripcion }}</p>
+                <p>{{ menu.descripcion | raw }}</p>
             </div>
         </div>
     </div>

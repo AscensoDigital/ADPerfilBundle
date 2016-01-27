@@ -30,6 +30,10 @@ class ADPerfilExtension extends Extension
 
         $container->setParameter('ad_perfil.navegacion.homepage_route',$config['navegacion']['homepage_route']);
         $container->setParameter('ad_perfil.navegacion.homepage_name',$config['navegacion']['homepage_name']);
+        $container->setParameter('ad_perfil.navegacion.homepage_icono',$config['navegacion']['homepage_icono']);
+        $container->setParameter('ad_perfil.navegacion.homepage_color',$config['navegacion']['homepage_color']);
+        $container->setParameter('ad_perfil.navegacion.homepage_title',$config['navegacion']['homepage_title']);
+        $container->setParameter('ad_perfil.navegacion.homepage_subtitle',$config['navegacion']['homepage_subtitle']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

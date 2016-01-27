@@ -99,3 +99,61 @@ html {
     background-color: #ff6be1;
     color: #000000;
 }
+
+/*Colores*/
+.Blanco {
+    background-color: #ffffff;
+    color: #000000;
+}
+.Negro {
+    background-color: #000000;
+    color: #ffffff;
+}
+.Rojo {
+    background-color: #e8121d;
+    color: #ffffff;
+}
+.Naranjo{
+    background-color: #ff8922;
+    color: #000000;
+}
+.Amarillo{
+    background-color: #fff647;
+    color: #000000;
+}
+.Verde{
+    background-color: #76ff61;
+    color: #000000;
+}
+.Azul{
+    background-color: #0000ff;
+    color: #ffffff;
+}
+.Celeste{
+    background-color: #3875d7;
+    color: #000000;
+}
+.Violeta{
+    background-color: #bc12e6;
+    color: #000000;
+}
+.Cafe{
+    background-color: #9d7050;
+    color: #ffffff;
+}
+.Gris{
+    background-color: #8c8c78;
+    color: #000000;
+}
+.Morado{
+    background-color: #7a0c5d;
+    color: #ffffff;
+}
+.Cian{
+    background-color: #5ae0d9;
+    color: #000000;
+}
+.Rosado{
+    background-color: #ff6be1;
+    color: #000000;
+}

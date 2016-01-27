@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 class NavegacionController extends Controller
 {
     /**
+     * @param Menu|null $menu
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/index/{menu_slug}", name="ad_perfil_menu", defaults={"menu_slug" : null})
      * @ParamConverter("menu", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
      * @Security("is_granted('menu',menu)")
@@ -21,12 +23,29 @@ class NavegacionController extends Controller
         $this->get('ad_perfil.menu_manager')->setMenuActual($menu);
         $menu_id=is_null($menu) ? null : $menu->getId();
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
+        if(/*!$this->isGranted('ROLE_SUPER_ADMIN') &&*/ 1==count($menus)){
+            /** @var Menu $mn */
+            $mn=$menus[0];
+            if($mn->getRoute() != '') {
+                return $this->redirectToRoute($mn->getRoute());
+            }
+            else {
+                return $this->redirectToRoute('ad_perfil_menu',['menu_slug' => $mn->getSlug()]);
+            }
+        }
         return $this->render('ADPerfilBundle:Navegacion:index.html.twig', [
             'menus' => $menus,
-            'menuActual' => $menu
+            'menuActual' => $menu,
+            'title' => is_null($menu) ? $this->getParameter('ad_perfil.navegacion.homepage_name') :
+                        (is_null($menu->getMenuSuperior()) ? $menu->getNombre(): $menu->getMenuSuperior()->getNombre()),
+            'subtitle' => is_null($menu) ? '' : (is_null($menu->getMenuSuperior()) ? '': $menu->getNombre())
         ]);
     }
 
+    /**
+     * @param Menu|null $menu
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function breadcrumbsAction(Menu $menu = null){
         $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
         return $this->render('ADPerfilBundle:Navegacion:breadcrumbs.html.twig', [
@@ -35,25 +54,44 @@ class NavegacionController extends Controller
             'homepage_name' => $this->getParameter('ad_perfil.navegacion.homepage_name')]);
     }
 
-    public function menuAction() {
-        $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId(null);
-        return $this->render('ADPerfilBundle:Navegacion:menu.html.twig', [
-            'menus' => $menus
-        ]);
-    }
-
-    public function pageTitleAction(Menu $menu = null){
-        $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
-        return $this->render('ADPerfilBundle:Navegacion:page-title.html.twig', [
-            'icono' => $menu->getIcono(),
-            'color' => $menu->getColor()->getNombre(),
-            'title' => $menu->getMenuBase()->getNombre(),
-            'subtitle' => $menu->getNombre()
+    /**
+     * @param null $menu_id
+     * @param bool $submenu Diferencia al menu desplegable principal de las secciones
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function menuAction($menu_id=null, $submenu=true) {
+        $menu_id= $submenu==false ? 0 : $menu_id;
+        $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
+        return $this->render('ADPerfilBundle:Navegacion:menu-'.($submenu ? 'nav' : 'li').'.html.twig', [
+            'menus' => $menus,
+            'menuActual' => $this->get('ad_perfil.menu_manager')->getMenuActual()
         ]);
     }
 
     /**
+     * @param Menu|null $menu
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function pageTitleAction(Menu $menu = null){
+        $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
+        $options=is_null($menu) ? [
+            'icono' => $this->getParameter('ad_perfil.navegacion.homepage_icono'),
+            'color' => $this->getParameter('ad_perfil.navegacion.homepage_color'),
+            'title' => $this->getParameter('ad_perfil.navegacion.homepage_title'),
+            'subtitle' => $this->getParameter('ad_perfil.navegacion.homepage_subtitle'),
+        ] : [
+            'icono' => $menu->getIcono(),
+            'color' => $menu->getColor()->getNombre(),
+            'title' => $menu->getMenuBase()->getNombre(),
+            'subtitle' => $menu->getNombre()
+        ];
+        return $this->render('ADPerfilBundle:Navegacion:page-title.html.twig', $options);
+    }
+
+    /**
      * @param Request $request
+     * @param Menu|null $menuSuperior
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/menu/new/{menu_slug}", name="ad_perfil_menu_new", defaults={"menu_slug" : null})
      * @ParamConverter("menuSuperior", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
      * @Security("has_role('ROLE_SUPER_ADMIN')")

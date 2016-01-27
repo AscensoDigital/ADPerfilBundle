@@ -41,18 +41,20 @@ class MenuManager {
     }
 
     public function getMenusByMenuId($menu_id){
-        $menu_sav_id=is_null($menu_id) ? 0 : $menu_id;
+        $menu_sav_id=is_null($menu_id) ?
+                        (is_null($this->getMenuActual()) ?
+                            0 :
+                            (is_null($this->getMenuActual()->getMenuSuperior()) ?
+                                0 :
+                                $this->getMenuActual()->getMenuSuperior()->getId())) :
+                        $menu_id;
         if(!isset($this->seccion[$menu_sav_id])) {
-            $this->seccion[$menu_sav_id] = $this->em->getRepository('ADPerfilBundle:Menu')->findByPerfilMenu($this->perfil_id, $menu_id);
+            $this->seccion[$menu_sav_id] = $this->em->getRepository('ADPerfilBundle:Menu')->findByPerfilMenu($this->perfil_id, $menu_sav_id);
         }
         return $this->seccion[$menu_sav_id];
     }
 
-    public function getMenuActual($params=array()){
-        if(is_null($this->menuActual)) {
-            $menuActual = $this->em->getRepository('ADPerfilBundle:Menu')->findBy($params);
-            $this->menuActual=isset($menuActual[0]) ? $menuActual[0] : null;
-        }
+    public function getMenuActual(){
         return $this->menuActual;
     }
 
@@ -64,4 +66,7 @@ class MenuManager {
         $this->menuActual=$menu;
     }
 
+    public function setMenuActualSinceRoute($route) {
+        $this->menuActual=$this->em->getRepository('ADPerfilBundle:Menu')->findOneByRoute($route);
+    }
 }

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="page-header">
-        <h1><i class="icono-title {{ icono!='' ? icono : 'fa fa-square' }} icono-{{ color!='' ? color | lower : 'blanco' }}"></i> {{ title }}{% if subtitle!='' %} - <small>{{ subtitle }}</small>{% endif %}</h1>
+        <h1><i class="icono-title {{ icono!='' ? icono : 'fa fa-square' }} icono-{{ color!='' ? color | lower : 'blanco' }}"></i> {{ title | title | raw }}{% if subtitle!='' and title!=subtitle %} - <small>{{ subtitle | raw }}</small>{% endif %}</h1>
     </div>
 </div>
 

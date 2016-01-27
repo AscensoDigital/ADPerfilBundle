@@ -58,14 +58,26 @@ class MenuRepository extends EntityRepository {
             ->leftJoin('adp_m.menuSuperior','adp_ms')
             ->leftJoin('adp_m.permiso','adp_prm')
             ->leftJoin('adp_prm.perfilXPermisos','adp_pxp')
-            ->where('adp_m.menuSuperior'.(is_null($menu_id) ? ' IS NULL' : '=:menu'))
+            ->where('adp_m.menuSuperior'.((is_null($menu_id) or $menu_id==0) ? ' IS NULL' : '=:menu'))
             ->andWhere('adp_m.permiso IS NULL or (adp_pxp.perfil=:perfil AND adp_pxp.acceso=:permitido)')
             ->orderBy('adp_m.orden')
             ->setParameter('perfil',$perfil_id)
             ->setParameter(':permitido','true');
-        if(!is_null($menu_id)){
+        if(!is_null($menu_id) and $menu_id>0){
             $qb->setParameter('menu',$menu_id);
         }
         return $qb->getQuery()->getResult();
+    }
+
+    public function findOneByRoute($route) {
+        return $this->createQueryBuilder('adp_m')
+            ->addSelect('adp_ms')
+            ->addSelect('adp_c')
+            ->leftJoin('adp_m.color','adp_c')
+            ->leftJoin('adp_m.menuSuperior','adp_ms')
+            ->where('adp_m.route=:route')
+            ->setParameter(':route',$route)
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
     }
 }

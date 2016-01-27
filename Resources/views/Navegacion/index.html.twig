@@ -1,5 +1,9 @@
 {% extends 'ADPerfilBundle::layout.html.twig' %}
 
+{% block ad_perfil_title %}{{ title }}{% endblock ad_perfil_title %}
+
+{% block ad_perfil_subtitle %}{{ subtitle }}{% endblock ad_perfil_subtitle %}
+
 {% block ad_perfil_content %}
     {{ include('ADPerfilBundle:Navegacion:index_content.html.twig') }}
 {% endblock ad_perfil_content %}

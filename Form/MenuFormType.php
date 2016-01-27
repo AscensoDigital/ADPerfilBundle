@@ -33,7 +33,7 @@ class MenuFormType extends AbstractType
                 'class' => 'AscensoDigital\PerfilBundle\Entity\Permiso',
                 'required' => false,
                 'query_builder' => function(EntityRepository $er) {
-                    return $er->getQueryBuilderOrderDescripcion();
+                    return $er->getQueryBuilderOrderNombre();
                 }
             ]);
     }

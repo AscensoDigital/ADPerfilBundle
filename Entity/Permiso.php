@@ -52,7 +52,7 @@ class Permiso
     }
 
     public function __toString() {
-        return $this->getDescripcion();
+        return $this->getNombre().' - '.$this->getDescripcion();
     }
 
     /**
