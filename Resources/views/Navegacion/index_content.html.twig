@@ -12,7 +12,7 @@
                 <a href="{% if menu.route != '' %}{{ path(menu.route) }}{% else %}{{ path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}{% endif %}"><h3>{{ menu.nombre | title }}</h3></a>
                 <p>{{ menu.descripcion | raw }}</p>
             </div>
-            {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('permiso','editar_menu') %}
+            {% if canEdit %}
             <div class="text-right editar-menu">
                 <a class="btn btn-info" href="{{ path('ad_perfil_menu_edit', {'menu_slug': menu.slug}) }}" title="Editar Menu">
                     <i class="fa fa-edit fa-fw"></i> <span class="badge">{{ menu.orden }}</span>

@@ -37,7 +37,8 @@ class NavegacionController extends Controller
             'menus' => $menus,
             'menuActual' => $menu,
             'title' => is_null($menu) ? $this->getParameter('ad_perfil.navegacion.homepage_name') : $menu->getTitulo(),
-            'subtitle' => is_null($menu) ? '' : $menu->getSubtitulo()
+            'subtitle' => is_null($menu) ? '' : $menu->getSubtitulo(),
+            'canEdit' => $this->isGranted('ROLE_SUPER_ADMIN') or $this->isGranted('permiso','editar-menu')
         ]);
     }
 
