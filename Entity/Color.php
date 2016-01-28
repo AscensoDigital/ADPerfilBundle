@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Color
  *
  * @ORM\Table(name="ad_perfil_color")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AscensoDigital\PerfilBundle\Repository\ColorRepository")
  */
 class Color
 {

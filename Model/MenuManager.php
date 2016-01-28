@@ -21,7 +21,9 @@ class MenuManager {
      * @var Menu
      */
     private $menuActual;
-
+    /**
+     * @var EntityManager
+     */
     private $em;
     private $perfil_id;
     private $sessionName;
@@ -67,6 +69,7 @@ class MenuManager {
     }
 
     public function setMenuActualSinceRoute($route) {
-        $this->menuActual=$this->em->getRepository('ADPerfilBundle:Menu')->findOneByRoute($route);
+        $menu=$this->em->getRepository('ADPerfilBundle:Menu')->findOneByRoute($route);
+        $this->setMenuActual($menu);
     }
 }

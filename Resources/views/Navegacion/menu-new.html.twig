@@ -1,5 +1,8 @@
 {% extends 'ADPerfilBundle::layout.html.twig' %}
 
+{% block ad_perfil_title %}Crear Menu{% endblock ad_perfil_title %}
+{% block ad_perfil_subtitle %}{{ menuSuperior }}{% endblock ad_perfil_subtitle %}
+
 {% block ad_perfil_content %}
     {{ include('ADPerfilBundle:Navegacion:menu-new_content.html.twig') }}
 {% endblock ad_perfil_content %}

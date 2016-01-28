@@ -2,7 +2,6 @@
 
 namespace AscensoDigital\PerfilBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -97,11 +96,23 @@ class Menu
 
 
     public function __toString() {
-        return $this->getNombre();
+        return (is_null($this->getMenuSuperior()) ? '' : $this->getMenuSuperior()->getNombre().' - ').$this->getNombre();
     }
 
     public function getMenuBase(){
         return is_null($this->getMenuSuperior()) ? $this : $this->getMenuSuperior()->getMenuBase();
+    }
+
+    public function getMenuSuperiorSlug() {
+        return is_null($this->getMenuSuperior()) ? null : $this->getMenuSuperior()->getSlug();
+    }
+
+    public function getSubtitulo() {
+        return (is_null($this->getMenuSuperior()) ? '': $this->getNombre());
+    }
+
+    public function getTitulo() {
+        return (is_null($this->getMenuSuperior()) ? $this->getNombre() : $this->getMenuSuperior()->getNombre());
     }
 
     public function isActual(Menu $menu = null) {

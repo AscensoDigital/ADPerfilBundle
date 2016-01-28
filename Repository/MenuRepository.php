@@ -80,4 +80,12 @@ class MenuRepository extends EntityRepository {
             ->setMaxResults(1)
             ->getQuery()->getOneOrNullResult();
     }
+
+    public function getQueryBuilderOrderNombre() {
+        return $this->createQueryBuilder('adp_m')
+            ->addSelect('adp_ms')
+            ->leftJoin('adp_m.menuSuperior','adp_ms')
+            ->orderBy('adp_ms.nombre')
+            ->addOrderBy('adp_m.nombre');
+    }
 }
