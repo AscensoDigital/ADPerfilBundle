@@ -20,6 +20,7 @@ class PerfilController extends Controller
         if($user){
             if(isset($user->getPerfils()[$perfil_id])){
                 $request->getSession()->set($this->getParameter('ad_perfil.session_name'),$perfil_id);
+                $this->removeFiltros($request);
                 $this->addFlash('success','Ha cambiado a su perfil de <strong>'.$user->getPerfils()[$perfil_id]->getNombre().'</strong>');
             }
             else{
@@ -49,5 +50,13 @@ class PerfilController extends Controller
     public function showOptionAction(){
         $perfils= $this->getUser() ? $this->getUser()->getPerfils() : array();
         return $this->render('ADPerfilBundle:Perfil:showOption.html.twig',['perfils' => $perfils, 'sesionName' => $this->getParameter('ad_perfil.session_name')]);
+    }
+
+    private function removeFiltros(Request $request) {
+        foreach($request->getSession()->all() as $key_ses => $data) {
+            if(strpos($key_ses,'filtros_')!==false) {
+                $request->getSession()->remove($key_ses);
+            }
+        }
     }
 }
