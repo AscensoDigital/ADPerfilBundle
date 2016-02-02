@@ -2,8 +2,13 @@
 
 namespace AscensoDigital\PerfilBundle\Form;
 
+use AscensoDigital\ComponentBundle\Form\Type\IconType;
+use Doctrine\DBAL\Types\IntegerType;
+use Doctrine\DBAL\Types\TextType;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -11,7 +16,7 @@ class MenuFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('menuSuperior','entity',[
+        $builder->add('menuSuperior',EntityType::class,[
             'placeholder' => 'Homepage',
             'class' => 'AscensoDigital\PerfilBundle\Entity\Menu',
             'required' => false,
@@ -19,12 +24,12 @@ class MenuFormType extends AbstractType
                 return $er->getQueryBuilderOrderNombre();
             }
         ])
-            ->add('orden','integer')
-            ->add('nombre','text')
-            ->add('slug','text')
-            ->add('descripcion','textarea')
-            ->add('icono','text')
-            ->add('color','entity',[
+            ->add('orden',IntegerType::class)
+            ->add('nombre',TextType::class)
+            ->add('slug',TextType::class)
+            ->add('descripcion',TextareaType::class)
+            ->add('icono',IconType::class)
+            ->add('color',EntityType::class,[
                 'placeholder' => '',
                 'class' => 'AscensoDigital\PerfilBundle\Entity\Color',
                 'query_builder' => function (EntityRepository $er) {
@@ -32,10 +37,10 @@ class MenuFormType extends AbstractType
                 }
             ]);
         if($options['super_admin']) {
-            $builder->add('route', 'text', [
+            $builder->add('route', TextType::class, [
                 'required' => false
             ])
-                ->add('permiso', 'entity', [
+                ->add('permiso', EntityType::class, [
                     'placeholder' => '',
                     'class' => 'AscensoDigital\PerfilBundle\Entity\Permiso',
                     'required' => false,
@@ -51,7 +56,7 @@ class MenuFormType extends AbstractType
         $resolver->setRequired(['super_admin']);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'ad_perfil_menu_form_type';
     }
