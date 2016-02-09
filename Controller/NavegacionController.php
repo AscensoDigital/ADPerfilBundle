@@ -38,7 +38,7 @@ class NavegacionController extends Controller
             'menuActual' => $menu,
             'title' => is_null($menu) ? $this->getParameter('ad_perfil.navegacion.homepage_name') : $menu->getTitulo(),
             'subtitle' => is_null($menu) ? '' : $menu->getSubtitulo(),
-            'canEdit' => $this->isGranted('ROLE_SUPER_ADMIN') or $this->isGranted('permiso','editar-menu')
+            'canEdit' => $this->isGranted('ROLE_SUPER_ADMIN') || $this->isGranted('permiso','editar-menu')
         ]);
     }
 
@@ -60,7 +60,7 @@ class NavegacionController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function menuAction($menu_id=null, $submenu=true) {
-        $menu_id= $submenu==false ? 0 : $menu_id;
+        $menu_id= $submenu===false ? 0 : $menu_id;
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
         return $this->render('ADPerfilBundle:Navegacion:menu-'.($submenu ? 'nav' : 'li').'.html.twig', [
             'menus' => $menus,
@@ -102,7 +102,7 @@ class NavegacionController extends Controller
             ->setOrden($this->get('ad_perfil.menu_manager')->countItems($menuSuperior)+1);
         $form=$this->createForm(new MenuFormType(),$menu, ['super_admin' => $this->isGranted('ROLE_SUPER_ADMIN')]);
         $form->handleRequest($request);
-        if($form->isSubmitted() and $form->isValid()){
+        if($form->isSubmitted() && $form->isValid()){
             $em=$this->getDoctrine()->getManager();
             $em->persist($menu);
             $em->flush();
@@ -130,7 +130,7 @@ class NavegacionController extends Controller
         }
         $form=$this->createForm(new MenuFormType(),$menu,['super_admin' => $this->isGranted('ROLE_SUPER_ADMIN')]);
         $form->handleRequest($request);
-        if($form->isSubmitted() and $form->isValid()){
+        if($form->isSubmitted() && $form->isValid()){
             $em=$this->getDoctrine()->getManager();
             $em->persist($menu);
             $em->flush();

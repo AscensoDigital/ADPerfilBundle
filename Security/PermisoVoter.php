@@ -57,7 +57,7 @@ class PermisoVoter extends Voter
             return false;
         }
 
-        if (in_array($attribute, array(self::MENU, self::ROUTE)) and !is_null($subject) and !$subject instanceof Menu) {
+        if (in_array($attribute, array(self::MENU, self::ROUTE)) && !is_null($subject) && !$subject instanceof Menu) {
             return false;
         }
 
@@ -82,7 +82,7 @@ class PermisoVoter extends Voter
         switch($attribute){
             case self::ROUTE:
                 /** @var Menu $subject */
-                if(isset($this->permisos[$attribute][Permiso::LIBRE]) and in_array($subject->getRoute(), $this->permisos[$attribute][Permiso::LIBRE])){
+                if(isset($this->permisos[$attribute][Permiso::LIBRE]) && in_array($subject->getRoute(), $this->permisos[$attribute][Permiso::LIBRE])){
                     return true;
                 }
                 if(!isset($this->permisos[$attribute][Permiso::RESTRICT])){
@@ -91,7 +91,7 @@ class PermisoVoter extends Voter
                 return in_array($subject->getRoute(), $this->permisos[$attribute][Permiso::RESTRICT]);
             case self::MENU:
                 /** @var Menu $subject */
-                if(isset($this->permisos[$attribute][Permiso::LIBRE]) and in_array($subject->getSlug(), $this->permisos[$attribute][Permiso::LIBRE])){
+                if(isset($this->permisos[$attribute][Permiso::LIBRE]) && in_array($subject->getSlug(), $this->permisos[$attribute][Permiso::LIBRE])){
                     return true;
                 }
                 if(!isset($this->permisos[$attribute][Permiso::RESTRICT])){
