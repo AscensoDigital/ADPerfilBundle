@@ -3,7 +3,7 @@
 namespace AscensoDigital\PerfilBundle\Controller;
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
-use AscensoDigital\PerfilBundle\Form\MenuFormType;
+use AscensoDigital\PerfilBundle\Form\Type\MenuFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

@@ -1,6 +1,6 @@
 <?php
 
-namespace AscensoDigital\PerfilBundle\Form;
+namespace AscensoDigital\PerfilBundle\Form\Type;
 
 use AscensoDigital\ComponentBundle\Form\Type\IconType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
