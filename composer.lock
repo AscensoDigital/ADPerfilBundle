@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AscensoDigital/ADComponentBundle.git",
-                "reference": "431819ec8e551c2415695733f2bc8aa2ba1e643f"
+                "reference": "79694fa099804f191ed218517e324ad6e6b87806"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AscensoDigital/ADComponentBundle/zipball/431819ec8e551c2415695733f2bc8aa2ba1e643f",
-                "reference": "431819ec8e551c2415695733f2bc8aa2ba1e643f",
+                "url": "https://api.github.com/repos/AscensoDigital/ADComponentBundle/zipball/79694fa099804f191ed218517e324ad6e6b87806",
+                "reference": "79694fa099804f191ed218517e324ad6e6b87806",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
             "keywords": [
                 "bundle extensiones"
             ],
-            "time": "2016-02-09 05:17:27"
+            "time": "2016-02-09 08:43:01"
         },
         {
             "name": "doctrine/annotations",
