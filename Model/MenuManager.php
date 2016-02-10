@@ -26,12 +26,10 @@ class MenuManager {
      */
     private $em;
     private $perfil_id;
-    private $sessionName;
 
     public function __construct(Session $session, EntityManager $em, $sessionName)
     {
         $this->em = $em;
-        $this->sessionName=$sessionName;
         $this->perfil_id = $session->get($sessionName,null);
     }
 

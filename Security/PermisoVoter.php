@@ -22,15 +22,11 @@ class PermisoVoter extends Voter
     const ROUTE = 'route';
     const PERMISO = 'permiso'; // nombre del permiso
 
-    private $em;
     private $perfil_id;
     private $permisos;
-    //private $sessionName;
 
     public function __construct(Session $session, EntityManager $em, $sessionName)
     {
-        $this->em = $em;
-        //$this->sessionName=$sessionName;
         $this->perfil_id = $session->get($sessionName,null);
         $menus = $em->getRepository('ADPerfilBundle:Menu')->findArrayPermisoByPerfil($this->perfil_id);
         $this->permisos[self::MENU] = isset($menus[self::MENU]) ? $menus[self::MENU] : array();
