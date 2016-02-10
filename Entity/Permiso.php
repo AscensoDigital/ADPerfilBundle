@@ -132,4 +132,3 @@ class Permiso
         return $this->perfilXPermisos;
     }
 }
-

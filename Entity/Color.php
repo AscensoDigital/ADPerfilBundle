@@ -85,6 +85,4 @@ class Color
         return $this->codigo;
     }
 
-
 }
-

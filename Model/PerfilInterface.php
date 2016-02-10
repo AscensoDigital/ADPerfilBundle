@@ -8,4 +8,3 @@ interface PerfilInterface
     public function getNombre();
     public function getSlug();
 }
-
