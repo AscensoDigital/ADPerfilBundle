@@ -117,7 +117,7 @@ class NavegacionController extends Controller
 
     /**
      * @param Request $request
-     * @param Menu|null $menuSuperior
+     * @param Menu|null $menu
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/menu/edit/{menu_slug}", name="ad_perfil_menu_edit", defaults={"menu_slug" : null})
      * @ParamConverter("menu", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
