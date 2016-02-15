@@ -67,7 +67,7 @@ class MenuManager {
     }
 
     public function setMenuActualSinceRoute($route) {
-        $menu=$this->em->getRepository('ADPerfilBundle:Menu')->findOneByRoute($route);
-        $this->setMenuActual($menu);
+        $menus=$this->em->getRepository('ADPerfilBundle:Menu')->findBy(['route' => $route]);
+        $this->setMenuActual(isset($menus[0]) ? $menus[0] : null);
     }
 }
