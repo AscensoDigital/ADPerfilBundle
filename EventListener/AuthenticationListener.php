@@ -10,7 +10,6 @@ namespace AscensoDigital\PerfilBundle\EventListener;
 
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;
 
