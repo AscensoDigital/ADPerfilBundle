@@ -23,25 +23,23 @@ class AuthenticationListener
         $this->sessionName=$sessionName;
     }
 
-    public function onSuccess(AuthenticationEvent $event){
+    public function onFormLogin(InteractiveLoginEvent $event) {
         $user=$event->getAuthenticationToken()->getUser();
         if(is_object($user)) {
-            dump($user);
+            $perfils=$user->getPerfils();
+            $this->setPerfilId($event->getRequest(), $perfils);
         }
     }
 
-    public function onFormLogin(InteractiveLoginEvent $event) {
-        $perfils=$event->getAuthenticationToken()->getUser()->getPerfils();
-        $this->setPerfilId($event->getRequest(), $perfils);
-    }
-
-    public function onSwitchUser(SwitchUserEvent $event)
-    {
+    public function onSwitchUser(SwitchUserEvent $event) {
         $request=$event->getRequest();
         $request->getSession()->remove('ut_id');
         $request->getSession()->remove('ad_perfil.perfil_multiple');
-        $perfils=$event->getTargetUser()->getPerfils();
-        $this->setPerfilId($event->getRequest(), $perfils);
+        $user=$event->getTargetUser();
+        if(is_object($user)) {
+            $perfils=$user->getPerfils();
+            $this->setPerfilId($event->getRequest(), $perfils);
+        }
     }
 
     private function setPerfilId(Request $request, $perfils) {
