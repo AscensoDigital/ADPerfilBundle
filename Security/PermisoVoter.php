@@ -11,6 +11,7 @@ namespace AscensoDigital\PerfilBundle\Security;
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -28,12 +29,18 @@ class PermisoVoter extends Voter
     public function __construct(Session $session, EntityManager $em, $sessionName)
     {
         $this->perfil_id = $session->get($sessionName,null);
-        $menus = $em->getRepository('ADPerfilBundle:Menu')->findArrayPermisoByPerfil($this->perfil_id);
-        $this->permisos[self::MENU] = isset($menus[self::MENU]) ? $menus[self::MENU] : array();
-        $this->permisos[self::ROUTE] = isset($menus[self::ROUTE]) ? $menus[self::ROUTE] : array();
+        try{
+            $menus = $em->getRepository('ADPerfilBundle:Menu')->findArrayPermisoByPerfil($this->perfil_id);
+            $this->permisos[self::MENU] = isset($menus[self::MENU]) ? $menus[self::MENU] : array();
+            $this->permisos[self::ROUTE] = isset($menus[self::ROUTE]) ? $menus[self::ROUTE] : array();
 
-        if(!is_null($this->perfil_id)) {
-            $this->permisos[self::PERMISO] = $em->getRepository('ADPerfilBundle:PerfilXPermiso')->findArrayIdByPerfil($this->perfil_id);
+            if(!is_null($this->perfil_id)) {
+                $this->permisos[self::PERMISO] = $em->getRepository('ADPerfilBundle:PerfilXPermiso')->findArrayIdByPerfil($this->perfil_id);
+            }
+        } catch(DBALException $e) {
+            return;
+        } catch(\PDOException $e) {
+            return;
         }
     }
 
