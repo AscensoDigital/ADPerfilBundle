@@ -56,5 +56,14 @@ class AuthenticationListener
                 $request->getSession()->set('ad_perfil.perfil_multiple',true);
                 break;
         }
+        $this->removeFiltros($request);
+    }
+
+    private function removeFiltros(Request $request) {
+        foreach($request->getSession()->all() as $key_ses => $data) {
+            if(strpos($key_ses,'filtros_')!==false) {
+                $request->getSession()->remove($key_ses);
+            }
+        }
     }
 }
