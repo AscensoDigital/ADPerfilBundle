@@ -9,6 +9,7 @@
 namespace AscensoDigital\PerfilBundle\EventListener;
 
 
+use AscensoDigital\PerfilBundle\Model\PerfilInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\Event\SwitchUserEvent;
@@ -49,6 +50,7 @@ class AuthenticationListener
                 break;
             case 1:
                 $request->getSession()->set('ad_perfil.perfil_multiple',false);
+                /** @var PerfilInterface $perfil */
                 $perfil=array_pop($perfils);
                 $request->getSession()->set($this->sessionName,$perfil->getId());
                 break;
