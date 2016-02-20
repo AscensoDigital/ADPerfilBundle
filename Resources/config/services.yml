@@ -9,6 +9,16 @@ services:
             - { name: kernel.event_listener, event: security.interactive_login, method: onFormLogin }
             - { name: kernel.event_listener, event: security.switch_user, method: onSwitchUser }
 
+    ad_perfil.configurator:
+        class: AscensoDigital\PerfilBundle\Configuration\Configurator
+        arguments: ['%ad_perfil.config%']
+
+    ad_perfil.filtro.form.type:
+        class: AscensoDigital\PerfilBundle\Form\Type\FiltroFormType
+        arguments: ["@ad_perfil.configurator", '@security.token_storage','@router']
+        tags:
+          - { name: form.type, alias: filtro_form_type }
+
     ad_perfil.request_listener:
         class: AscensoDigital\PerfilBundle\EventListener\RequestListener
         arguments: [ '@ad_perfil.menu_manager' ]
@@ -21,6 +31,12 @@ services:
           - '@session'
           - '@doctrine.orm.entity_manager'
           - %ad_perfil.session_name%
+
+    ad_perfil.perfil_manager:
+            class: AscensoDigital\PerfilBundle\Model\PerfilManager
+            arguments:
+              - '@doctrine.orm.entity_manager'
+              - %ad_perfil.perfil_class%
 
     ad_perfil.permiso_voter:
         class: AscensoDigital\PerfilBundle\Security\PermisoVoter

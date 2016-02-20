@@ -2,6 +2,7 @@
 
 namespace AscensoDigital\PerfilBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -40,10 +41,56 @@ class Configuration implements ConfigurationInterface
             ->end()
         ->end();
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $this->addFiltroSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    private function addFiltroSection(ArrayNodeDefinition $rootNode) {
+        $rootNode
+            ->fixXmlConfig('filtro')
+            ->children()
+            ->arrayNode('filtros')
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+            ->children()
+            ->scalarNode('type')
+            ->defaultValue('Symfony\Bridge\Doctrine\Form\Type\EntityType')
+            ->cannotBeEmpty()
+            ->info('Clase del tipo de form que será el filtro.')
+            ->example('Symfony\Bridge\Doctrine\Form\Type\EntityType (see http://symfony.com/doc/current/reference/forms/types.html)')
+            ->end()
+            ->scalarNode('table_alias')
+            ->isRequired()
+            ->info('String con alias del "entity" usado para filtrar')
+            ->example('eg: para entity "Pais" alias "p"')
+            ->end()
+            ->scalarNode('field')
+            ->defaultValue('id')
+            ->cannotBeEmpty()
+            ->info('Nombre del "field" que se filtra de la tabla con "table_alias"')
+            ->example('eg: id')
+            ->end()
+            ->scalarNode('operator')
+            ->defaultValue('eq')
+            ->cannotBeEmpty()
+            ->info('Valor para el operador de comparación')
+            ->example('eg para equal: eq (see http://www.doctrine-project.org/api/orm/2.5/class-Doctrine.ORM.Query.Expr.html)')
+            ->end()
+            ->scalarNode('query_builder_method')
+            ->info('Nombre del metodo usado para generar la opción query_builder')
+            ->example('eg: getQueryBuilderFindAll')
+            ->end()
+            ->arrayNode('options')
+            ->defaultValue(array(
+                'required' => false
+            ))
+            ->info('Lista de opciones según "type" del filtro.')
+            ->prototype('variable')
+            ->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
     }
 }
