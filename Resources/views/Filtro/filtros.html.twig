@@ -1,43 +1,26 @@
 <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne">
+    <div class="panel-heading" role="tab" id="ad_perfil-headingFiltros">
         <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFiltro" aria-expanded="true" aria-controls="collapseFiltro">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ad_perfil-collapseFiltro" aria-expanded="true" aria-controls="ad_perfil-collapseFiltro">
                 <span class="caret"></span> Filtros
             </a>
         </h4>
     </div>
-    <div id="collapseFiltro" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-        <form id="frm-filtros" method="post" data-update="{{ update }}" action="{{ url }}">
+    <div id="ad_perfil-collapseFiltro" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="ad_perfil-headingFiltros">
+        {{ form_start(form) }}
             <div class="panel-body">
                 {% for filtro,activo in activos %}
                     <div class="col-md-4">
-                    {% if filtro=='fechaRango' %}
-                        <div class="form-group">
-                            {% set nombre_desde=filtro ~ '_' ~ activo.table ~ '_' ~ activo.campo ~ '_desde' %}
-                            {{ form_label(form[nombre_desde],null,{ 'label_attr' : { 'class' : 'col-md-12'} }) }}
-                            {{ form_widget(form[nombre_desde]) }}
-                        </div>
-                        <div class="form-group">
-                            {% set nombre_hasta=filtro ~ '_' ~ activo.table ~ '_' ~ activo.campo ~ '_hasta' %}
-                            {{ form_label(form[nombre_hasta],null,{ 'label_attr' : { 'class' : 'col-md-12'} }) }}
-                            {{ form_widget(form[nombre_hasta]) }}
-                        </div>
-                    {% elseif filtro=='fecha' %}
-                        {% set nombre=filtro ~ '_' ~ activo.table ~ '_' ~ activo.campo %}
-                        {{ form_label(form[nombre],null,{ 'label_attr' : { 'class' : 'col-md-12'} }) }}
-                        {{ form_widget(form[nombre]) }}
-                    {% else %}
                         {{ form_label(form[filtro],null,{ 'label_attr' : { 'class' : 'col-md-12'} }) }}
                         {{ form_widget(form[filtro]) }}
-                    {% endif %}
-                        </div>
+                    </div>
                 {% endfor %}
                 {{ form_widget(form) }}
             </div>
             <div class="panel-footer text-right">
-                <button id="btn-filtros" type="submit" class="btn btn-primary"> Listar</button>&nbsp;
+                <button id="ad_perfil-btn-filtros" type="submit" class="btn btn-primary"> Listar</button>&nbsp;
                 <button id="reset" type="button" class="btn btn-danger">Limpiar Filtros</button>
             </div>
-        </form>
+        {{ form_end(form) }}
     </div>
 </div>
