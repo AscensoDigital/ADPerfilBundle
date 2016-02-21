@@ -3,7 +3,7 @@
 namespace AscensoDigital\PerfilBundle\Controller;
 
 
-use AscensoDigital\ComponentBundle\Form\Type\FiltroFormType;
+use AscensoDigital\PerfilBundle\Form\Type\FiltroFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Exception\LogicException;
 use Symfony\Component\HttpFoundation\Request;

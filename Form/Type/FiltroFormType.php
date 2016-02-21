@@ -1,6 +1,6 @@
 <?php
 
-namespace AscensoDigital\ComponentBundle\Form\Type;
+namespace AscensoDigital\PerfilBundle\Form\Type;
 
 use AscensoDigital\PerfilBundle\Configuration\Configurator;
 use Doctrine\ORM\EntityRepository;
