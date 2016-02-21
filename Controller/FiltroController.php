@@ -25,7 +25,7 @@ class FiltroController extends Controller {
         return $this->filtrosAction($request, $options);
     } */
 
-    protected function filtrosAction(Request $request, $options) {
+    protected function filtroAction(Request $request, $options) {
         $options=$this->validateOptions($options);
         $options['perfil']=$this->get('ad_perfil.perfil_manager')->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
         
