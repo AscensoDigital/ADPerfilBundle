@@ -5,17 +5,17 @@ $(document).ready(function(){
         frm_filtro.find(':input[required="required"]').each(function() {
             var elemento= this;
             ids=elemento.id.split('_');
-            ids.splice(0,1);
+            ids.splice(0,3);
             if($(elemento).val()===null || $(elemento).val().length===0) {
                 error+='Filtro ' + ids.join(' ') + " es obligatorio\n";
             }
         });
-        if(frm_filtro.data('auto-llenado')===true) {
+        if(1===frm_filtro.data('auto-llenado')) {
             frm_filtro.find(':input').each(function () {
                 var elemento = this;
                 ids = elemento.id.split('_');
-                ids.splice(0, 1);
-                var name = elemento.id;
+                ids.splice(0,3);
+                var name = elemento.id + '_' + frm_filtro.data('route');
                 if (elemento.multiple) {
                     name = name + '_multiple'
                 }

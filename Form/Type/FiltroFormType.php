@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -28,8 +30,6 @@ class FiltroFormType extends AbstractType
      * @var Router
      */
     private $router;
-    
-    private $route;
 
     public function __construct(Configurator $configurator, TokenStorageInterface $tokenStorage, Router $router) {
         $this->configurator=$configurator;
@@ -39,16 +39,7 @@ class FiltroFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->route=$options['route'];
         $filtroActivos=$options['filtros'];
-
-        $options['action'] = $this->router->generate($this->route,$options['route_params']);
-        $options['attr']= array(
-            'id' => 'ad_perfil-frm-filtros',
-            'data-update' => $options['update'],
-            'data-auto-filter' => $options['auto_filter'],
-            'data-auto-llenado' => $options['auto_llenado']
-        );
 
         //Se elimina data de cualquier filtro no solicitado
         $builder->addEventListener(
@@ -77,6 +68,17 @@ class FiltroFormType extends AbstractType
         }
     }
 
+    public function buildView(FormView $view, FormInterface $form, array $options) {
+        $view->vars['action'] = $this->router->generate($this->route,$options['route_params']);
+        $view->vars['attr']= $view->vars['attr'] + array(
+                'id' => 'ad_perfil-frm-filtros',
+                'data-route' => $options['route'],
+                'data-update' => $options['update'],
+                'data-auto-filter' => $options['auto_filter'] ? 1 : 0,
+                'data-auto-llenado' => $options['auto_llenado'] ? 1 : 0
+            );
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('filtros','route','update'));
@@ -91,7 +93,7 @@ class FiltroFormType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'ad_perfil_filtros_'.$this->route;
+        return 'ad_perfil_filtros';
     }
 
     /**
@@ -101,6 +103,6 @@ class FiltroFormType extends AbstractType
      */
     public function getName()
     {
-        return 'ad_perfil_filtros_'.$this->route;
+        return 'ad_perfil_filtros';
     }
 }
