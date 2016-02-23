@@ -7,7 +7,7 @@ $(document).ready(function(){
             ids=elemento.id.split('_');
             ids.splice(0,3);
             if($(elemento).val()===null || $(elemento).val().length===0) {
-                error+='Filtro ' + ids.join(' ') + " es obligatorio\n";
+                error+='<li>Filtro ' + ids.join(' ') + " es obligatorio</li>";
             }
         });
         if(1 === frm_filtro.data('auto-llenado')) {
@@ -22,13 +22,16 @@ $(document).ready(function(){
                 if ($(elemento).val() === null || $(elemento).val().length === 0) {
                     sessionStorage.removeItem(name);
                 }
-                else if (elemento.id != 'filtros__token') {
+                else if (elemento.id != 'ad_perfil_filtros__token') {
                     sessionStorage.setItem(name, JSON.stringify($(elemento).val()));
                 }
             });
         }
         if(''!=error) {
-            alert(error);
+            var divError='<div></div>';
+            $(divError).append(error).addClass('alert alert-danger');
+            $('#ad_perfil-collapseFiltro').prepend(divError);
+            //alert(error);
             return false;
         }
 
