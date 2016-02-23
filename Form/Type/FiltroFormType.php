@@ -91,7 +91,7 @@ class FiltroFormType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'ad_component_filtros_'.$this->route;
+        return 'ad_perfil_filtros_'.$this->route;
     }
 
     /**
@@ -101,6 +101,6 @@ class FiltroFormType extends AbstractType
      */
     public function getName()
     {
-        return 'ad_component_filtros_'.$this->route;
+        return 'ad_perfil_filtros_'.$this->route;
     }
 }
