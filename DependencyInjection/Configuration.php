@@ -90,9 +90,7 @@ class Configuration implements ConfigurationInterface
                             ->info('Determina si el filtro requiere el objeto user')
                         ->end()
                         ->arrayNode('options')
-                            ->defaultValue(array(
-                                'required' => false
-                            ))
+                            ->addDefaultChildrenIfNoneSet(['required' => false])
                             ->info('Lista de opciones según "type" del filtro.')
                             ->prototype('variable')
                         ->end()
