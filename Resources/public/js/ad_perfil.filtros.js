@@ -10,7 +10,7 @@ $(document).ready(function(){
                 error+='Filtro ' + ids.join(' ') + " es obligatorio\n";
             }
         });
-        if(1===frm_filtro.data('auto-llenado')) {
+        if(1 === frm_filtro.data('auto-llenado')) {
             frm_filtro.find(':input').each(function () {
                 var elemento = this;
                 ids = elemento.id.split('_');
@@ -67,11 +67,13 @@ $(document).ready(function(){
     var requerido=true;
     frm_filtro.find(':input').each(function() {
         var elemento= this;
-        var name=elemento.id;
-        if(elemento.multiple){
-            name=name + '_multiple'
+        ids = elemento.id.split('_');
+        ids.splice(0,3);
+        var name = elemento.id + '_' + frm_filtro.data('route');
+        if (elemento.multiple) {
+            name = name + '_multiple'
         }
-        if(frm_filtro.data('auto-llenado')===true) {
+        if(1 === frm_filtro.data('auto-llenado')) {
             if ($(elemento).val() === null || $(elemento).val().length === 0) {
                 var valor = JSON.parse(sessionStorage.getItem(name));
                 if (valor != null) {
@@ -90,7 +92,7 @@ $(document).ready(function(){
         }
     });
 
-    if(frm_filtro.data('auto-filter') === true && filtrar && requerido) {
+    if(1 === frm_filtro.data('auto-filter') && filtrar && requerido) {
         frm_filtro.submit();
     }
     $('.fecha').datepicker({
