@@ -69,7 +69,7 @@ class FiltroFormType extends AbstractType
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options) {
-        $view->vars['action'] = $this->router->generate($this->route,$options['route_params']);
+        $view->vars['action'] = $this->router->generate($options['route'],$options['route_params']);
         $view->vars['attr']= $view->vars['attr'] + array(
                 'id' => 'ad_perfil-frm-filtros',
                 'data-route' => $options['route'],
