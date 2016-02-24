@@ -13,6 +13,20 @@ use Doctrine\ORM\EntityRepository;
 
 class PermisoRepository extends EntityRepository {
 
+    public function findAllOrderNombre()
+    {
+        return $this->getQueryBuilderOrderNombre()->getQuery()->getResult();
+    }
+
+    public function findByFiltro($filtros) {
+        $qb=$this->getEntityManager()->createQueryBuilder()
+            ->select('pr')
+            ->from('ADPerfilBundle:Permiso','adp_prm')
+            ->orderBy('adp_prm.nombre');
+        $exclude=array('adp_prf');
+        return Filtro::getQueryBuilderFiltros($qb,$filtros,$exclude)->getQuery()->getResult();
+    }
+
     public function getQueryBuilderOrderNombre() {
         return $this->createQueryBuilder('adp_prm')
             ->orderBy('adp_prm.nombre');

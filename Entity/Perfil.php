@@ -24,6 +24,24 @@ class Perfil
         $this->perfilXPermisos = new ArrayCollection();
     }
 
+    public function loadPermisos($ps) {
+        /** @var Permiso $p */
+        foreach($ps as $p) {
+            $encontrado=false;
+            foreach($this->getPerfilXPermisos() as $pxp) {
+                if($pxp->getPermiso()->getId()==$p->getId()){
+                    $encontrado=true;
+                    break;
+                }
+            }
+            if(!$encontrado) {
+                $pxpn=new PerfilXPermiso();
+                $pxpn->setPermiso($p);
+                $this->addPerfilXPermiso($pxpn);
+            }
+        }
+    }
+
     /**
      * Add perfilXPermisos
      *

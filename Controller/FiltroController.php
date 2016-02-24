@@ -22,8 +22,20 @@ class FiltroController extends Controller {
             'auto_filter' => true, # optional define ejecucion automatica si los filtros required estan con valores default: true
             'auto_llenado' => true # optional define si los filtros son guardados para volver a presentarlos default: true
         );
-        return $this->filtrosAction($request, $options);
+        return $this->filtroAction($request, $options);
     } */
+
+    public function permisoAction(Request $request) {
+        $options=array(
+            'route' => 'ad_perfil_permiso_list_table',
+            'update' => 'table_permisos',
+            'filtros' => array(
+                'perfil' => ['multiple' => true],
+                'permiso' => ['multiple' => true]
+            ),
+        );
+        return $this->filtroAction($request, $options);
+    }
 
     protected function filtroAction(Request $request, $options) {
         $options=$this->validateOptions($options);

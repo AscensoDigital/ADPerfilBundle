@@ -7,4 +7,5 @@ interface PerfilInterface
     public function getId();
     public function getNombre();
     public function getSlug();
+    public function getLabel();
 }

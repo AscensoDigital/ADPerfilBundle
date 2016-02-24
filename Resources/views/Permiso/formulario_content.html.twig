@@ -1,0 +1,21 @@
+{{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs')) }}
+{{ render(controller('ADPerfilBundle:Navegacion:menu')) }}
+{{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
+
+<div class="panel panel-default">
+    <form method="post" class="form-horizontal">
+        <div class="panel-body">
+            {{ form_errors(form) }}
+            {{ form_row(form.nombre) }}
+            {{ form_row(form.descripcion) }}
+            <div id="permiso" class="col-md-6">
+                {{ form_row(form.perfilXPermisos) }}
+            </div>
+            {{ form_widget(form) }}
+        </div>
+        <div class="panel-footer text-right">
+            <button class="btn-primary btn" type="submit">Agregar Permiso</button>&nbsp;
+            <a class="btn btn-danger" href="{{ path('ad_perfil_permiso_list') }}">Cancelar</a>
+        </div>
+    </form>
+</div>

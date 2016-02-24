@@ -1,0 +1,35 @@
+<div class="col-md-12">
+    <div id="permisos" class="table-responsive">
+        <table id="table-permisos" class="table table-bordered  table-striped col-md-12">
+            <thead>
+            <tr>
+                <td><h5>Permiso</h5></td>
+                <td></td>
+                {% for perfil in perfils %}
+                    <td class="small-permisos" title="{{ perfil.nombre }}">
+                        {{ perfil.role }} {{ perfil.slug }}
+                        {% if is_granted('permiso','per-edit') %}
+                            <a href="{{ path('ad_perfil_permiso_edit_perfil', { 'slug': perfil.slug }) }}"><span class="fa fa-edit"></span></a>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for permiso in permisos %}
+                <tr>
+                    <td class="small-permisos" title="{{ permiso.descripcion }}">{{ permiso.nombre }}</td>
+                    <td>
+                        {% if is_granted('permiso','per-edit') %}
+                            <a href="{{ path('ad_perfil_permiso_edit', { 'nombre': permiso.nombre }) }}"><span class="fa fa-edit"></span></a>
+                        {% endif %}
+                    </td>
+                    {% for perfil in perfils %}
+                        <td class="center">{% if pxps[permiso.id][perfil.id] is defined %}<span class="fa fa-check-circle"></span>{% endif %}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 
 namespace AscensoDigital\PerfilBundle\Entity;
 
+use AscensoDigital\PerfilBundle\Model\PerfilInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -53,6 +54,25 @@ class Permiso
 
     public function __toString() {
         return $this->getNombre().' - '.$this->getDescripcion();
+    }
+
+    public function loadPerfils($prfs) {
+        /** @var PerfilInterface $prf */
+        foreach($prfs as $prf) {
+            $encontrado=false;
+            foreach($this->getPerfilXPermisos() as $pxp) {
+                if($pxp->getPerfil()->getId()==$prf->getId()){
+                    $encontrado=true;
+                    break;
+                }
+            }
+            if(!$encontrado) {
+                $pxpn=new PerfilXPermiso();
+                $pxpn->setPermiso($this)
+                    ->setPerfil($prf);
+                $this->addPerfilXPermiso($pxpn);
+            }
+        }
     }
 
     /**
