@@ -65,6 +65,13 @@ class Menu
     protected $route;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="visible", type="boolean", nullable=false)
+     */
+    protected $visible = true;
+
+    /**
      * @var Menu
      *
      * @ORM\ManyToOne(targetEntity="Menu")
@@ -290,6 +297,24 @@ class Menu
     public function getOrden()
     {
         return $this->orden;
+    }
+
+    /**
+     * @param boolean $visible
+     * @return Menu
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->visible;
     }
 
 

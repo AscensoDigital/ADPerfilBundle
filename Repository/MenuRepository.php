@@ -26,6 +26,8 @@ class MenuRepository extends EntityRepository {
             $qb->where('adp_m.menuSuperior=:menu')
                 ->setParameter(':menu',$menu_id);
         }
+        $qb->andWhere('adp_m.visible=:visible')
+            ->setParameter(':visible','true');
         return $qb->getQuery()->getSingleScalarResult();
     }
 
@@ -60,9 +62,11 @@ class MenuRepository extends EntityRepository {
             ->leftJoin('adp_prm.perfilXPermisos','adp_pxp')
             ->where('adp_m.menuSuperior'.((is_null($menu_id) || $menu_id==0) ? ' IS NULL' : '=:menu'))
             ->andWhere('adp_m.permiso IS NULL or (adp_pxp.perfil=:perfil AND adp_pxp.acceso=:permitido)')
+            ->andWhere('adp_m.visible=:visible')
             ->orderBy('adp_m.orden')
             ->setParameter('perfil',$perfil_id)
-            ->setParameter(':permitido','true');
+            ->setParameter(':permitido','true')
+            ->setParameter(':visible','true');
         if(!is_null($menu_id) && $menu_id>0){
             $qb->setParameter('menu',$menu_id);
         }
@@ -85,7 +89,9 @@ class MenuRepository extends EntityRepository {
         return $this->createQueryBuilder('adp_m')
             ->addSelect('adp_ms')
             ->leftJoin('adp_m.menuSuperior','adp_ms')
+            ->where('adp_m.visible=:visible')
             ->orderBy('adp_ms.nombre')
-            ->addOrderBy('adp_m.nombre');
+            ->addOrderBy('adp_m.nombre')
+            ->setParameter(':visible','true');
     }
 }
