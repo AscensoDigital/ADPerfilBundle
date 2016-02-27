@@ -34,6 +34,18 @@ class Configurator
     }
 
     /**
+     * @param $key
+     * @return mixed valor del parametro de configuracion solicitado
+     * @throws \InvalidArgumentException cuando no se encuentra definida el parametro solicitado.
+     */
+    public function getConfiguration($key){
+        if(!isset($this->config[$key])) {
+            throw new \InvalidArgumentException(sprintf('Parámetro de Configuración "%s" no esta definido',$key));
+        }
+        return $this->config[$key];
+    }
+
+    /**
      * Returns the configuration for the given filtro name.
      *
      * @param string $filtroName
@@ -49,5 +61,13 @@ class Configurator
         }
 
         return $this->config['filtros'][$filtroName];
+    }
+    
+    public function getNavegacionConfiguration($navegacionField){
+        if (!isset($this->config['navegacion'][$navegacionField])) {
+            throw new \InvalidArgumentException(sprintf('Parametro "%s" no esta definido dentro de la configuración de navegacioó.', $navegacionField));
+        }
+
+        return $this->config['navegacion'][$navegacionField];
     }
 }
