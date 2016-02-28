@@ -25,6 +25,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
+    ad_perfil.filtro_manager:
+        class: AscensoDigital\PerfilBundle\Doctrine\FiltroManager
+        arguments: ["@ad_perfil.configurator"]
+
     ad_perfil.menu_manager:
         class: AscensoDigital\PerfilBundle\Model\MenuManager
         arguments:
@@ -33,10 +37,16 @@ services:
           - %ad_perfil.session_name%
 
     ad_perfil.perfil_manager:
-            class: AscensoDigital\PerfilBundle\Model\PerfilManager
-            arguments:
-              - '@doctrine.orm.entity_manager'
-              - %ad_perfil.perfil_class%
+        class: AscensoDigital\PerfilBundle\Model\PerfilManager
+        arguments:
+          - '@doctrine.orm.entity_manager'
+          - %ad_perfil.perfil_class%
+
+    ad_perfil.twig_extension:
+        class: AscensoDigital\PerfilBundle\Twig\ADPerfilTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
 
     ad_perfil.permiso_voter:
         class: AscensoDigital\PerfilBundle\Security\PermisoVoter
