@@ -9,6 +9,7 @@
 namespace AscensoDigital\PerfilBundle\Repository;
 
 
+use AscensoDigital\PerfilBundle\Doctrine\FiltroManager;
 use AscensoDigital\PerfilBundle\Entity\PerfilXPermiso;
 use Doctrine\ORM\EntityRepository;
 
@@ -33,7 +34,7 @@ class PerfilXPermisoRepository extends EntityRepository {
      * @param $filtros
      * @return array
      */
-    public function findByFiltros($filtros) {
+    public function findByFiltros(FiltroManager $filtros) {
         $qb=$this->getEntityManager()->createQueryBuilder()
             ->select('adp_pxp')
             ->from('ADPerfilBundle:PerfilXPermiso','adp_pxp')
@@ -41,7 +42,7 @@ class PerfilXPermisoRepository extends EntityRepository {
             ->join('adp_pxp.perfil','adp_prf')
             ->where('adp_prf.acceso=:acceso')
             ->setParameter(':acceso','true');
-        $rs=Filtro::getQueryBuilderFiltros($qb,$filtros)->getQuery()->getResult();
+        $rs=$filtros->getQueryBuilder($qb)->getQuery()->getResult();
         $ret=array();
         /** @var PerfilXPermiso $pxp */
         foreach($rs as $pxp) {

@@ -24,7 +24,7 @@ class PermisoController extends Controller
         $permiso->loadPerfils($perfils);
         $form=$this->createForm(PermisosFormType::class,$permiso);
         $form->handleRequest($request);
-        if($form->isSubmitted() and $form->isValid()) {
+        if($form->isSubmitted() && $form->isValid()) {
             $em->persist($permiso);
             $em->flush();
             return $this->redirectToRoute('ad_perfil_permiso_list');
@@ -47,7 +47,7 @@ class PermisoController extends Controller
 
         $form=$this->createForm(PermisosPerfilFormType::class,$perfil);
         $form->handleRequest($request);
-        if($form->isSubmitted() and $form->isValid()) {
+        if($form->isSubmitted() && $form->isValid()) {
             $em->persist($perfil);
             $em->flush();
             return $this->redirectToRoute('ad_perfil_permiso_list');
@@ -73,7 +73,7 @@ class PermisoController extends Controller
      */
     public function listTableAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $filtros = Filtro::procesa($request);
+        $filtros = $this->get('ad_perfil.filtro_manager');
         $perfils=$this->get('perfil_manager')->findByFiltro($filtros);
         $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro-($filtros);
         $pxps=$em->getRepository('ADPerfilBundle:PerfilXPermiso')->findByFiltros($filtros);
@@ -94,7 +94,7 @@ class PermisoController extends Controller
 
         $form=$this->createForm(PermisosFormType::class,$permiso);
         $form->handleRequest($request);
-        if($form->isSubmitted() and $form->isValid()) {
+        if($form->isSubmitted() && $form->isValid()) {
             $em->persist($permiso);
             $em->flush();
             $this->addFlash('success','Se registro correctamente el permiso "'.$permiso.'"');
