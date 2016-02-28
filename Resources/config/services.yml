@@ -27,7 +27,7 @@ services:
 
     ad_perfil.filtro_manager:
         class: AscensoDigital\PerfilBundle\Doctrine\FiltroManager
-        arguments: ["@ad_perfil.configurator"]
+        arguments: ["@request_stack", "@ad_perfil.configurator"]
 
     ad_perfil.menu_manager:
         class: AscensoDigital\PerfilBundle\Model\MenuManager
@@ -44,6 +44,7 @@ services:
 
     ad_perfil.twig_extension:
         class: AscensoDigital\PerfilBundle\Twig\ADPerfilTwigExtension
+        arguments: ["@ad_perfil.configurator"]
         public: false
         tags:
             - { name: twig.extension }

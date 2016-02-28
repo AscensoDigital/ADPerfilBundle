@@ -21,12 +21,10 @@ use AscensoDigital\PerfilBundle\Configuration\Configurator;
 class ADPerfilTwigExtension extends \Twig_Extension
 {
     private $configurator;
-    private $debug;
 
-    public function __construct(Configurator $configurator, $debug = false)
+    public function __construct(Configurator $configurator)
     {
         $this->configurator = $configurator;
-        $this->debug = $debug;
     }
 
     public function getFunctions()
