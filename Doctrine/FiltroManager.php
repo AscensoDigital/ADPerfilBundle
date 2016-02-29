@@ -19,7 +19,6 @@ class FiltroManager{
     protected $requestStack;
     protected $configurator;
     protected $filtrosNormalized;
-    protected $excludes;
     protected $qb;
 
     private $procesado=false;
@@ -42,15 +41,6 @@ class FiltroManager{
         }
         else {
             $this->filtrosNormalized=$filtrosAdd + $this->filtrosNormalized;
-        }
-    }
-
-    public function addExcludes(array $excludesAdd){
-        if(is_array($this->excludes)) {
-            $this->excludes=$this->excludes+$excludesAdd;
-        }
-        else {
-            $this->excludes=$excludesAdd;
         }
     }
 
@@ -96,13 +86,12 @@ class FiltroManager{
         return $ret;
     }
 
-    public function getQueryBuilder(QueryBuilder $qb, $isNull=false) {
-        $this->addExcludes(array('token'));
+    public function getQueryBuilder(QueryBuilder $qb, $excludes=array(), $isNull=false) {
         if(false===$this->procesado){
             $this->procesa();
         }
         foreach ($this->filtrosNormalized as $field => $data) {
-            if(!in_array($field,$this->excludes)) {
+            if(!in_array($field,$excludes)) {
                 $operator=$data['operator'];
                 switch($data['type']) {
                     /*case 'fecha':
