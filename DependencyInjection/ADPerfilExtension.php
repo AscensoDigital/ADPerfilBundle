@@ -20,14 +20,11 @@ class ADPerfilExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('filtros.yml');
-
         $config = $this->processConfiguration(new Configuration(), $configs);
+        $this->loadBundleFiltros($config);
         $container->setParameter('ad_perfil.config', $config);
 
         $container->setParameter('ad_perfil.perfil_class',$config['perfil_class']);
-        
         $container->setParameter('ad_perfil.session_name',$config['session_name']);
         $container->setParameter('ad_perfil.route_redirect',$config['route_redirect']);
 
@@ -38,11 +35,31 @@ class ADPerfilExtension extends Extension
         $container->setParameter('ad_perfil.navegacion.homepage_title',$config['navegacion']['homepage_title']);
         $container->setParameter('ad_perfil.navegacion.homepage_subtitle',$config['navegacion']['homepage_subtitle']);
 
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
 
     public function getAlias()
     {
         return 'ad_perfil';
+    }
+
+    private function loadBundleFiltros($config){
+        $filtro_permiso=[
+            'table_alias' => 'adp_prm',
+            'query_builder_method' => 'getQueryBuilderOrderNombre',
+            'options' => [
+                'class' => 'AscensoDigital\PerfilBundle\Entity\Permiso',
+                'multiple' => true
+            ]];
+        $config['filtros']['adperfil_permiso']=$filtro_permiso;
+
+        $filtro_perfil=[
+            'table_alias' => 'adp_prf',
+            'options' => [
+                'class' => $config['perfil_class'],
+                'multiple' => true
+            ]];
+        $config['filtros']['adperfil_perfil']=$filtro_perfil;
     }
 }

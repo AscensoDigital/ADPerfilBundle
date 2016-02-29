@@ -30,7 +30,7 @@ class FiltroController extends Controller {
             'route' => 'ad_perfil_permiso_list_table',
             'update' => 'table_permisos',
             'filtros' => array(
-                'adperfil_perfil' => ['multiple' => true],
+                'adperfil_perfil' => [],
                 'adperfil_permiso' => []
             ),
         );
