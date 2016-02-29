@@ -75,7 +75,7 @@ class PermisoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $filtros = $this->get('ad_perfil.filtro_manager');
         $perfils=$this->get('ad_perfil.perfil_manager')->findByFiltro($filtros);
-        $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro-($filtros);
+        $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro($filtros);
         $pxps=$em->getRepository('ADPerfilBundle:PerfilXPermiso')->findByFiltros($filtros);
         return $this->render('ADPerfilBundle:Permiso:list-table.html.twig',array('permisos' => $permisos, 'perfils' => $perfils, 'pxps' => $pxps));
     }
