@@ -34,6 +34,7 @@ class ADPerfilTwigExtension extends \Twig_Extension
             new \Twig_SimpleFunction('ad_perfil_get_icon_alt', array($this, 'getIconAlt')),
             new \Twig_SimpleFunction('ad_perfil_get_homepage_title', array($this, 'getHomepageTitle')),
             new \Twig_SimpleFunction('ad_perfil_get_homepage_route', array($this, 'getHomepageRoute')),
+            new \Twig_SimpleFunction('ad_perfil_get_homepage_subtitle', array($this, 'getHomepageSubtitle')),
         );
     }
 
@@ -67,6 +68,14 @@ class ADPerfilTwigExtension extends \Twig_Extension
             throw new \LogicException(sprintf("No se encuentra definido la ruta del homepage"));
         }
         return $route;
+    }
+
+    public function getHomepageSubtitle() {
+        $subtitle=$this->configurator->getNavegacionConfiguration('homepage_subtitle');
+        if(empty($subtitle)) {
+            throw new \LogicException(sprintf("No se encuentra definido el subtitulo de la aplicación"));
+        }
+        return $subtitle;
     }
 
     public function getName()
