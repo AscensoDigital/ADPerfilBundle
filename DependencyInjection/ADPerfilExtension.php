@@ -54,6 +54,7 @@ class ADPerfilExtension extends Extension
             'query_builder_user' => false,
             'query_builder_method' => 'getQueryBuilderOrderNombre',
             'options' => [
+                'label' => 'Permiso',
                 'class' => 'AscensoDigital\PerfilBundle\Entity\Permiso',
                 'multiple' => true
             ]];
@@ -68,6 +69,7 @@ class ADPerfilExtension extends Extension
             'query_builder_user' => false,
             'query_builder_method' => 'getQueryBuilderOrderRole',
             'options' => [
+                'label' => 'Perfil',
                 'class' => $config['perfil_class'],
                 'multiple' => true
             ]];
