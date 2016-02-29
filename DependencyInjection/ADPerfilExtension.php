@@ -50,6 +50,8 @@ class ADPerfilExtension extends Extension
             'table_alias' => 'adp_prm',
             'field' => 'id',
             'operator' => 'in',
+            'query_builder_perfil' => false,
+            'query_builder_user' => false,
             'query_builder_method' => 'getQueryBuilderOrderNombre',
             'options' => [
                 'class' => 'AscensoDigital\PerfilBundle\Entity\Permiso',
@@ -62,8 +64,8 @@ class ADPerfilExtension extends Extension
             'table_alias' => 'adp_prf',
             'field' => 'id',
             'operator' => 'in',
-            'perfil' => true,
-            'user' => true,
+            'query_builder_perfil' => true,
+            'query_builder_user' => false,
             'query_builder_method' => 'getQueryBuilderOrderRole',
             'options' => [
                 'class' => $config['perfil_class'],

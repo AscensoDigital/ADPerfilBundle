@@ -54,15 +54,33 @@ class FiltroFormType extends AbstractType
                 $event->setData($data);
             }
         );
-
+        $user=$this->tokenStorage->getToken()->getUser();
+        $perfil=$options['perfil'];
         foreach ($filtroActivos as $keyFiltro => $filtro) {
             $filtroConf=$this->configurator->getFiltroConfiguration($keyFiltro);
             $options=$filtro+ $filtroConf['options'] + ['required' => false];
             if(isset($filtroConf['query_builder_method'])){
                 $method=$filtroConf['query_builder_method'];
-                $options['query_builder']=function(EntityRepository $er) use ($method) {
-                        return $er->$method();
+                if(true===$filtroConf['query_builder_perfil'] && true===$filtroConf['query_builder_user']) {
+                    $options['query_builder']=function(EntityRepository $er) use ($method,$perfil,$user) {
+                        return $er->$method($user,$perfil);
                     };
+                }
+                elseif(true===$filtroConf['query_builder_perfil']){
+                    $options['query_builder']=function(EntityRepository $er) use ($method,$perfil) {
+                        return $er->$method($perfil);
+                    };
+                }
+                elseif(true===$filtroConf['query_builder_user']) {
+                    $options['query_builder']=function(EntityRepository $er) use ($method,$user) {
+                        return $er->$method($user);
+                    };
+                }
+                else {
+                    $options['query_builder']=function(EntityRepository $er) use ($method) {
+                            return $er->$method();
+                        };
+                }
             }
             $builder->add($keyFiltro, $filtroConf['type'],$options);
         }
