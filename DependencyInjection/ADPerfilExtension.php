@@ -20,6 +20,9 @@ class ADPerfilExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('filtros.yml');
+
         $config = $this->processConfiguration(new Configuration(), $configs);
         $container->setParameter('ad_perfil.config', $config);
 
@@ -35,7 +38,6 @@ class ADPerfilExtension extends Extension
         $container->setParameter('ad_perfil.navegacion.homepage_title',$config['navegacion']['homepage_title']);
         $container->setParameter('ad_perfil.navegacion.homepage_subtitle',$config['navegacion']['homepage_subtitle']);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
 

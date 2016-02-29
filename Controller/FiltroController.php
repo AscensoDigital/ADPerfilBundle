@@ -30,8 +30,8 @@ class FiltroController extends Controller {
             'route' => 'ad_perfil_permiso_list_table',
             'update' => 'table_permisos',
             'filtros' => array(
-                'perfil' => ['multiple' => true],
-                'permiso' => ['multiple' => true]
+                'adperfil_perfil' => ['multiple' => true],
+                'adperfil_permiso' => []
             ),
         );
         return $this->filtroAction($request, $options);

@@ -1,0 +1,8 @@
+ad_perfil:
+    filtros:
+        adperfil_permiso:
+            table_alias: adp_prm
+            query_builder_method: getQueryBuilderOrderNombre
+            options:
+                class: AscensoDigital\PerfilBundle\Entity\Permiso
+                multiple: true
