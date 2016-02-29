@@ -61,7 +61,7 @@ class ADPerfilExtension extends Extension
 
         $filtro_perfil=[
             'type' => 'Symfony\Bridge\Doctrine\Form\Type\EntityType',
-            'table_alias' => 'adp_prf',
+            'table_alias' => $config['perfil_table_alias'],
             'field' => 'id',
             'operator' => 'in',
             'query_builder_perfil' => true,

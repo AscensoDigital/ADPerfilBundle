@@ -24,6 +24,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('perfil_class')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('perfil_table_alias')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('route_redirect')->defaultValue('homepage')->end()
                 ->scalarNode('session_name')->defaultValue('ad_perfil.perfil_id')->end()
                 ->scalarNode('icon_path')->isRequired()->end()
