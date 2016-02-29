@@ -39,7 +39,7 @@ class PerfilManager
     }
 
     public function findByFiltro($filtros) {
-        return $this->repository->findByFiltro($filtros);
+        return $this->repository->findByFiltros($filtros);
     }
 
     public function findPerfilBy(array $criteria) {
