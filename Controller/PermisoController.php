@@ -20,7 +20,7 @@ class PermisoController extends Controller
      */
     public function editAction(Request $request, Permiso $permiso) {
         $em=$this->getDoctrine()->getManager();
-        $perfils=$this->get('perfil_manager')->findAllOrderRole();
+        $perfils=$this->get('ad_perfil.perfil_manager')->findAllOrderRole();
         $permiso->loadPerfils($perfils);
         $form=$this->createForm(PermisosFormType::class,$permiso);
         $form->handleRequest($request);
@@ -42,7 +42,7 @@ class PermisoController extends Controller
         $em=$this->getDoctrine()->getManager();
         $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findAllOrderNombre();
 
-        $perfil=$this->get('perfil_manager')->findPerfilBy(['slug' => $slug]);
+        $perfil=$this->get('ad_perfil.perfil_manager')->findPerfilBy(['slug' => $slug]);
         $perfil->loadPermisos($permisos);
 
         $form=$this->createForm(PermisosPerfilFormType::class,$perfil);
@@ -74,7 +74,7 @@ class PermisoController extends Controller
     public function listTableAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $filtros = $this->get('ad_perfil.filtro_manager');
-        $perfils=$this->get('perfil_manager')->findByFiltro($filtros);
+        $perfils=$this->get('ad_perfil.perfil_manager')->findByFiltro($filtros);
         $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro-($filtros);
         $pxps=$em->getRepository('ADPerfilBundle:PerfilXPermiso')->findByFiltros($filtros);
         return $this->render('ADPerfilBundle:Permiso:list-table.html.twig',array('permisos' => $permisos, 'perfils' => $perfils, 'pxps' => $pxps));
@@ -89,7 +89,7 @@ class PermisoController extends Controller
     public function newAction(Request $request) {
         $em=$this->getDoctrine()->getManager();
         $permiso=new Permiso();
-        $perfils=$this->get('perfil_manager')->findAllOrderRole();
+        $perfils=$this->get('ad_perfil.perfil_manager')->findAllOrderRole();
         $permiso->loadPerfils($perfils);
 
         $form=$this->createForm(PermisosFormType::class,$permiso);
