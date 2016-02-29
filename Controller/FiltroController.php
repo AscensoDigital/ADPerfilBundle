@@ -43,13 +43,12 @@ class FiltroController extends Controller {
         
         $form = $this->createForm(FiltroFormType::class, null, $options);
 
-        //TODO: implementar carga de filtros guardados
-        /*$filtro_values=$request->getSession()->get('filtros_'.$options['route'],array());
+        $filtro_values=$this->get('ad_perfil.filtro_manager')->getFiltros();
         if(true===$options['auto_llenado'] && count($filtro_values)){
-            $request->request->set('filtros_'.$options['route'], Filtro::revert($filtro_values));
+            $request->request->set('ad_perfil_filtros', $filtro_values);
             $request->setMethod('post');
             $form->handleRequest($request);
-        }*/
+        }
 
         return $this->render('ADPerfilBundle:Filtro:filtros.html.twig', array(
             'form' => $form->createView(),
