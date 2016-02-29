@@ -21,8 +21,8 @@ class ADPerfilExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
-        $this->loadBundleFiltros($config);
-        $container->setParameter('ad_perfil.config', $config);
+        $allConfig=$this->loadBundleFiltros($config);
+        $container->setParameter('ad_perfil.config', $allConfig);
 
         $container->setParameter('ad_perfil.perfil_class',$config['perfil_class']);
         $container->setParameter('ad_perfil.session_name',$config['session_name']);
@@ -56,10 +56,12 @@ class ADPerfilExtension extends Extension
 
         $filtro_perfil=[
             'table_alias' => 'adp_prf',
+            'query_builder_method' => 'getQueryBuilderOrderRole',
             'options' => [
                 'class' => $config['perfil_class'],
                 'multiple' => true
             ]];
         $config['filtros']['adperfil_perfil']=$filtro_perfil;
+        return $config;
     }
 }
