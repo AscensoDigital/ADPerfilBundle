@@ -37,7 +37,11 @@ class PerfilManager
     public function findAllOrderRole() {
         return $this->repository->findAllOrderRole();
     }
-    
+
+    public function findByFiltro($filtros) {
+        return $this->repository->findByFiltro($filtros);
+    }
+
     public function findPerfilBy(array $criteria) {
         return $this->repository->findOneBy($criteria);
     }
