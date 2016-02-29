@@ -105,7 +105,8 @@ class FiltroFormType extends AbstractType
             'auto_filter' => true,
             'auto_llenado' => true,
             'perfil' => null,
-            'route_params' => array()
+            'route_params' => array(),
+            'csrf_protection' => false
         ]);
     }
 
