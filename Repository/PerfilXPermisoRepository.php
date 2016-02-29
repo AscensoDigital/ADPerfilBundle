@@ -39,8 +39,8 @@ class PerfilXPermisoRepository extends EntityRepository {
             ->select('adp_pxp')
             ->from('ADPerfilBundle:PerfilXPermiso','adp_pxp')
             ->join('adp_pxp.permiso','adp_prm')
-            ->join('adp_pxp.perfil','adp_prf')
-            ->where('adp_prf.acceso=:acceso')
+            ->join('adp_pxp.perfil',$filtros->getPerfilTableAlias())
+            ->where('adp_pxp.acceso=:acceso')
             ->setParameter(':acceso','true');
         $rs=$filtros->getQueryBuilder($qb)->getQuery()->getResult();
         $ret=array();

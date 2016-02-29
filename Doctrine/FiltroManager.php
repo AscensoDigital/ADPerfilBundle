@@ -54,8 +54,20 @@ class FiltroManager{
         return $filtros;
     }
 
+    public function getPerfilField() {
+        return $this->configurator->getConfiguration('perfil_table_alias').'.id';
+    }
+
     public function getPerfilTableAlias() {
         return $this->configurator->getConfiguration('perfil_table_alias');
+    }
+
+    public function getPermisoField() {
+        return 'adp_prm.id';
+    }
+
+    public function getPermisoTableAlias() {
+        return 'adp_prm';
     }
 
     public function procesa() {
