@@ -24,7 +24,7 @@ class PermisoRepository extends EntityRepository {
             ->select('pr')
             ->from('ADPerfilBundle:Permiso','adp_prm')
             ->orderBy('adp_prm.nombre');
-        $exclude=array('adp_prf');
+        $exclude=array($filtros->getPerfilTableAlias());
         $filtros->addExcludes($exclude);
         return $filtros->getQueryBuilder($qb)->getQuery()->getResult();
     }

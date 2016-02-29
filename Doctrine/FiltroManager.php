@@ -64,6 +64,10 @@ class FiltroManager{
         return $filtros;
     }
 
+    public function getPerfilTableAlias() {
+        return $this->configurator->getConfiguration('perfil_table_alias');
+    }
+
     public function procesa() {
         $filtros=$this->getFiltros();
         $ret=array();
