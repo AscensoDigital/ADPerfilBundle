@@ -70,8 +70,8 @@ class FiltroManager{
         return 'adp_prm';
     }
 
-    public function procesa() {
-        $filtros=$this->getFiltros();
+    public function procesa($route = null) {
+        $filtros=$this->getFiltros($route);
         $ret=array();
         foreach($filtros as $filName => $data){
             $alias=$this->getAlias($filName);
@@ -98,7 +98,10 @@ class FiltroManager{
         return $ret;
     }
 
-    public function getQueryBuilder(QueryBuilder $qb, $excludes=array(), $isNull=false) {
+    public function getQueryBuilder(QueryBuilder $qb, $excludes=null, $isNull=false) {
+        if(is_null($excludes)) {
+            $excludes=array();
+        }
         if(false===$this->procesado){
             $this->procesa();
         }
