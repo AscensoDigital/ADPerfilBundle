@@ -35,7 +35,7 @@ class PerfilXPermiso
      *
      * @ORM\ManyToOne(targetEntity="AscensoDigital\PerfilBundle\Model\PerfilInterface", inversedBy="perfilXPermisos")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="perfil_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="perfil_id", referencedColumnName="id", onDelete="cascade")
      * })
      */
     protected $perfil;
@@ -45,7 +45,7 @@ class PerfilXPermiso
      *
      * @ORM\ManyToOne(targetEntity="Permiso", inversedBy="perfilXPermisos")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="permiso_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="permiso_id", referencedColumnName="id", onDelete="cascade")
      * })
      */
     protected $permiso;
