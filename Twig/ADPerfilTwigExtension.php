@@ -32,9 +32,9 @@ class ADPerfilTwigExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction('ad_perfil_get_icon_path', array($this, 'getIconPath')),
             new \Twig_SimpleFunction('ad_perfil_get_icon_alt', array($this, 'getIconAlt')),
-            new \Twig_SimpleFunction('ad_perfil_get_homepage_title', array($this, 'getHomepageTitle')),
+            new \Twig_SimpleFunction('ad_perfil_get_homepage_title', array($this, 'getHomepageTitle'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('ad_perfil_get_homepage_route', array($this, 'getHomepageRoute')),
-            new \Twig_SimpleFunction('ad_perfil_get_homepage_subtitle', array($this, 'getHomepageSubtitle')),
+            new \Twig_SimpleFunction('ad_perfil_get_homepage_subtitle', array($this, 'getHomepageSubtitle'), array('is_safe' => array('html'))),
         );
     }
 
