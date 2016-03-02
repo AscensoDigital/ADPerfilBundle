@@ -76,6 +76,8 @@ class FiltroManager{
         foreach($filtros as $filName => $data){
             $alias=$this->getAlias($filName);
             if(is_array($alias)){
+                $encontrado=false;
+                $lastKeyItem="";
                 foreach ($alias as $keySubitem => $aliasSubitem) {
                     if(isset($data[$keySubitem])) {
                         $valor=$this->procesaValor($data[$keySubitem], $this->getType($filName));
@@ -83,6 +85,15 @@ class FiltroManager{
                             $ret[$aliasSubitem] = $valor;
                             $this->normalizar($filName,$aliasSubitem,$valor);
                         }
+                        $encontrado=true;
+                    }
+                    $lastKeyItem=$keySubitem;
+                }
+                if(false===$encontrado){
+                    $valor=$this->procesaValor($data[$lastKeyItem], $this->getType($filName));
+                    if(!is_null($valor)) {
+                        $ret[$alias[$lastKeyItem]] = $valor;
+                        $this->normalizar($filName,$alias[$lastKeyItem],$valor);
                     }
                 }
             }
