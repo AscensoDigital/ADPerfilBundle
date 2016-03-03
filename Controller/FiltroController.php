@@ -28,7 +28,7 @@ class FiltroController extends Controller {
     public function permisoAction(Request $request) {
         $options=array(
             'route' => 'ad_perfil_permiso_list_table',
-            'update' => 'table_permisos',
+            'update' => 'table-permisos',
             'filtros' => array(
                 'adperfil_perfil' => [],
                 'adperfil_permiso' => []
