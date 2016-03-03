@@ -18,8 +18,8 @@ class FiltroManager{
 
     protected $requestStack;
     protected $configurator;
-    protected $filtrosNormalized;
-    protected $filtroValor;
+    protected $filtrosNormalized = array();
+    protected $filtroValor = array();
     protected $qb;
 
     private $procesado=false;
@@ -30,19 +30,11 @@ class FiltroManager{
     }
 
     public function addNormalizedFiltro($keyField, $filtroNormal) {
-        if(is_null($this->filtrosNormalized)) {
-            $this->filtrosNormalized=array();
-        }
         $this->filtrosNormalized[$keyField]=$filtroNormal;
     }
 
     public function addNormalizedFiltros(array $filtrosAdd){
-        if(is_null($this->filtrosNormalized)) {
-            $this->filtrosNormalized=$filtrosAdd;
-        }
-        else {
-            $this->filtrosNormalized=$filtrosAdd + $this->filtrosNormalized;
-        }
+        $this->filtrosNormalized=$filtrosAdd + $this->filtrosNormalized;
     }
 
     public function getFiltros($route=null) {
