@@ -19,6 +19,7 @@ class FiltroManager{
     protected $requestStack;
     protected $configurator;
     protected $filtrosNormalized;
+    protected $filtroValor;
     protected $qb;
 
     private $procesado=false;
@@ -52,6 +53,16 @@ class FiltroManager{
         $filtros=is_null($request) ? array() : $request->get('ad_perfil_filtros',$request->get('filtros_'.$route,$request->getSession()->get('filtros_'.$route,array())));
         $request->getSession()->set('filtros_'.$route, $filtros);
         return $filtros;
+    }
+
+    public function getFiltroValor($key) {
+        if(is_null($this->filtroValor)){
+            $this->procesa();
+        }
+        if(isset($this->filtroValor[$key])) {
+            return $this->filtroValor[$key];
+        }
+        return null;
     }
 
     public function getPerfilField() {
@@ -106,7 +117,8 @@ class FiltroManager{
             }
         }
         $this->procesado=true;
-        return $ret;
+        $this->filtroValor=$ret;
+        return $this->filtroValor;
     }
 
     public function getQueryBuilder(QueryBuilder $qb, $excludes=null, $isNull=false) {
