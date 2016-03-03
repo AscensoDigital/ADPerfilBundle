@@ -5,11 +5,5 @@
 
 {% block ad_perfil_content %}
     {{ include('ADPerfilBundle:Permiso:list_content.html.twig') }}
-{% endblock %}
-
-{% block ad_perfil_javascripts %}
-    {% javascripts
-    'bundles/adperfil/js/ad_perfil.filtros.js' filter='?yui_js' output='js/compiled/permiso.list.js'%}
-    <script src="{{ asset_url }}" type="text/javascript"></script>
-    {% endjavascripts %}
+    <script src="{{ asset('bundles/adperfil/js/ad_perfil.filtros.js') }}" type="application/javascript"></script>
 {% endblock %}
