@@ -47,7 +47,9 @@ class MenuFormType extends AbstractType
                     'query_builder' => function (EntityRepository $er) {
                         return $er->getQueryBuilderOrderNombre();
                     }
-                ]);
+                ])
+                ->add('visible')
+            ;
         }
     }
 
