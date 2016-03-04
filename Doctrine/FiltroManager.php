@@ -10,6 +10,7 @@ namespace AscensoDigital\PerfilBundle\Doctrine;
 
 
 use AscensoDigital\PerfilBundle\Configuration\Configurator;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -239,6 +240,8 @@ class FiltroManager{
             switch($type) {
                 case 'Symfony\Component\Form\Extension\Core\Type\CheckboxType':
                     return 'true';
+                case 'Symfony\Component\Form\Extension\Core\Type\DateType':
+                    return $valor;
                 default:
                     $tmp = explode('-', $valor);
                     return isset($tmp[0]) ? $tmp[0] : $valor;
@@ -247,33 +250,23 @@ class FiltroManager{
         return null;
     }
 
-    static public function getSqlWhere($criterios){
-        $sql='';
-        if(count($criterios)) {
-            $sql=' WHERE ';
-            $i=0;
-            foreach($criterios as $campo => $valor) {
-                $params=explode('.',$campo);
-                $is_campo=count(explode('_',$campo))>1;
-                if($i) {
-                    $sql.=' AND ';
-                }
-                if(is_array($valor)){
-                    if(isset($valor['campo'])){
-                        $sql.=$valor['campo']."='".$valor['valor']."'";
-                    }
-                    else{
-                        $sql.=$campo.(count($params)==1 ? ($is_campo ? '' : '.id') : '').' IN ('.implode(',',$valor).')';
-                    }
-                }
-                elseif(in_array($valor,array('true','false'))) {
-                    $sql.=$campo." = '".$valor."'";
-                }
-                else {
-                    $sql.=$campo.(count($params)==1 ? ($is_campo ? '' : '.id') : '')." = '".$valor."'";
-                }
-
-                $i++;
+    public function getSqlWhere(QueryBuilder $qb, $excludes = null, $isNull=false){
+        $query=$this->getQueryBuilder($qb,$excludes,$isNull)->getQuery();
+        $sql=$query->getDQL();
+        $pos=strpos($sql,'WHERE');
+        $sql=substr($sql,$pos-1);
+        /** @var Parameter $parameter */
+        foreach ($query->getParameters() as $parameter) {
+            //dump($parameter);
+            switch ($parameter->getType()){
+                case 'integer':
+                    $sql=str_replace(':'.$parameter->getName(),$parameter->getValue(),$sql);
+                    break;
+                case 102:
+                    $sql=str_replace(':'.$parameter->getName(),implode(',',$parameter->getValue()),$sql);
+                    break;
+                default:
+                    $sql=str_replace(':'.$parameter->getName(),"'".$parameter->getValue()."'",$sql);
             }
         }
         return $sql;
