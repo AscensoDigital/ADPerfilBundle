@@ -80,46 +80,6 @@ class FiltroManager{
         return 'adp_prm';
     }
 
-    public function procesa($route = null) {
-        $filtros=$this->getFiltros($route);
-        $ret=array();
-        foreach($filtros as $filName => $data){
-            $alias=$this->getAlias($filName);
-            if(is_array($alias)){
-                $encontrado=false;
-                $lastKeyItem="";
-                foreach ($alias as $keySubitem => $aliasSubitem) {
-                    if(isset($data[$keySubitem])) {
-                        $valor=$this->procesaValor($data[$keySubitem], $this->getType($filName));
-                        if(!is_null($valor)) {
-                            $ret[$aliasSubitem] = $valor;
-                            $this->normalizar($filName,$aliasSubitem,$valor);
-                        }
-                        $encontrado=true;
-                    }
-                    $lastKeyItem=$keySubitem;
-                }
-                if(false===$encontrado){
-                    $valor=$this->procesaValor($data[$lastKeyItem], $this->getType($filName));
-                    if(!is_null($valor)) {
-                        $ret[$alias[$lastKeyItem]] = $valor;
-                        $this->normalizar($filName,$alias[$lastKeyItem],$valor);
-                    }
-                }
-            }
-            else {
-                $valor=$this->procesaValor($data, $this->getType($filName));
-                if(!is_null($valor)) {
-                    $ret[$alias] = $valor;
-                    $this->normalizar($filName,$alias,$valor);
-                }
-            }
-        }
-        $this->procesado=true;
-        $this->filtroValor=$ret;
-        return $this->filtroValor;
-    }
-
     public function getQueryBuilder(QueryBuilder $qb, $excludes=null, $isNull=false) {
         if(is_null($excludes)) {
             $excludes=array();
@@ -193,6 +153,46 @@ class FiltroManager{
         return $filtro['type'];
     }
 
+    protected function procesa($route = null) {
+        $filtros=$this->getFiltros($route);
+        $ret=array();
+        foreach($filtros as $filName => $data){
+            $alias=$this->getAlias($filName);
+            if(is_array($alias)){
+                $encontrado=false;
+                $lastKeyItem="";
+                foreach ($alias as $keySubitem => $aliasSubitem) {
+                    if(isset($data[$keySubitem])) {
+                        $valor=$this->procesaValor($data[$keySubitem], $this->getType($filName));
+                        if(!is_null($valor)) {
+                            $ret[$aliasSubitem] = $valor;
+                            $this->normalizar($filName,$aliasSubitem,$valor);
+                        }
+                        $encontrado=true;
+                    }
+                    $lastKeyItem=$keySubitem;
+                }
+                if(false===$encontrado){
+                    $valor=$this->procesaValor($data[$lastKeyItem], $this->getType($filName));
+                    if(!is_null($valor)) {
+                        $ret[$alias[$lastKeyItem]] = $valor;
+                        $this->normalizar($filName,$alias[$lastKeyItem],$valor);
+                    }
+                }
+            }
+            else {
+                $valor=$this->procesaValor($data, $this->getType($filName));
+                if(!is_null($valor)) {
+                    $ret[$alias] = $valor;
+                    $this->normalizar($filName,$alias,$valor);
+                }
+            }
+        }
+        $this->procesado=true;
+        $this->filtroValor=$ret;
+        return $this->filtroValor;
+    }
+    
     private function normalizar($filtroName, $table_alias, $valor) {
         $filtroConf = $this->configurator->getFiltroConfiguration($filtroName);
         $tmp = array();
