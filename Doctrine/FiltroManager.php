@@ -47,9 +47,16 @@ class FiltroManager{
         return $filtros;
     }
 
-    public function getFiltroValor($key) {
+    public function getFiltrosValor($route=null) {
         if(is_null($this->filtroValor)){
-            $this->procesa();
+            $this->procesa($route);
+        }
+        return $this->filtroValor;
+    }
+
+    public function getFiltroValor($key,$route=null) {
+        if(is_null($this->filtroValor)){
+            $this->procesa($route);
         }
         if(isset($this->filtroValor[$key])) {
             return $this->filtroValor[$key];
