@@ -21,12 +21,18 @@ class FiltroManager{
     protected $filtrosNormalized = array();
     protected $filtroValor = array();
     protected $qb;
+    protected $route;
 
     private $procesado=false;
 
     public function __construct(RequestStack $requestStack, Configurator $configurator) {
         $this->requestStack = $requestStack;
         $this->configurator = $configurator;
+    }
+
+    public function addFiltroValor($filtroName,$value){
+        $table_alias=$this->normalizar($filtroName,null,$value);
+        $this->filtroValor[$table_alias]=$value;
     }
 
     public function addNormalizedFiltro($keyField, $filtroNormal) {
@@ -39,9 +45,8 @@ class FiltroManager{
 
     public function getFiltros($route=null) {
         $request=$this->getRequest();
-        if(is_null($route)){
-            $route=$request->attributes->get('_route');
-        }
+        $route= is_null($route) ? (is_null($this->route) ? $request->attributes->get('_route') : $this->route) : $route;
+
         $filtros=is_null($request) ? array() : $request->get('ad_perfil_filtros',$request->get('filtros_'.$route,$request->getSession()->get('filtros_'.$route,array())));
         $request->getSession()->set('filtros_'.$route, $filtros);
         return $filtros;
@@ -136,6 +141,11 @@ class FiltroManager{
         return $qb;
     }
 
+    public function setRoute($route) {
+        $this->route=$route;
+        return $this;
+    }
+
     /**
      * @return null|Request
      */
@@ -192,9 +202,17 @@ class FiltroManager{
         $this->filtroValor=$ret;
         return $this->filtroValor;
     }
-    
+
     private function normalizar($filtroName, $table_alias, $valor) {
         $filtroConf = $this->configurator->getFiltroConfiguration($filtroName);
+        if(is_null($table_alias)){
+            if(is_array($filtroConf['table_alias'])){
+                throw new \LogicException('No se puede determinar el table_alias del filtro "'.$filtroName.'"');
+            }
+            else {
+                $table_alias=$filtroConf['table_alias'];
+            }
+        }
         $tmp = array();
         $fieldName = $table_alias.'.'.$filtroConf['field'];
         $tmp['operator'] = $filtroConf['operator'];
@@ -205,6 +223,7 @@ class FiltroManager{
             $tmp['function']=$filtroConf['function'];
         }
         $this->addNormalizedFiltro($fieldName,$tmp);
+        return $table_alias;
     }
 
     private function procesaValor($valor,$type) {
