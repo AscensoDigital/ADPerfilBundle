@@ -20,8 +20,9 @@ class PerfilXPermisoRepository extends EntityRepository {
             ->select('adp_prm.nombre')
             ->from('ADPerfilBundle:PerfilXPermiso','adp_pxp')
             ->join('adp_pxp.permiso','adp_prm')
-            ->where('adp_pxp.perfil=:perfil')
+            ->where('adp_pxp.perfil=:perfil and adp_pxp.acceso=:acceso')
             ->setParameter(':perfil',$perfil_id)
+            ->setParameter(':acceso','true')
             ->getQuery()->getScalarResult();
         $ret=array();
         foreach ($prms as $prm) {
