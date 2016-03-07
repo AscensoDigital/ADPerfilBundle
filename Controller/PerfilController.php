@@ -39,9 +39,16 @@ class PerfilController extends Controller
         if($this->getUser()){
             $perfil_id=$request->getSession()->get($this->getParameter('ad_perfil.session_name'));
             if(!is_null($perfil_id)) {
+                $perfils=$this->getUser()->getPerfils();
                 /** @var PerfilInterface $perfil */
-                $perfil=$this->getUser()->getPerfils()[$perfil_id];
-                $perfilStr=$perfil->getSlug();
+                if(!isset($perfils[$perfil_id])) {
+                    $this->addFlash('danger', 'No tiene acceso al Perfil seleccionado');
+                    $request->getSession()->remove('ut_id');
+                }
+                else{
+                    $perfil=$perfils[$perfil_id];
+                    $perfilStr=$perfil->getSlug();
+                }
             }
         }
         return $this->render('ADPerfilBundle:Perfil:showActive.html.twig', ['perfil'=> $perfilStr,'multiple' => $multiple]);
