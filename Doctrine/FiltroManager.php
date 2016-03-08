@@ -257,7 +257,6 @@ class FiltroManager{
         $sql=substr($sql,$pos-1);
         /** @var Parameter $parameter */
         foreach ($query->getParameters() as $parameter) {
-            //dump($parameter);
             switch ($parameter->getType()){
                 case 'integer':
                     $sql=str_replace(':'.$parameter->getName(),$parameter->getValue(),$sql);
