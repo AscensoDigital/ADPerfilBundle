@@ -9,6 +9,7 @@
 namespace AscensoDigital\PerfilBundle\Model;
 
 
+use AscensoDigital\PerfilBundle\Doctrine\FiltroManager;
 use Doctrine\ORM\EntityManager;
 
 class PerfilManager
@@ -34,11 +35,11 @@ class PerfilManager
         return $this->repository->find($id);
     }
 
-    public function findAllOrderRole($perfil) {
+    public function findAllOrderRole($perfil = null) {
         return $this->repository->findAllOrderRole($perfil);
     }
 
-    public function findByFiltro($filtros) {
+    public function findByFiltro(FiltroManager $filtros) {
         return $this->repository->findByFiltros($filtros);
     }
 
