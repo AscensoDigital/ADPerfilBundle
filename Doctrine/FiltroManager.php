@@ -261,6 +261,7 @@ class FiltroManager{
                 case 'integer':
                     $sql=str_replace(':'.$parameter->getName(),$parameter->getValue(),$sql);
                     break;
+                case 101:
                 case 102:
                     $sql=str_replace(':'.$parameter->getName(),implode(',',$parameter->getValue()),$sql);
                     break;
