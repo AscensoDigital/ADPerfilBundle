@@ -52,7 +52,7 @@ class MenuRepository extends EntityRepository {
         return $ret;
     }
 
-    public function findByPerfilMenu($perfil_id, $menu_id) {
+    public function findByPerfilMenu($perfil_id, $menu_id, $visible=true) {
         $qb=$this->createQueryBuilder('adp_m');
         $qb->addSelect('adp_ms')
             ->addSelect('adp_c')
@@ -66,7 +66,7 @@ class MenuRepository extends EntityRepository {
             ->orderBy('adp_m.orden')
             ->setParameter('perfil',$perfil_id)
             ->setParameter(':permitido','true')
-            ->setParameter(':visible','true');
+            ->setParameter(':visible', $visible ? 'true' : 'false');
         if(!is_null($menu_id) && $menu_id>0){
             $qb->setParameter('menu',$menu_id);
         }

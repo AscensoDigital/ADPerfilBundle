@@ -56,13 +56,13 @@ class NavegacionController extends Controller
 
     /**
      * @param null $menu_id
-     * @param bool $submenu Diferencia al menu desplegable principal de las secciones
+     * @param bool $lateral Diferencia al menu desplegable principal de las secciones
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function menuAction($menu_id=null, $submenu=true) {
-        $menu_id= $submenu===false ? 0 : $menu_id;
+    public function menuAction($menu_id=null, $lateral=false) {
+        $menu_id= $lateral===true ? 0 : $menu_id;
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
-        return $this->render('ADPerfilBundle:Navegacion:menu-'.($submenu ? 'nav' : 'li').'.html.twig', [
+        return $this->render('ADPerfilBundle:Navegacion:menu-'.(false===$lateral ? 'nav' : 'li').'.html.twig', [
             'menus' => $menus,
             'menuActual' => $this->get('ad_perfil.menu_manager')->getMenuActual()
         ]);
@@ -70,22 +70,35 @@ class NavegacionController extends Controller
 
     /**
      * @param Menu|null $menu
+     * @param array|null $options
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function pageTitleAction(Menu $menu = null){
+    public function pageTitleAction(Menu $menu = null, $options = array()){
         $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
         $options=is_null($menu) ? [
-            'icono' => $this->getParameter('ad_perfil.navegacion.homepage_icono'),
-            'color' => $this->getParameter('ad_perfil.navegacion.homepage_color'),
-            'title' => $this->getParameter('ad_perfil.navegacion.homepage_title'),
-            'subtitle' => $this->getParameter('ad_perfil.navegacion.homepage_subtitle'),
+            'icono' => isset($options['icono']) ? $options['icono'] : $this->getParameter('ad_perfil.navegacion.homepage_icono'),
+            'color' => isset($options['color']) ? $options['color'] : $this->getParameter('ad_perfil.navegacion.homepage_color'),
+            'title' => isset($options['title']) ? $options['title'] : $this->getParameter('ad_perfil.navegacion.homepage_title'),
+            'subtitle' => isset($options['subtitle']) ? $options['subtitle'] : $this->getParameter('ad_perfil.navegacion.homepage_subtitle'),
         ] : [
-            'icono' => $menu->getIcono(),
-            'color' => $menu->getColor()->getNombre(),
-            'title' => $menu->getTitulo(),
-            'subtitle' => $menu->getSubtitulo()
+            'icono' => isset($options['icono']) ? $options['icono'] : $menu->getIcono(),
+            'color' => isset($options['color']) ? $options['color'] : $menu->getColor()->getNombre(),
+            'title' => isset($options['title']) ? $options['title'] : $menu->getTitulo(),
+            'subtitle' => isset($options['subtitle']) ? $options['subtitle'] : $menu->getSubtitulo()
         ];
         return $this->render('ADPerfilBundle:Navegacion:page-title.html.twig', $options);
+    }
+
+    /**
+     * @param null $menu_id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function submenuAction($menu_id=null) {
+        $menus=$this->get('ad_perfil.menu_manager')->getSubmenusByMenuId($menu_id);
+        return $this->render('ADPerfilBundle:Navegacion:menu-nav-tab.html.twig', [
+            'menus' => $menus,
+            'menuActual' => $this->get('ad_perfil.menu_manager')->getMenuActual()
+        ]);
     }
 
     /**

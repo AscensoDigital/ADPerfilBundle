@@ -1,0 +1,9 @@
+{% if menus | length > 1 %}
+<div class="row">
+    <nav class="navbar navbar-default">
+        <ul class="nav nav-tabs nav-justified">
+            {{ include('ADPerfilBundle:Navegacion:menu-li.html.twig') }}
+        </ul>
+    </nav>
+</div>
+{% endif %}

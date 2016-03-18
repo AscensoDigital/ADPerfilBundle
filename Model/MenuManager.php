@@ -42,12 +42,16 @@ class MenuManager {
 
     public function getMenusByMenuId($menu_id){
         $menu_sav_id=is_null($menu_id) ?
-                        (is_null($this->getMenuActual()) ?
-                            0 :
-                            (is_null($this->getMenuActual()->getMenuSuperior()) ?
-                                0 :
-                                $this->getMenuActual()->getMenuSuperior()->getId())) :
-                        $menu_id;
+            (is_null($this->getMenuActual()) ?
+                0 :
+                (is_null($this->getMenuActual()->getMenuSuperior()) ?
+                    0 :
+                    ($this->getMenuActual()->isVisible() ?
+                        $this->getMenuActual()->getMenuSuperior()->getId() :
+                        (is_null($this->getMenuActual()->getMenuSuperior()->getMenuSuperior()) ?
+                            $this->getMenuActual()->getMenuSuperior()->getId() :
+                            $this->getMenuActual()->getMenuSuperior()->getMenuSuperior()->getId()) ))) :
+            $menu_id;
         if(!isset($this->seccion[$menu_sav_id])) {
             $this->seccion[$menu_sav_id] = $this->em->getRepository('ADPerfilBundle:Menu')->findByPerfilMenu($this->perfil_id, $menu_sav_id);
         }
@@ -64,6 +68,20 @@ class MenuManager {
 
     public function setMenuActual(Menu $menu = null){
         $this->menuActual=$menu;
+    }
+
+    public function getsubmenusByMenuId($menu_id){
+        $menu_sav_id=is_null($menu_id) ?
+            (is_null($this->getMenuActual()) ?
+                0 :
+                (is_null($this->getMenuActual()->getMenuSuperior()) ?
+                    0 :
+                    $this->getMenuActual()->getMenuSuperior()->getId() )) :
+            $menu_id;
+        if(!isset($this->seccion[$menu_sav_id])) {
+            $this->seccion[$menu_sav_id] = $this->em->getRepository('ADPerfilBundle:Menu')->findByPerfilMenu($this->perfil_id, $menu_sav_id, false);
+        }
+        return $this->seccion[$menu_sav_id];
     }
 
     public function setMenuActualSinceRoute($route) {

@@ -126,7 +126,17 @@ class Menu
         if(is_null($menu)){
             return false;
         }
-        return $this->getId()== $menu->getId();
+        return $this->getId() == $menu->getId() || $this->isActualMenuSuperior($menu);
+    }
+
+    public function isActualMenuSuperior(Menu $menu = null) {
+        if(is_null($menu)){
+            return false;
+        }
+        if(is_null($menu->getMenuSuperior())) {
+            return false;
+        }
+        return $this->getId() == $menu->getMenuSuperior()->getId();
     }
 
     /**
