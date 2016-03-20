@@ -8,19 +8,19 @@
     </div>
     <div id="ad_perfil-collapseFiltro" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="ad_perfil-headingFiltros">
         {{ form_start(form) }}
-            <div class="panel-body">
-                {% for filtro,activo in activos %}
-                    <div class="col-md-4">
-                        {{ form_label(form[filtro],null,{ 'label_attr' : { 'class' : 'col-md-12'} }) }}
-                        {{ form_widget(form[filtro]) }}
-                    </div>
-                {% endfor %}
-                {{ form_widget(form) }}
-            </div>
-            <div class="panel-footer text-right">
-                <button id="ad_perfil-btn-filtros" type="submit" class="btn btn-primary"> Listar</button>&nbsp;
-                <button id="reset" type="button" class="btn btn-danger">Limpiar Filtros</button>
-            </div>
+        <div id="ad_perfil-filtro-body" class="panel-body">
+            {% for filtro,activo in activos %}
+                <div class="col-md-4">
+                    {{ form_label(form[filtro],null,{ 'label_attr' : { 'class' : 'col-md-12'} }) }}
+                    {{ form_widget(form[filtro]) }}
+                </div>
+            {% endfor %}
+            {{ form_widget(form) }}
+        </div>
+        <div class="panel-footer text-right">
+            <button id="ad_perfil-btn-filtros" type="submit" class="btn btn-primary"> Listar</button>&nbsp;
+            <button id="reset" type="button" class="btn btn-danger">Limpiar Filtros</button>
+        </div>
         {{ form_end(form) }}
     </div>
 </div>

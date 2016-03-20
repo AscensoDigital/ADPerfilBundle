@@ -1,6 +1,8 @@
 $(document).ready(function(){
+    var filtroBody=$("#ad_perfil-filtro-body");
     var frm_filtro=$('#ad_perfil-frm-filtros');
     frm_filtro.on('submit',function(){
+        filtroBody.children('.alert-danger').remove();
         var error='';
         frm_filtro.find(':input[required="required"]').each(function() {
             var elemento= this;
@@ -30,8 +32,7 @@ $(document).ready(function(){
         if(''!=error) {
             var divError='<div></div>';
             $(divError).append(error).addClass('alert alert-danger');
-            $('#ad_perfil-collapseFiltro').prepend(divError);
-            //alert(error);
+            filtroBody.prepend(divError);
             return false;
         }
 
@@ -53,8 +54,11 @@ $(document).ready(function(){
             error : function (obj) {
                 $('i.fa-spin').remove();
                 $('#ad_perfil-btn-filtros').prop('disabled', false);
-                alert("Error de Conexion: "+ obj.statusText);
-              return false;
+
+                var error="Error de Conexion: "+ obj.statusText;
+                var divError='<div class="alert alert-danger">'+ error + '</div>';
+                filtroBody.prepend(divError);
+                return false;
             }
         });
         return false;

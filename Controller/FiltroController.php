@@ -43,7 +43,7 @@ class FiltroController extends Controller {
         
         $form = $this->createForm(FiltroFormType::class, null, $options);
 
-        $filtro_values=$this->get('ad_perfil.filtro_manager')->getFiltros();
+        $filtro_values=$this->get('ad_perfil.filtro_manager')->getFiltros($options['route']);
         if(true===$options['auto_llenado'] && count($filtro_values)){
             $request->request->set('ad_perfil_filtros', $filtro_values);
             $request->setMethod('post');
