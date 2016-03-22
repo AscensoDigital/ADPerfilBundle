@@ -54,12 +54,12 @@ class ADPerfilTwigExtension extends \Twig_Extension
         return $iconAlt;
     }
     
-    public function getHomepageTitle() {
+    public function getHomepageTitle($header=false) {
         $title=$this->configurator->getNavegacionConfiguration('homepage_title');
         if(empty($title)) {
             throw new \LogicException(sprintf("No se encuentra definido el titulo de la aplicación"));
         }
-        return $title;
+        return true===$header ? strip_tags($title) : $title;
     }
 
     public function getHomepageRoute() {
@@ -70,12 +70,12 @@ class ADPerfilTwigExtension extends \Twig_Extension
         return $route;
     }
 
-    public function getHomepageSubtitle() {
+    public function getHomepageSubtitle($header=false) {
         $subtitle=$this->configurator->getNavegacionConfiguration('homepage_subtitle');
         if(empty($subtitle)) {
             throw new \LogicException(sprintf("No se encuentra definido el subtitulo de la aplicación"));
         }
-        return $subtitle;
+        return true===$header ? strip_tags($subtitle) : $subtitle;
     }
 
     public function getName()
