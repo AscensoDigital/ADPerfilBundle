@@ -46,10 +46,13 @@ class FiltroManager{
 
     public function getFiltros($route=null) {
         $request=$this->getRequest();
-        $route= is_null($route) ? (is_null($this->route) ? (is_null($request) ? '' : $request->attributes->get('_route')) : $this->route) : $route;
+        $null_request=is_null($request);
+        $route= is_null($route) ? (is_null($this->route) ? ($null_request ? '' : $request->attributes->get('_route')) : $this->route) : $route;
+        $filtros= $null_request ? array() : $request->get('ad_perfil_filtros',$request->get('filtros_'.$route,$request->getSession()->get('filtros_'.$route,array())));
+        if(false===$null_request){
+            $request->getSession()->set('filtros_'.$route, $filtros);
+        }
 
-        $filtros=is_null($request) ? array() : $request->get('ad_perfil_filtros',$request->get('filtros_'.$route,$request->getSession()->get('filtros_'.$route,array())));
-        $request->getSession()->set('filtros_'.$route, $filtros);
         return $filtros;
     }
 
