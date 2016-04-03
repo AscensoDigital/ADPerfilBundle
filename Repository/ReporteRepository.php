@@ -18,7 +18,6 @@ class ReporteRepository extends EntityRepository
         $reps=$this->createQueryBuilder('rp')
             ->addSelect('rpc')
             ->addSelect('rps')
-            ->addSelect('rpxc')
             ->addSelect('rpcr')
             ->join('rp.reporteCategoria','rpc')
             ->join('rp.reporteSeccion','rps')
@@ -31,11 +30,11 @@ class ReporteRepository extends EntityRepository
             ->addOrderBy('rp.orden')
             ->setParameter(':perfil',$perfil_id)
             ->getQuery()->getResult();
-        $ret=array();
+        $ret=array('criterios' => array(), 'reportes' => array());
         /** @var Reporte $rep */
         foreach ($reps as $rep) {
-            if(!is_null($rep->getReporteCriterio()) && !isset($ret['criterio'][$rep->getReporteCriterio()->getNombre()])){
-                $ret['criterio'][$rep->getReporteCriterio()->getNombre()]=$rep->getReporteCriterio();
+            if(!is_null($rep->getReporteCriterio()) && !isset($ret['criterios'][$rep->getReporteCriterio()->getNombre()])){
+                $ret['criterios'][$rep->getReporteCriterio()->getNombre()]=$rep->getReporteCriterio();
             }
             $ret['reportes'][$rep->getReporteSeccion()->getNombre()]['categorias'][$rep->getReporteCategoria()->getNombre()][]=$rep;
             $ret['reportes'][$rep->getReporteSeccion()->getNombre()]['style']=$rep->getReporteSeccion()->getStyle();

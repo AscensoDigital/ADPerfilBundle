@@ -27,7 +27,7 @@
                         <td>{{ rp.nombre }}</td>
                         <td>{{ rp.descripcion }}</td>
                         <td>
-                            {% set route= rp.route is not null ? rp.route : 'ad_perfil_reporte') ?  %}
+                            {% set route= rp.route is not null ? rp.route : 'ad_perfil_reporte' %}
                             <a href="{{ rp.hasCriterio ? '#modal' ~ rp.reporteCriterio | capitalize : path(route, {'reporte_id' : rp.codigo}) }}" {% if rp.hasCriterio %}data-url="{{ path(route, {'reporte_id' : rp.codigo}) }}" data-toggle="modal" data-reporte="{{ rp.nombre }}"{% endif %}><i class="fa fa-cloud-download"></i></a>
                         </td>
                     </tr>

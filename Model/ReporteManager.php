@@ -36,7 +36,7 @@ class ReporteManager
         $dat=$this->em->getRepository('ADPerfilBundle:Reporte')->findArrayByPerfil($this->perfil_id);
         $criterios=array();
         /** @var ReporteCriterio $reporteCriterio */
-        foreach ($dat['criterio'] as $nombre => $reporteCriterio) {
+        foreach ($dat['criterios'] as $nombre => $reporteCriterio) {
             switch ($nombre){
                 case 'periodo':
                     $criterios[$nombre]['data']=array(new Dia(0,'Completo'), new Dia(date('Y-m-d'), 'Diario'));
