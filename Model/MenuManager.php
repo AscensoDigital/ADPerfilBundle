@@ -21,10 +21,12 @@ class MenuManager {
      * @var Menu
      */
     private $menuActual;
+    
     /**
      * @var EntityManager
      */
     private $em;
+    
     private $perfil_id;
 
     public function __construct(Session $session, EntityManager $em, $sessionName)

@@ -2,13 +2,14 @@
 
 namespace AscensoDigital\PerfilBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Reporte
  *
  * @ORM\Table(name="ad_perfil_reporte")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AscensoDigital\PerfilBundle\Repository\ReporteRepository")
  */
 class Reporte
 {
@@ -23,16 +24,16 @@ class Reporte
     protected $id;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="nombre", type="integer", nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=200, nullable=false)
      */
     protected $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo", type="string", length=20, nullable=true)
+     * @ORM\Column(name="codigo", type="string", length=20, nullable=false, unique=true)
      */
     protected $codigo;
 
@@ -49,6 +50,27 @@ class Reporte
      * @ORM\Column(name="route", type="string", length=100, nullable=true)
      */
     protected $route;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    protected $orden;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="repositorio", type="string", length=100, nullable=true)
+     */
+    protected $repositorio;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metodo", type="string", length=100, nullable=true)
+     */
+    protected $metodo;
 
     /**
      * @var Permiso
@@ -91,6 +113,40 @@ class Reporte
     protected $reporteCriterio;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="ReporteXCriterio", mappedBy="reporte", cascade={"persist"} )
+     */
+    protected $reporteXCriterios;
+
+
+
+    public function __construct() {
+        $this->reporteXCriterios = new ArrayCollection();
+    }
+
+    /**
+     * @param $criterio_valor
+     * @return ReporteXCriterio|null
+     */
+    public function getReporteEstatico($criterio_valor) {
+        if(0==$this->getReporteXCriterios()->count()){
+            return null;
+        }
+        /** @var ReporteXCriterio $rxp */
+        foreach ($this->getReporteXCriterios()->getValues() as $rxp) {
+            if($rxp->getCriterioId()==$criterio_valor){
+                return $rxp;
+            }
+        }
+        return null;
+    }
+
+    public function hasCriterio() {
+        return !is_null($this->getReporteCriterio());
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -99,7 +155,7 @@ class Reporte
     }
 
     /**
-     * @param int $nombre
+     * @param string $nombre
      * @return Reporte
      */
     public function setNombre($nombre)
@@ -109,7 +165,7 @@ class Reporte
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getNombre()
     {
@@ -242,5 +298,75 @@ class Reporte
         return $this->reporteCriterio;
     }
 
+    /**
+     * @param int $orden
+     * @return Reporte
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+        return $this;
+    }
 
+    /**
+     * @return int
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $reporteXCriterios
+     * @return Reporte
+     */
+    public function setReporteXCriterios($reporteXCriterios)
+    {
+        $this->reporteXCriterios = $reporteXCriterios;
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReporteXCriterios()
+    {
+        return $this->reporteXCriterios;
+    }
+
+    /**
+     * @param string $repositorio
+     * @return Reporte
+     */
+    public function setRepositorio($repositorio)
+    {
+        $this->repositorio = $repositorio;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRepositorio()
+    {
+        return $this->repositorio;
+    }
+
+    /**
+     * @param string $metodo
+     * @return Reporte
+     */
+    public function setMetodo($metodo)
+    {
+        $this->metodo = $metodo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetodo()
+    {
+        return $this->metodo;
+    }
 }

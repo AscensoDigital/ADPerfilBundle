@@ -1,0 +1,11 @@
+sep=;
+{% set encabezado=true %}
+{% for fila in data %}
+{% if encabezado %}
+{% set encabezado=false %}
+{% for key in fila | keys %}{% if not loop.first %};{% endif %}{{ '"' ~ (key | replace('_',' ') | title) ~ '"' }}{% endfor %}
+
+{% endif %}
+{% for dat in fila %}{% if not loop.first %};{% endif %}{{ '"' ~ (dat is null ? 0 : (dat is same as(true) ? 'si' : ( dat is same as(false) ? 'no' : dat | raw))) ~ '"' }}{%  endfor %}
+
+{% endfor %}

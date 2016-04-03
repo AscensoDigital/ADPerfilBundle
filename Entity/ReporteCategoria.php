@@ -25,7 +25,7 @@ class ReporteCategoria
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=100, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=100, nullable=false)
      */
     protected $nombre;
 
@@ -36,5 +36,47 @@ class ReporteCategoria
      */
     protected $orden;
 
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
+    /**
+     * @param string $nombre
+     * @return ReporteCategoria
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param int $orden
+     * @return ReporteCategoria
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
 }

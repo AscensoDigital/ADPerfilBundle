@@ -10,7 +10,7 @@ namespace AscensoDigital\PerfilBundle\Model;
 
 use FOS\UserBundle\Model\User as BaseUser;
 
-abstract class User extends BaseUser
+abstract class User extends BaseUser implements UserInterface
 {
     /**
      * @var array

@@ -25,7 +25,7 @@ class ReporteCriterio
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=20, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=20, nullable=false, unique=true)
      */
     protected $nombre;
 
@@ -43,5 +43,100 @@ class ReporteCriterio
      */
     protected $metodo;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="titulo", type="string", length=100, nullable=false)
+     */
+    protected $titulo;
 
+
+    public function __toString()
+    {
+        return $this->getNombre();
+    }
+
+    public function hasMetodo(){
+        return !is_null($this->getMetodo());
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $nombre
+     * @return ReporteCriterio
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param string $repositorio
+     * @return ReporteCriterio
+     */
+    public function setRepositorio($repositorio)
+    {
+        $this->repositorio = $repositorio;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRepositorio()
+    {
+        return $this->repositorio;
+    }
+
+    /**
+     * @param string $metodo
+     * @return ReporteCriterio
+     */
+    public function setMetodo($metodo)
+    {
+        $this->metodo = $metodo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetodo()
+    {
+        return $this->metodo;
+    }
+
+    /**
+     * @param string $titulo
+     * @return ReporteCriterio
+     */
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
 }

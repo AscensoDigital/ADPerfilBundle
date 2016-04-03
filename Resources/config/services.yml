@@ -19,6 +19,13 @@ services:
         tags:
           - { name: form.type, alias: filtro_form_type }
 
+    ad_perfil.reporte_manager:
+        class: AscensoDigital\PerfilBundle\Model\ReporteManager
+        arguments:
+          - '@session'
+          - '@doctrine.orm.entity_manager'
+          - %ad_perfil.session_name%
+
     ad_perfil.request_listener:
         class: AscensoDigital\PerfilBundle\EventListener\RequestListener
         arguments: [ '@ad_perfil.menu_manager' ]

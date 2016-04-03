@@ -37,7 +37,7 @@
             <type label="SET" length="1" sql="SET" quote=""/>
             <type label="Bit" length="0" sql="bit" quote=""/>
         </group>
-    </datatypes><table x="456" y="202" name="PERMISO">
+    </datatypes><table x="518" y="208" name="AD_PERFIL_PERMISO">
     <row name="id" null="1" autoincrement="1">
         <datatype>INTEGER</datatype>
         <default>NULL</default></row>
@@ -50,6 +50,9 @@
     <key type="PRIMARY" name="">
         <part>id</part>
     </key>
+    <key type="UNIQUE" name="">
+        <part>nombre</part>
+    </key>
 </table>
     <table x="904" y="59" name="PERFIL">
         <row name="id" null="1" autoincrement="1">
@@ -58,11 +61,14 @@
         <row name="nombre" null="0" autoincrement="0">
             <datatype>VARCHAR(100)</datatype>
         </row>
+        <row name="slug" null="0" autoincrement="0">
+            <datatype>VARCHAR(100)</datatype>
+        </row>
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>
     </table>
-    <table x="606" y="55" name="PERFIL_x_PERMISO">
+    <table x="570" y="57" name="AD_PERFIL_PERFIL_x_PERMISO">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -72,120 +78,93 @@
         </row>
         <row name="permiso_id" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="PERMISO" row="id" />
+            <default>NULL</default><relation table="AD_PERFIL_PERMISO" row="id" />
         </row>
         <row name="acceso" null="1" autoincrement="0">
             <datatype>bit</datatype>
-        </row>
+            <default>NULL</default></row>
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>
     </table>
-    <table x="256" y="302" name="MENU">
+    <table x="276" y="316" name="AD_PERFIL_MENU">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="menu_superior_id" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="MENU" row="id" />
+            <default>NULL</default><relation table="AD_PERFIL_MENU" row="id" />
         </row>
         <row name="permiso_id" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="PERMISO" row="id" />
+            <default>NULL</default><relation table="AD_PERFIL_PERMISO" row="id" />
         </row>
         <row name="color_id" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="COLOR" row="id" />
+            <default>NULL</default><relation table="AD_PERFIL_COLOR" row="id" />
         </row>
         <row name="nombre" null="0" autoincrement="0">
+            <datatype>VARCHAR(100)</datatype>
+        </row>
+        <row name="slug" null="0" autoincrement="0">
             <datatype>VARCHAR(100)</datatype>
         </row>
         <row name="descripcion" null="1" autoincrement="0">
             <datatype>MEDIUMTEXT</datatype>
             <default>NULL</default></row>
+        <row name="orden" null="0" autoincrement="0">
+            <datatype>INTEGER</datatype>
+        </row>
         <row name="icono" null="1" autoincrement="0">
             <datatype>VARCHAR(50)</datatype>
             <default>NULL</default></row>
         <row name="route" null="1" autoincrement="0">
             <datatype>VARCHAR(150)</datatype>
             <default>NULL</default></row>
+        <row name="visible" null="0" autoincrement="0">
+            <datatype>bit</datatype>
+            <default>true</default></row>
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>
+        <key type="UNIQUE" name="">
+            <part>slug</part>
+        </key>
     </table>
-    <table x="668" y="301" name="REPORTE">
+    <table x="551" y="374" name="AD_PERFIL_REPORTE">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="permiso_id" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="PERMISO" row="id" />
+            <default>NULL</default><relation table="AD_PERFIL_PERMISO" row="id" />
         </row>
         <row name="reporte_seccion_id" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="REPORTE_SECCION" row="id" />
+            <default>NULL</default><relation table="AD_PERFIL_REPORTE_SECCION" row="id" />
         </row>
         <row name="reporte_categoria_id" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="REPORTE_CATEGORIA" row="id" />
+            <default>NULL</default><relation table="AD_PERFIL_REPORTE_CATEGORIA" row="id" />
         </row>
         <row name="reporte_criterio_id" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default><relation table="REPORTE_CRITERIO" row="id" />
+            <default>NULL</default><relation table="AD_PERFIL_REPORTE_CRITERIO" row="id" />
         </row>
-        <row name="nombre" null="1" autoincrement="0">
-            <datatype>INTEGER</datatype>
-            <default>NULL</default></row>
-        <row name="codigo" null="1" autoincrement="0">
+        <row name="nombre" null="0" autoincrement="0">
+            <datatype>VARCHAR(200)</datatype>
+        </row>
+        <row name="codigo" null="0" autoincrement="0">
             <datatype>VARCHAR(20)</datatype>
-            <default>NULL</default></row>
+        </row>
         <row name="descripcion" null="1" autoincrement="0">
             <datatype>MEDIUMTEXT</datatype>
             <default>NULL</default></row>
         <row name="route" null="1" autoincrement="0">
             <datatype>VARCHAR(100)</datatype>
             <default>NULL</default></row>
-        <key type="PRIMARY" name="">
-            <part>id</part>
-        </key>
-    </table>
-    <table x="916" y="237" name="REPORTE_SECCION">
-        <row name="id" null="1" autoincrement="1">
-            <datatype>INTEGER</datatype>
-            <default>NULL</default></row>
-        <row name="nombre" null="1" autoincrement="0">
-            <datatype>VARCHAR(200)</datatype>
-            <default>NULL</default></row>
         <row name="orden" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
-            <default>NULL</default></row>
-        <row name="color" null="1" autoincrement="0">
-            <datatype>CHAR(6)</datatype>
-            <default>NULL</default></row>
-        <key type="PRIMARY" name="">
-            <part>id</part>
-        </key>
-    </table>
-    <table x="914" y="391" name="REPORTE_CATEGORIA">
-        <row name="id" null="1" autoincrement="1">
-            <datatype>INTEGER</datatype>
-            <default>NULL</default></row>
-        <row name="nombre" null="1" autoincrement="0">
-            <datatype>VARCHAR(100)</datatype>
-            <default>NULL</default></row>
-        <row name="orden" null="1" autoincrement="0">
-            <datatype>INTEGER</datatype>
-            <default>NULL</default></row>
-        <key type="PRIMARY" name="">
-            <part>id</part>
-        </key>
-    </table>
-    <table x="915" y="517" name="REPORTE_CRITERIO">
-        <row name="id" null="1" autoincrement="1">
-            <datatype>INTEGER</datatype>
-            <default>NULL</default></row>
-        <row name="nombre" null="1" autoincrement="0">
-            <datatype>VARCHAR(20)</datatype>
             <default>NULL</default></row>
         <row name="repositorio" null="1" autoincrement="0">
             <datatype>VARCHAR(100)</datatype>
@@ -196,8 +175,65 @@
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>
+        <key type="UNIQUE" name="">
+            <part>codigo</part>
+        </key>
     </table>
-    <table x="56" y="304" name="COLOR">
+    <table x="916" y="237" name="AD_PERFIL_REPORTE_SECCION">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="nombre" null="0" autoincrement="0">
+            <datatype>VARCHAR(200)</datatype>
+        </row>
+        <row name="orden" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="style" null="1" autoincrement="0">
+            <datatype>VARCHAR(10)</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="914" y="391" name="AD_PERFIL_REPORTE_CATEGORIA">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="nombre" null="0" autoincrement="0">
+            <datatype>VARCHAR(100)</datatype>
+        </row>
+        <row name="orden" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="915" y="517" name="AD_PERFIL_REPORTE_CRITERIO">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="nombre" null="0" autoincrement="0">
+            <datatype>VARCHAR(20)</datatype>
+        </row>
+        <row name="repositorio" null="1" autoincrement="0">
+            <datatype>VARCHAR(100)</datatype>
+            <default>NULL</default></row>
+        <row name="metodo" null="1" autoincrement="0">
+            <datatype>VARCHAR(100)</datatype>
+            <default>NULL</default></row>
+        <row name="titulo" null="0" autoincrement="0">
+            <datatype>VARCHAR(100)</datatype>
+        </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+        <key type="UNIQUE" name="">
+            <part>nombre</part>
+        </key>
+    </table>
+    <table x="21" y="299" name="AD_PERFIL_COLOR">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -207,6 +243,64 @@
         <row name="codigo" null="0" autoincrement="0">
             <datatype>CHAR(6)</datatype>
         </row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="536" y="706" name="AD_PERFIL_REPORTE_x_CRITERIO">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="reporte_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="AD_PERFIL_REPORTE" row="id" />
+        </row>
+        <row name="criterio_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="archivo_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="AD_PERFIL_ARCHIVO" row="id" />
+        </row>
+        <row name="updated_at" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <row name="modificador_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+        <key type="UNIQUE" name="">
+            <part>reporte_id</part>
+            <part>criterio_id</part>
+        </key>
+    </table>
+    <table x="952" y="751" name="AD_PERFIL_ARCHIVO">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="titulo" null="1" autoincrement="0">
+            <datatype>VARCHAR(255)</datatype>
+            <default>NULL</default></row>
+        <row name="fecha_publicacion" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <row name="ruta" null="1" autoincrement="0">
+            <datatype>VARCHAR(255)</datatype>
+            <default>NULL</default></row>
+        <row name="visible" null="0" autoincrement="0">
+            <datatype>bit</datatype>
+            <default>false</default></row>
+        <row name="mime_type" null="1" autoincrement="0">
+            <datatype>VARCHAR(200)</datatype>
+            <default>NULL</default></row>
+        <row name="creador_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="created_at" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>

@@ -25,7 +25,7 @@ class ReporteSeccion
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=200, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=200, nullable=false)
      */
     protected $nombre;
 
@@ -39,9 +39,69 @@ class ReporteSeccion
     /**
      * @var string
      *
-     * @ORM\Column(name="color", type="string", length=6, nullable=true)
+     * @ORM\Column(name="style", type="string", length=10, nullable=true)
      */
-    protected $color;
+    protected $style;
 
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
+    /**
+     * @param string $nombre
+     * @return ReporteSeccion
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * @param int $orden
+     * @return ReporteSeccion
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrden()
+    {
+        return $this->orden;
+    }
+
+    /**
+     * @param string $style
+     * @return ReporteSeccion
+     */
+    public function setStyle($style)
+    {
+        $this->style = $style;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStyle()
+    {
+        return $this->style;
+    }
 }

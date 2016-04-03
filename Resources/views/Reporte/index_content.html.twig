@@ -1,0 +1,64 @@
+{{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs')) }}
+{{ render(controller('ADPerfilBundle:Navegacion:menu')) }}
+{{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
+
+{% for seccion, categorias in data.reportes %}
+    <div class="panel panel-{{ categorias.style }}">
+        <div class="panel-heading"><h4>{{ seccion | title }}</h4></div>
+        <div class="panel-body">
+        {% for categoria, reportes in categorias.reportes %}
+            <fieldset>
+                <legend>{{ categoria | title }}</legend>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th class="col-md-1">N°</th>
+                        <th class="col-md-2">Código</th>
+                        <th class="col-md-3">Nombre</th>
+                        <th class="col-md-5">Descripción</th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for rp in reportes %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ rp.codigo }}</td>
+                        <td>{{ rp.nombre }}</td>
+                        <td>{{ rp.descripcion }}</td>
+                        <td>
+                            {% set route= rp.route is not null ? rp.route : 'ad_perfil_reporte') ?  %}
+                            <a href="{{ rp.hasCriterio ? '#modal' ~ rp.reporteCriterio | capitalize : path(route, {'reporte_id' : rp.codigo}) }}" {% if rp.hasCriterio %}data-url="{{ path(route, {'reporte_id' : rp.codigo}) }}" data-toggle="modal" data-reporte="{{ rp.nombre }}"{% endif %}><i class="fa fa-cloud-download"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+        {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning">No tienes reportes disponibles</div>
+{% endfor %}
+
+{% for nombre,criterio in data.criterios %}
+<div class="modal fade" id="modal{{ nombre | capitalize }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ nombre | capitalize }}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modalLabel{{ nombre | capitalize }}">{{ criterio.title }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">Seleccione el {{ criterio.title }} para el reporte <span id="rep-nombre"></span></div>
+                <ul class="list-group">
+                    {% for i in criterio.data %}
+                        <li class="list-group-item"><a class="modal-link" data-valor="{{ i.id }}">{{ i }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

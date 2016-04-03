@@ -1,0 +1,15 @@
+{% extends 'ADPerfilBundle::layout.html.twig' %}
+
+{% block ad_perfil_title %}Reportes{% endblock ad_perfil_title %}
+
+{% block ad_perfil_content %}
+    {{ include('ADPerfilBundle:Reporte:index_content.html.twig') }}
+{% endblock ad_perfil_content %}
+
+{% block ad_perfil_javascripts %}
+    {{ parent() }}
+    {% javascripts
+    'bundles/adperfil/js/ad_perfil.reporte.js' filter='?yui_js' output='js/compiled/reporte.js' %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+{% endblock %}
