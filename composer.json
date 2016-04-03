@@ -19,7 +19,8 @@
         "doctrine/doctrine-bundle": "~1.4",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "ascensodigital/component-bundle": "dev-master",
-        "cocur/slugify": "^2.0"
+        "cocur/slugify": "^2.0",
+        "javiereguiluz/easyadmin-bundle": "^1.5"
     },
     "autoload": {
         "psr-4": { "AscensoDigital\\PerfilBundle\\": "" }

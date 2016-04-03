@@ -1,0 +1,8 @@
+easy_admin:
+  entities:
+    - AscensoDigital\PerfilBundle\Entity\Color
+    - AscensoDigital\PerfilBundle\Entity\Menu
+    - AscensoDigital\PerfilBundle\Entity\Reporte
+    - AscensoDigital\PerfilBundle\Entity\ReporteCriterio
+    - AscensoDigital\PerfilBundle\Entity\ReporteCategoria
+    - AscensoDigital\PerfilBundle\Entity\ReporteSeccion
