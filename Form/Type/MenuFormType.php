@@ -26,7 +26,6 @@ class MenuFormType extends AbstractType
         ])
             ->add('orden',IntegerType::class)
             ->add('nombre',TextType::class)
-            ->add('slug',TextType::class)
             ->add('descripcion',TextareaType::class)
             ->add('icono',IconType::class)
             ->add('color',EntityType::class,[

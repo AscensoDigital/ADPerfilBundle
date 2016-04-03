@@ -2,6 +2,7 @@
 
 namespace AscensoDigital\PerfilBundle\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -154,6 +155,9 @@ class Menu
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
+        $slugify= new Slugify();
+        $slugPadre=$this->getMenuSuperiorSlug();
+        $this->setSlug((is_null($slugPadre) ? '' : $slugPadre.'_').$slugify->slugify($nombre));
         return $this;
     }
 
