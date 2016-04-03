@@ -4,7 +4,7 @@ parameters:
 services:
     ad_perfil.authentication_listener:
         class: AscensoDigital\PerfilBundle\EventListener\AuthenticationListener
-        arguments: [ %ad_perfil.session_name% ]
+        arguments: [ "%ad_perfil.session_name%" ]
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onFormLogin }
             - { name: kernel.event_listener, event: security.switch_user, method: onSwitchUser }
@@ -24,7 +24,7 @@ services:
         arguments:
           - '@session'
           - '@doctrine.orm.entity_manager'
-          - %ad_perfil.session_name%
+          - "%ad_perfil.session_name%"
 
     ad_perfil.request_listener:
         class: AscensoDigital\PerfilBundle\EventListener\RequestListener
@@ -41,13 +41,13 @@ services:
         arguments:
           - '@session'
           - '@doctrine.orm.entity_manager'
-          - %ad_perfil.session_name%
+          - "%ad_perfil.session_name%"
 
     ad_perfil.perfil_manager:
         class: AscensoDigital\PerfilBundle\Model\PerfilManager
         arguments:
           - '@doctrine.orm.entity_manager'
-          - %ad_perfil.perfil_class%
+          - "%ad_perfil.perfil_class%"
 
     ad_perfil.twig_extension:
         class: AscensoDigital\PerfilBundle\Twig\ADPerfilTwigExtension
@@ -61,7 +61,7 @@ services:
         arguments:
           - '@session'
           - '@doctrine.orm.entity_manager'
-          - %ad_perfil.session_name%
+          - "%ad_perfil.session_name%"
         public: false
         tags:
             - { name: security.voter }
