@@ -66,7 +66,7 @@ class ReporteXCriterio
     /**
      * @var UserInterface
      *
-     * @ORM\ManyToOne(targetEntity="UserInterface")
+     * @ORM\ManyToOne(targetEntity="AscensoDigital\PerfilBundle\Model\UserInterface")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="modificador_id", referencedColumnName="id")
      * })

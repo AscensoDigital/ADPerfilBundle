@@ -71,7 +71,7 @@ class Archivo
     /**
      * @var UserInterface
      *
-     * @ORM\ManyToOne(targetEntity="UserInterface")
+     * @ORM\ManyToOne(targetEntity="AscensoDigital\PerfilBundle\Model\UserInterface")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="creador_id", referencedColumnName="id")
      * })
