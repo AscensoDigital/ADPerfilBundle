@@ -28,8 +28,14 @@ class ReporteManager
         $this->perfil_id = $session->get($sessionName,null);
     }
 
-    public function getCriterioNombre(ReporteCriterio $reporteCriterio) {
-        
+    public function getCriterioNombre(ReporteCriterio $reporteCriterio, $valor) {
+        switch ($reporteCriterio->getNombre()) {
+            case 'periodo':
+                return $valor==0 ? 'Completo' : 'Diario';
+            default:
+                $criterio=$this->em->getRepository($reporteCriterio->getRepositorio())->find($valor);
+                return $criterio ? $criterio->__toString() : '';
+        }
     }
 
     public function getDataReportesForList(){

@@ -49,7 +49,7 @@ class ReporteController extends Controller
         $metodo=$reporte->getMetodo();
         if($reporte->hasCriterio()){
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo($criterio_valor);
-            $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio());
+            $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(),$criterio_valor);
             $nombre=$reporte->getNombre().'-'.$criterio_nombre;
         }
         else {
