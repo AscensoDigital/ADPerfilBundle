@@ -8,7 +8,7 @@
                 {% for perfil in perfils %}
                     <td class="small-permisos" title="{{ perfil.nombre }}">
                         {{ perfil.role }} {{ perfil.slug }}
-                        {% if is_granted('permiso','per-edit') %}
+                        {% if is_granted('permiso','ad_perfil-per-edit') %}
                             <a href="{{ path('ad_perfil_permiso_edit_perfil', { 'slug': perfil.slug }) }}"><span class="fa fa-edit"></span></a>
                         {% endif %}
                     </td>
@@ -20,7 +20,7 @@
                 <tr>
                     <td class="small-permisos" title="{{ permiso.descripcion }}">{{ permiso.nombre }}</td>
                     <td>
-                        {% if is_granted('permiso','per-edit') %}
+                        {% if is_granted('permiso','ad_perfil-per-edit') %}
                             <a href="{{ path('ad_perfil_permiso_edit', { 'nombre': permiso.nombre }) }}"><span class="fa fa-edit"></span></a>
                         {% endif %}
                     </td>
