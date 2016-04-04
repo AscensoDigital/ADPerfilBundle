@@ -5,11 +5,13 @@ namespace AscensoDigital\PerfilBundle\Controller;
 use AscensoDigital\ComponentBundle\Util\StrUtil;
 use AscensoDigital\PerfilBundle\Entity\Archivo;
 use AscensoDigital\PerfilBundle\Entity\Reporte;
+use AscensoDigital\PerfilBundle\Form\ReporteFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,10 +23,38 @@ class ReporteController extends Controller
      * @Route("/reportes", name="ad_perfil_reportes")
      * @Security("is_granted('permiso','ad_perfil-mn-reporte')")
      */
-    public function indexAction()
+    public function listAction()
     {
         $data=$this->get('ad_perfil.reporte_manager')->getDataReportesForList();
         return $this->render('ADPerfilBundle:Reporte:index.html.twig', array('data' => $data));
+    }
+
+    /**
+     * @param Request $request
+     * @param Reporte $reporte
+     */
+    public function loadEstaticoAction(Request $request, Reporte $reporte){
+
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/reporte/new", name="ad_perfil_reporte_new")
+     * @Security("is_granted('permiso','ad_perfil-rep-new')")
+     */
+    public function newAction(Request $request){
+        $em=$this->getDoctrine()->getManager();
+        $rp=new Reporte();
+        $form=$this->createForm(new ReporteFormType(),$rp);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($rp);
+            $em->flush();
+            $this->addFlash('success','Se creo correctamente el reporte: '.$rp);
+            return $this->redirectToRoute('ad_perfil_reportes');
+        }
+        return $this->render('ADPerfilBundle:Reporte:new.html.twig',['form' => $form->createView()]);
     }
 
     /**
@@ -61,7 +91,7 @@ class ReporteController extends Controller
         }
         return $this->generarReporte($data, $nombre);
     }
-
+    
     /**
      * @param $data
      * @param $nombre_base

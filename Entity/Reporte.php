@@ -125,6 +125,11 @@ class Reporte
         $this->reporteXCriterios = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getNombre();
+    }
+
     /**
      * @param $criterio_valor
      * @return ReporteXCriterio|null

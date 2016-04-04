@@ -36,6 +36,12 @@ class ReporteCategoria
      */
     protected $orden;
 
+
+    public function __toString()
+    {
+        return $this->getNombre();
+    }
+
     /**
      * @return int
      */

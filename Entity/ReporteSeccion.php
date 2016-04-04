@@ -43,6 +43,13 @@ class ReporteSeccion
      */
     protected $style;
 
+
+    public function __toString()
+    {
+        return $this->getNombre();
+    }
+    
+
     /**
      * @return int
      */
