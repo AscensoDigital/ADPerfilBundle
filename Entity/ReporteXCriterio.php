@@ -46,7 +46,7 @@ class ReporteXCriterio
     /**
      * @var Reporte
      *
-     * @ORM\ManyToOne(targetEntity="Reporte")
+     * @ORM\ManyToOne(targetEntity="Reporte", inversedBy="reporteXCriterios")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="reporte_id", referencedColumnName="id")
      * })
