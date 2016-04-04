@@ -24,7 +24,8 @@ class ReporteFormType extends AbstractType
                 'class' => Permiso::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->getQueryBuilderOrderNombre();
-                }
+                },
+                'attr' => ['class' => 'select2']
             ])
             ->add('nombre')
             ->add('codigo')
