@@ -81,6 +81,7 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
             ->setIcono('fa fa-list-ul')
             ->setPermiso($this->getReference('per-rep-list'));
         $manager->persist($repList);
+        $manager->flush();
     }
 
     /**

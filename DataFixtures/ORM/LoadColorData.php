@@ -93,6 +93,7 @@ class LoadColorData extends AbstractFixture implements OrderedFixtureInterface
         $violeta->setNombre('Violeta')->setCodigo('bc12e6');
         $manager->persist($violeta);
         $this->addReference('clr-violeta',$violeta);
+        $manager->flush();
     }
 
     /**

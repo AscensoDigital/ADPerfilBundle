@@ -86,6 +86,8 @@ class LoadPermisoData extends AbstractFixture implements OrderedFixtureInterface
             ->setDescripcion('Menu Configuración');
         $manager->persist($confIndex);
         $this->addReference('per-config-index',$confIndex);
+
+        $manager->flush();
     }
 
     /**
