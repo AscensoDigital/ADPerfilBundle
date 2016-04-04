@@ -28,6 +28,13 @@ class PermisoRepository extends EntityRepository {
         return $filtros->getQueryBuilder($qb,$exclude)->getQuery()->getResult();
     }
 
+    public function findByNombreParcial($nombre) {
+        return $this->createQueryBuilder('adp_prm')
+            ->where('adp_prm.nombre LIKE :nombre')
+            ->setParameter(':nombre',$nombre.'%')
+            ->getQuery()->getResult();
+    }
+
     public function getQueryBuilderOrderNombre() {
         return $this->createQueryBuilder('adp_prm')
             ->orderBy('adp_prm.nombre');
