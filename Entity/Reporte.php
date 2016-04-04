@@ -130,6 +130,10 @@ class Reporte
         return $this->getNombre();
     }
 
+    public function getNombreReporte(){
+        return $this->getCodigo().'-'.$this->getNombre();
+    }
+
     /**
      * @param $criterio_valor
      * @return ReporteXCriterio|null

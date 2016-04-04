@@ -113,11 +113,11 @@ class ReporteController extends Controller
         if($reporte->hasCriterio()){
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo($criterio_valor);
             $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(),$criterio_valor);
-            $nombre=$reporte->getNombre().'-'.$criterio_nombre;
+            $nombre=$reporte->getNombreReporte().'-'.$criterio_nombre;
         }
         else {
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo();
-            $nombre=$reporte->getNombre();
+            $nombre=$reporte->getNombreReporte();
         }
         return $this->generarReporte($data, $nombre);
     }

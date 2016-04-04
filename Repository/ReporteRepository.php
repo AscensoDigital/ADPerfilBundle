@@ -54,7 +54,7 @@ class ReporteRepository extends EntityRepository
             ->leftJoin('rp.permiso','per')
             ->leftJoin('rp.reporteCriterio','rpcr')
             ->leftJoin('rp.reporteXCriterios','rpxc')
-            ->where('rp.codigo=:codigo')
+            ->where("rp.codigo=':codigo'")
             ->setParameter(':codigo',$codigo)
             ->getQuery()->getOneOrNullResult();
     }
