@@ -4,6 +4,7 @@ namespace AscensoDigital\PerfilBundle\Form;
 
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Entity\ReporteCriterio;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,7 +21,10 @@ class ReporteFormType extends AbstractType
             ])
             ->add('permiso','entity',[
                 'required' => false,
-                'class' => Permiso::class
+                'class' => Permiso::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->getQueryBuilderOrderNombre();
+                }
             ])
             ->add('nombre')
             ->add('codigo')
