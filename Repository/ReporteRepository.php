@@ -45,8 +45,12 @@ class ReporteRepository extends EntityRepository
     public function findOneByCodigo($codigo){
         return $this->createQueryBuilder('rp')
             ->addSelect('per')
+            ->addSelect('rpc')
+            ->addSelect('rps')
             ->addSelect('rpcr')
             ->addSelect('rpxc')
+            ->join('rp.reporteCategoria','rpc')
+            ->join('rp.reporteSeccion','rps')
             ->leftJoin('rp.permiso','per')
             ->leftJoin('rp.reporteCriterio','rpcr')
             ->leftJoin('rp.reporteXCriterios','rpxc')
