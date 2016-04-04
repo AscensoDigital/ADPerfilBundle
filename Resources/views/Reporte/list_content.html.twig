@@ -6,7 +6,7 @@
     <div class="panel panel-{{ categorias.style }}">
         <div class="panel-heading"><h4>{{ seccion | title }}</h4></div>
         <div class="panel-body">
-        {% for categoria, reportes in categorias.reportes %}
+        {% for categoria, reportes in categorias.categorias %}
             <fieldset>
                 <legend>{{ categoria | title }}</legend>
                 <table class="table table-striped">
