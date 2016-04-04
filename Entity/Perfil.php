@@ -11,7 +11,7 @@ namespace AscensoDigital\PerfilBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-class Perfil
+abstract class Perfil
 {
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -20,6 +20,8 @@ class Perfil
      */
     protected $perfilXPermisos;
 
+    public abstract function getNombre();
+    
     public function __construct() {
         $this->perfilXPermisos = new ArrayCollection();
     }

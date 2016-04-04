@@ -24,7 +24,7 @@
 {% else%}
     <div class="alert alert-warning">No hay menús disponibles en la sección {{ menuActual }}</div>
 {% endfor %}
-{%  if is_granted('ROLE_SUPER_ADMIN') %}
+{%  if canCreate %}
     <div class="col-sm-6 col-md-3">
         <div class="thumbnail text-center">
             <a href="{{ path('ad_perfil_menu_new', {'menu_slug': (menuActual is null ? null : menuActual.slug)}) }}">

@@ -23,7 +23,8 @@ class NavegacionController extends Controller
         $this->get('ad_perfil.menu_manager')->setMenuActual($menu);
         $menu_id=is_null($menu) ? null : $menu->getId();
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
-        if(!$this->isGranted('ROLE_SUPER_ADMIN') && 1==count($menus)){
+        $canCreate=$this->isGranted('permiso','ad_perfil-menu-new');
+        if(!$canCreate && 1==count($menus)){
             /** @var Menu $mn */
             $mn=$menus[0];
             if($mn->getRoute() != '') {
@@ -38,7 +39,8 @@ class NavegacionController extends Controller
             'menuActual' => $menu,
             'title' => is_null($menu) ? $this->getParameter('ad_perfil.navegacion.homepage_name') : $menu->getTitulo(),
             'subtitle' => is_null($menu) ? '' : $menu->getSubtitulo(),
-            'canEdit' => $this->isGranted('ROLE_SUPER_ADMIN') || $this->isGranted('permiso','editar-menu')
+            'canEdit' => $this->isGranted('permiso','ad_perfil-menu-edit'),
+            'canCreate' => $canCreate
         ]);
     }
 
@@ -107,13 +109,13 @@ class NavegacionController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/menu/new/{menu_slug}", name="ad_perfil_menu_new", defaults={"menu_slug" : null})
      * @ParamConverter("menuSuperior", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
-     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     * @Security("is_granted('permiso','ad_perfil-menu-new')")
      */
     public function createAction(Request $request, Menu $menuSuperior = null){
         $menu=new Menu();
         $menu->setMenuSuperior($menuSuperior)
             ->setOrden($this->get('ad_perfil.menu_manager')->countItems($menuSuperior)+1);
-        $form=$this->createForm(new MenuFormType(),$menu, ['super_admin' => $this->isGranted('ROLE_SUPER_ADMIN')]);
+        $form=$this->createForm(new MenuFormType(),$menu, ['super_admin' => true]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em=$this->getDoctrine()->getManager();
@@ -134,14 +136,14 @@ class NavegacionController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/menu/edit/{menu_slug}", name="ad_perfil_menu_edit", defaults={"menu_slug" : null})
      * @ParamConverter("menu", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
-     * @Security("has_role('ROLE_SUPER_ADMIN') or is_granted('permiso','editar-menu')")
+     * @Security("is_granted('permiso','ad_perfil-menu-edit')")
      */
     public function editAction(Request $request, Menu $menu) {
         if(is_null($menu)){
             $this->addFlash('danger','Debes haber seleccionado un menu para editar');
             return $this->redirectToRoute('ad_perfil_menu');
         }
-        $form=$this->createForm(new MenuFormType(),$menu,['super_admin' => $this->isGranted('ROLE_SUPER_ADMIN')]);
+        $form=$this->createForm(new MenuFormType(),$menu,['super_admin' => $this->isGranted('permiso','ad_perfil-menu-new')]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em=$this->getDoctrine()->getManager();

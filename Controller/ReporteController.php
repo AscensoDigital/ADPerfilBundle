@@ -30,17 +30,20 @@ class ReporteController extends Controller
     /**
      * @param Reporte $reporte
      * @param $criterio_valor
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/reporte/{reporte_id}/criterio/{criterio_valor}", name="ad_perfil_reporte", defaults={"criterio_valor" : null})
      * @ParamConverter("reporte", class="ADPerfilBundle:Reporte", options={"repository_method" : "findOneByCodigo", "mapping" : {"reporte_id" : "codigo"} })
      */
-    public function reporteCriterioAction(Reporte $reporte, $criterio_valor){
-        if(!$this->isGranted('permiso',$reporte->getPermiso()->getNombre())){
-            $this->addFlash('danger','No tienes permisos para ver este reporte');
-            return $this->redirectToRoute('ad_perfil_reportes');
-        }
+    public function reporteAction(Reporte $reporte, $criterio_valor){
         if(is_null($reporte)){
             $this->addFlash('warning','No existe el reporte solicitado');
             return $this->redirectToRoute('ad_perfil_reportes');
+        }
+        if(!is_null($reporte->getPermiso())) {
+            if (!$this->isGranted('permiso', $reporte->getPermiso()->getNombre())) {
+                $this->addFlash('danger', 'No tienes permisos para ver este reporte');
+                return $this->redirectToRoute('ad_perfil_reportes');
+            }
         }
         $estatico=$reporte->getReporteEstatico($criterio_valor);
         if(!is_null($estatico)){
@@ -56,7 +59,7 @@ class ReporteController extends Controller
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo();
             $nombre=$reporte->getNombre();
         }
-        return $this->createReporte($data, $nombre);
+        return $this->generarReporte($data, $nombre);
     }
 
     /**
@@ -65,7 +68,7 @@ class ReporteController extends Controller
      * @param bool $return_reporte
      * @return Response
      */
-    private function createReporte($data,$nombre_base,$return_reporte=true) {
+    protected function generarReporte($data,$nombre_base,$return_reporte=true) {
         $contenido=$this->renderView('ADPerfilBundle:Reporte:reporte.csv.twig', array('data' => $data));
         $file=StrUtil::formatReport($contenido);
         $reporte=$this->saveReporte($nombre_base, $file);
@@ -87,7 +90,7 @@ class ReporteController extends Controller
      * @param $file
      * @return array
      */
-    private function saveReporte($nombre_base,$file) {
+    protected function saveReporte($nombre_base,$file) {
         $fecha=new \DateTime();
         $nombre=$nombre_base.'-'.$fecha->format('Y_m_d_H_i_s').'.csv';
         $archivo= new Archivo();

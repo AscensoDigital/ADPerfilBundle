@@ -2,6 +2,7 @@
 
 namespace AscensoDigital\PerfilBundle\Controller;
 
+use AscensoDigital\PerfilBundle\Entity\Perfil;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosFormType;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosPerfilFormType;
@@ -14,9 +15,10 @@ class PermisoController extends Controller
 {
     /**
      * @param Request $request
+     * @param Permiso $permiso
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/permisos/edit/{nombre}", name="ad_perfil_permiso_edit")
-     * @Security("is_granted('permiso','per-edit')")
+     * @Security("is_granted('permiso','ad_perfil-per-edit')")
      */
     public function editAction(Request $request, Permiso $permiso) {
         $em=$this->getDoctrine()->getManager();
@@ -34,14 +36,16 @@ class PermisoController extends Controller
 
     /**
      * @param Request $request
+     * @param $slug
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/permisos/edit-perfil/{slug}", name="ad_perfil_permiso_edit_perfil")
-     * @Security("is_granted('permiso','per-edit')")
+     * @Security("is_granted('permiso','ad_perfil-per-edit')")
      */
     public function editByPerfilAction(Request $request, $slug) {
         $em=$this->getDoctrine()->getManager();
         $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findAllOrderNombre();
 
+        /** @var Perfil $perfil */
         $perfil=$this->get('ad_perfil.perfil_manager')->findPerfilBy(['slug' => $slug]);
         $perfil->loadPermisos($permisos);
 
@@ -56,22 +60,20 @@ class PermisoController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/permisos/list", name="ad_perfil_permiso_list")
-     * @Security("is_granted('permiso','per-list')")
+     * @Security("is_granted('permiso','ad_perfil-per-list')")
      */
     public function listAction() {
         return $this->render('ADPerfilBundle:Permiso:list.html.twig');
     }
 
     /**
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/permisos/list-table", name="ad_perfil_permiso_list_table")
-     * @Security("is_granted('permiso','per-list')")
+     * @Security("is_granted('permiso','ad_perfil-per-list')")
      */
-    public function listTableAction(Request $request) {
+    public function listTableAction() {
         $em = $this->getDoctrine()->getManager();
         $filtros = $this->get('ad_perfil.filtro_manager');
         $perfils=$this->get('ad_perfil.perfil_manager')->findByFiltro($filtros);
@@ -84,7 +86,7 @@ class PermisoController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/permisos/new", name="ad_perfil_permiso_new")
-     * @Security("is_granted('permiso','per-new')")
+     * @Security("is_granted('permiso','ad_perfil-per-new')")
      */
     public function newAction(Request $request) {
         $em=$this->getDoctrine()->getManager();
