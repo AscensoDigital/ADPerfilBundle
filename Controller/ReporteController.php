@@ -19,6 +19,30 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ReporteController extends Controller
 {
     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/reporte/edit/{codigo}", name="ad_perfil_reporte_edit")
+     * @Security("is_granted('permiso','ad_perfil-rep-edit')")
+     * @ParamConverter("reporte", class="ADPerfilBundle:Reporte", options={"repository_method" : "findOneByCodigo" })
+     */
+    public function editAction(Request $request, Reporte $reporte) {
+        if(is_null($reporte)){
+            $this->addFlash('warning','No existe el reporte que se desea modificar');
+            return $this->redirectToRoute('ad_perfil_reportes');
+        }
+        $em=$this->getDoctrine()->getManager();
+        $form=$this->createForm(new ReporteFormType(),$reporte);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($reporte);
+            $em->flush();
+            $this->addFlash('success','Se creo correctamente el reporte: '.$reporte);
+            return $this->redirectToRoute('ad_perfil_reportes');
+        }
+        return $this->render('ADPerfilBundle:Reporte:new.html.twig',['form' => $form->createView()]);
+    }
+
+    /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/reportes", name="ad_perfil_reportes")
      * @Security("is_granted('permiso','ad_perfil-mn-reporte')")
@@ -26,12 +50,18 @@ class ReporteController extends Controller
     public function listAction()
     {
         $data=$this->get('ad_perfil.reporte_manager')->getDataReportesForList();
-        return $this->render('ADPerfilBundle:Reporte:index.html.twig', array('data' => $data));
+        return $this->render('ADPerfilBundle:Reporte:list.html.twig', array(
+            'data' => $data,
+            'canEdit' => $this->isGranted('permiso','ad_perfil-rep-edit'),
+            'canLoad' => $this->isGranted('permiso','ad_perfil-rep-load-estatico')));
     }
 
     /**
      * @param Request $request
      * @param Reporte $reporte
+     * @Route("/reporte/load-estatico/{codigo}", name="ad_perfil_reporte_load_estatico")
+     * @Security("is_granted('permiso','ad_perfil-rep-load-estatico')")
+     * @ParamConverter("reporte", class="ADPerfilBundle:Reporte", options={"repository_method" : "findOneByCodigo" })
      */
     public function loadEstaticoAction(Request $request, Reporte $reporte){
 
