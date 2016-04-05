@@ -14,7 +14,7 @@ class ReporteLoadEstaticoFormType extends AbstractType
     {
         $builder->add('reporte','entity',[
             'class' => Reporte::class,
-            'readonly' => true
+            'read_only' => true
         ])
             ->add('criterioId',ChoiceType::class, [
             'choices' => $options['criterio_choices']
