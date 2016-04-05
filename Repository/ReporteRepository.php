@@ -36,7 +36,10 @@ class ReporteRepository extends EntityRepository
             if(!is_null($rep->getReporteCriterio()) && !isset($ret['criterios'][$rep->getReporteCriterio()->getNombre()])){
                 $ret['criterios'][$rep->getReporteCriterio()->getNombre()]=$rep->getReporteCriterio();
             }
-            $ret['reportes'][$rep->getReporteSeccion()->getNombre()]['categorias'][$rep->getReporteCategoria()->getNombre()][]=$rep;
+            if(!isset($ret['reportes'][$rep->getReporteSeccion()->getNombre()]['categorias'][$rep->getReporteCategoria()->getNombre()]['icono'])){
+                $ret['reportes'][$rep->getReporteSeccion()->getNombre()]['categorias'][$rep->getReporteCategoria()->getNombre()]['icono']= $rep->getReporteCategoria()->getIcono();
+            }
+            $ret['reportes'][$rep->getReporteSeccion()->getNombre()]['categorias'][$rep->getReporteCategoria()->getNombre()]['reportes'][]=$rep;
             $ret['reportes'][$rep->getReporteSeccion()->getNombre()]['style']=$rep->getReporteSeccion()->getStyle();
         }
         return $ret;

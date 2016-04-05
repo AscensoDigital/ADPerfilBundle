@@ -36,6 +36,13 @@ class ReporteCategoria
      */
     protected $orden;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="icono", type="string", length=50, nullable=true)
+     */
+    protected $icono;
+
 
     public function __toString()
     {
@@ -84,5 +91,23 @@ class ReporteCategoria
     public function getOrden()
     {
         return $this->orden;
+    }
+
+    /**
+     * @param string $icono
+     * @return ReporteCategoria
+     */
+    public function setIcono($icono)
+    {
+        $this->icono = $icono;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcono()
+    {
+        return $this->icono;
     }
 }

@@ -8,7 +8,7 @@
         <div class="panel-body">
         {% for categoria, reportes in categorias.categorias %}
             <fieldset>
-                <legend>{{ categoria | title }}</legend>
+                <legend>{% if not reportes.icono is null %}<i class="{{ reportes.icono }}"></i> {% endif %}{{ categoria | title }}</legend>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -20,7 +20,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for rp in reportes %}
+                    {% for rp in reportes.reportes %}
                     <tr>
                         <td>{{ loop.index }}</td>
                         <td>{{ rp.codigo }}</td>
