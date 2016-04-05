@@ -191,6 +191,7 @@ class ReporteController extends Controller
         $archivo->setMimeType('text/vnd.ms-excel')
             ->setTitulo(str_replace('-',' ',$nombre_base).' - '.$fecha->format('Y-m-d H-i-s'))
             ->setCreador($this->getUser())
+            ->setFechaPublicacion($fecha)
             ->saveFile('reportes',$nombre,$file);
         $em=$this->getDoctrine()->getManager();
         $em->persist($archivo);
