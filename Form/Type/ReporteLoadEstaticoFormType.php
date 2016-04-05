@@ -17,7 +17,9 @@ class ReporteLoadEstaticoFormType extends AbstractType
             'read_only' => true
         ])
             ->add('criterioId',ChoiceType::class, [
-            'choices' => $options['criterio_choices']
+                'placeholder' => '',
+                'choices' => $options['criterio_choices'],
+                'required' => count($options['criterio_choices'])>0
         ])
             ->add('archivo', ArchivoType::class);
     }
