@@ -54,10 +54,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalLabel{{ nombre | capitalize }}">{{ criterio.titulo }}</h4>
+                <h4 class="modal-title" id="modalLabel{{ nombre | capitalize }}">Seleccione {{ criterio.titulo }} para "<span id="rep-nombre"></span>"</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-info">Seleccione el {{ criterio.titulo }} para el reporte <span id="rep-nombre"></span></div>
                 <ul class="list-group">
                     {% for i in criterio.data %}
                         <li class="list-group-item"><a class="modal-link" data-valor="{{ i.id }}">{{ i }}</a></li>
