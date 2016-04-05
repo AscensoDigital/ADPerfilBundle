@@ -24,7 +24,7 @@ class ReporteRepository extends EntityRepository
             ->leftJoin('rp.reporteCriterio','rpcr')
             ->leftJoin('rp.permiso','per')
             ->leftJoin('per.perfilXPermisos','pxp')
-            ->where('pxp.perfil=:perfil')
+            ->where('pxp.perfil=:perfil OR rp.permiso IS NULL')
             ->orderBy('rps.orden')
             ->addOrderBy('rpc.orden')
             ->addOrderBy('rp.orden')
