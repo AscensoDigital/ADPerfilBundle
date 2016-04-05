@@ -7,6 +7,7 @@ use AscensoDigital\PerfilBundle\Entity\Archivo;
 use AscensoDigital\PerfilBundle\Entity\Reporte;
 use AscensoDigital\PerfilBundle\Entity\ReporteXCriterio;
 use AscensoDigital\PerfilBundle\Form\Type\ReporteFormType;
+use AscensoDigital\PerfilBundle\Form\Type\ReporteLoadEstaticoFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -68,7 +69,7 @@ class ReporteController extends Controller
         $em=$this->getDoctrine()->getManager();
         $reporteXCriterio=new ReporteXCriterio();
         $reporteXCriterio->setReporte($reporte);
-        $form=$this->createForm(new ReporteFormType(),$reporteXCriterio,[
+        $form=$this->createForm(new ReporteLoadEstaticoFormType(),$reporteXCriterio,[
             'criterio_choices' => $this->get('ad_perfil.reporte_manager')->getCriterioChoices($reporte->getReporteCriterio())
         ]);
         $form->handleRequest($request);
