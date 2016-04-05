@@ -129,8 +129,9 @@ class Archivo
         $targetDir = $this->getUploadRootDir() . DIRECTORY_SEPARATOR . $directorio;
         $fs = new Filesystem();
         $slugify = new Slugify();
+        $slugify->addRule('.','.');
         $nombre=$slugify->slugify($nombre);
-        $archivo = $targetDir."/".$nombre;
+        $archivo = $targetDir . DIRECTORY_SEPARATOR . $nombre;
 
         try {
             $fs->dumpFile($archivo, $file);
@@ -157,6 +158,7 @@ class Archivo
             $nombre=$nombre.'.'.$extension;
         }
         $slugify = new Slugify();
+        $slugify->addRule('.','.');
         $nombre=$slugify->slugify($nombre);
         $this->file->move($targetDir, $nombre);
 
