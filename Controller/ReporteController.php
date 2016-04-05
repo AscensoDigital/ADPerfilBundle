@@ -90,6 +90,7 @@ class ReporteController extends Controller
             $archivo->upload($directorio, $nombre);
             $archivo->setCreador($this->getUser());
             $archivo->setTitulo($nombre);
+            $archivo->setFechaPublicacion(new \DateTime());
             $em->persist($archivo);
             $em->persist($rxp);
             $em->flush();

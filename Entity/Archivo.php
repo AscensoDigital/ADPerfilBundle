@@ -322,6 +322,7 @@ class Archivo
     public function setFile(UploadedFile $file = null)
     {
         $this->file = $file;
+        $this->setFechaPublicacion(new \DateTime());
     }
 
     /**
