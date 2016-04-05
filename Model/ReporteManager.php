@@ -52,19 +52,24 @@ class ReporteManager
                 if($reporteCriterio->isIncludeUser() && $reporteCriterio->isIncludePerfil()){
                     $user=$this->tokenStorage->getToken()->getUser();
                     $perfil=$this->perfilManager->find($this->perfil_id);
-                    return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user,$perfil);
+                    $options=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user,$perfil);
                 }
                 elseif ($reporteCriterio->isIncludeUser()){
                     $user=$this->tokenStorage->getToken()->getUser();
-                    return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user);
+                    $options=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user);
                 }
                 elseif ($reporteCriterio->isIncludePerfil()){
                     $perfil=$this->perfilManager->find($this->perfil_id);
-                    return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($perfil);
+                    $options=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($perfil);
                 }
                 else {
-                    return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo();
+                    $options=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo();
                 }
+                $ret=array();
+                foreach ($options as $option) {
+                    $ret[$option->getId()]=$option;
+                }
+                return $ret;
         }
     }
 
