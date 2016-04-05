@@ -226,6 +226,12 @@
         <row name="titulo" null="0" autoincrement="0">
             <datatype>VARCHAR(100)</datatype>
         </row>
+        <row name="include_user" null="0" autoincrement="0">
+            <datatype>bit</datatype>
+            <default>false</default></row>
+        <row name="include_perfil" null="0" autoincrement="0">
+            <datatype>bit</datatype>
+            <default>false</default></row>
         <key type="PRIMARY" name="">
             <part>id</part>
         </key>

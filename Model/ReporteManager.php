@@ -13,6 +13,7 @@ use AscensoDigital\PerfilBundle\Entity\ReporteCriterio;
 use AscensoDigital\PerfilBundle\Util\Dia;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ReporteManager
 {
@@ -21,11 +22,22 @@ class ReporteManager
      */
     private $em;
     private $perfil_id;
+    /**
+     * @var PerfilManager
+     */
+    private $perfilManager;
 
-    public function __construct(Session $session, EntityManager $em, $sessionName)
+    /**
+     * @var TokenStorageInterface
+     */
+    private $tokenStorage;
+
+    public function __construct(Session $session, EntityManager $em, $sessionName, PerfilManager $perfilManager, TokenStorageInterface $tokenStorage)
     {
         $this->em = $em;
         $this->perfil_id = $session->get($sessionName,null);
+        $this->perfilManager= $perfilManager;
+        $this->tokenStorage=$tokenStorage;
     }
 
     public function getCriterioChoices(ReporteCriterio $reporteCriterio) {
@@ -36,8 +48,23 @@ class ReporteManager
             case 'periodo':
                 return array(new Dia(0,'Completo'), new Dia(date('Y-m-d'), 'Diario'));
             default:
-                $metodo=$reporteCriterio->getMetodo();
-                return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo();
+                $metodo=is_null($reporteCriterio->getMetodo()) ? 'findAll' : $reporteCriterio->getMetodo();
+                if($reporteCriterio->isIncludeUser() && $reporteCriterio->isIncludePerfil()){
+                    $user=$this->tokenStorage->getToken()->getUser();
+                    $perfil=$this->perfilManager->find($this->perfil_id);
+                    return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user,$perfil);
+                }
+                elseif ($reporteCriterio->isIncludeUser()){
+                    $user=$this->tokenStorage->getToken()->getUser();
+                    return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user);
+                }
+                elseif ($reporteCriterio->isIncludePerfil()){
+                    $perfil=$this->perfilManager->find($this->perfil_id);
+                    return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($perfil);
+                }
+                else {
+                    return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo();
+                }
         }
     }
 

@@ -50,7 +50,22 @@ class ReporteCriterio
      */
     protected $titulo;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="include_user", type="boolean", nullable=false)
+     */
+    protected $includeUser = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="include_perfil", type="boolean", nullable=false)
+     */
+    protected $includePerfil = false;
+
+
+    
     public function __toString()
     {
         return $this->getNombre();
@@ -138,5 +153,41 @@ class ReporteCriterio
     public function getTitulo()
     {
         return $this->titulo;
+    }
+
+    /**
+     * @param boolean $includeUser
+     * @return ReporteCriterio
+     */
+    public function setIncludeUser($includeUser)
+    {
+        $this->includeUser = $includeUser;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIncludeUser()
+    {
+        return $this->includeUser;
+    }
+
+    /**
+     * @param boolean $includePerfil
+     * @return ReporteCriterio
+     */
+    public function setIncludePerfil($includePerfil)
+    {
+        $this->includePerfil = $includePerfil;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIncludePerfil()
+    {
+        return $this->includePerfil;
     }
 }
