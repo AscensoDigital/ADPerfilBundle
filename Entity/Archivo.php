@@ -128,8 +128,10 @@ class Archivo
     {
         $targetDir = $this->getUploadRootDir() . DIRECTORY_SEPARATOR . $directorio;
         $fs = new Filesystem();
-        $slugify = new Slugify(['regexp' => '/([^A-Za-z0-9]|-|.)+/']);
-        $nombre=$slugify->slugify($nombre);
+        $nombreArray=explode('.',$nombre);
+        $extension=array_pop($nombreArray);
+        $slugify = new Slugify();
+        $nombre=$slugify->slugify(implode('.',$nombreArray)).'.'.$extension;
         $archivo = $targetDir . DIRECTORY_SEPARATOR . $nombre;
 
         try {
@@ -152,12 +154,12 @@ class Archivo
 
         $targetDir = $this->getUploadRootDir() . DIRECTORY_SEPARATOR . $directorio;
         $extension=$this->getExtensionOriginal();
-        $tmpNombre=explode('.',$nombre);
-        if($tmpNombre[count($tmpNombre)-1]!=$extension){
-            $nombre=$nombre.'.'.$extension;
+        $nombreArray=explode('.',$nombre);
+        if($nombreArray[count($nombreArray)-1]==$extension){
+            array_pop($nombreArray);
         }
-        $slugify = new Slugify(['regexp' => '/([^A-Za-z0-9]|-|.)+/']);
-        $nombre=$slugify->slugify($nombre);
+        $slugify = new Slugify();
+        $nombre=$slugify->slugify(implode('.',$nombreArray)).'.'.$extension;
         $this->file->move($targetDir, $nombre);
 
         $this->setRuta($directorio . DIRECTORY_SEPARATOR . $nombre);
