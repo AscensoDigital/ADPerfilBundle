@@ -24,75 +24,118 @@ class LoadColorData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $amarillo= new Color();
-        $amarillo->setNombre('Amarillo')->setCodigo('fff647');
-        $manager->persist($amarillo);
+        $amarillo=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Amarillo']);
+        if(!$amarillo) {
+            $amarillo = new Color();
+            $amarillo->setNombre('Amarillo')->setCodigo('fff647');
+            $manager->persist($amarillo);
+        }
         $this->addReference('clr-amarillo',$amarillo);
 
-        $azul= new Color();
-        $azul->setNombre('Azul')->setCodigo('0000ff');
-        $manager->persist($azul);
+        $azul=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Azul']);
+        if(!$azul) {
+            $azul = new Color();
+            $azul->setNombre('Azul')->setCodigo('0000ff');
+            $manager->persist($azul);
+        }
         $this->addReference('clr-azul',$azul);
 
-        $blanco= new Color();
-        $blanco->setNombre('Blanco')->setCodigo('ffffff');
-        $manager->persist($blanco);
+        $blanco=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Blanco']);
+        if(!$blanco) {
+            $blanco = new Color();
+            $blanco->setNombre('Blanco')->setCodigo('ffffff');
+            $manager->persist($blanco);
+        }
         $this->addReference('clr-blanco',$blanco);
 
-        $cafe= new Color();
-        $cafe->setNombre('Cafe')->setCodigo('9d7050');
-        $manager->persist($cafe);
+        $cafe=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Cafe']);
+        if(!$cafe) {
+            $cafe = new Color();
+            $cafe->setNombre('Cafe')->setCodigo('9d7050');
+            $manager->persist($cafe);
+        }
         $this->addReference('clr-cafe',$cafe);
 
-        $celeste= new Color();
-        $celeste->setNombre('Celeste')->setCodigo('3875d7');
-        $manager->persist($celeste);
+        $celeste=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Celeste']);
+        if(!$celeste) {
+            $celeste = new Color();
+            $celeste->setNombre('Celeste')->setCodigo('3875d7');
+            $manager->persist($celeste);
+        }
         $this->addReference('clr-celeste',$celeste);
 
-        $cian= new Color();
-        $cian->setNombre('Cian')->setCodigo('5ae0d9');
-        $manager->persist($cian);
+        $cian=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Cian']);
+        if(!$cian) {
+            $cian = new Color();
+            $cian->setNombre('Cian')->setCodigo('5ae0d9');
+            $manager->persist($cian);
+        }
         $this->addReference('clr-cian',$cian);
 
-        $gris= new Color();
-        $gris->setNombre('Gris')->setCodigo('8c8c78');
-        $manager->persist($gris);
+        $gris=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Gris']);
+        if(!$gris) {
+            $gris = new Color();
+            $gris->setNombre('Gris')->setCodigo('8c8c78');
+            $manager->persist($gris);
+        }
         $this->addReference('clr-gris',$gris);
 
-        $morado= new Color();
-        $morado->setNombre('Morado')->setCodigo('7a0c5d');
-        $manager->persist($morado);
+        $morado=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Morado']);
+        if(!$morado) {
+            $morado = new Color();
+            $morado->setNombre('Morado')->setCodigo('7a0c5d');
+            $manager->persist($morado);
+        }
         $this->addReference('clr-morado',$morado);
 
-        $naranjo= new Color();
-        $naranjo->setNombre('Naranjo')->setCodigo('ff8922');
-        $manager->persist($naranjo);
+        $naranjo=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Naranjo']);
+        if(!$naranjo) {
+            $naranjo = new Color();
+            $naranjo->setNombre('Naranjo')->setCodigo('ff8922');
+            $manager->persist($naranjo);
+        }
         $this->addReference('clr-naranjo',$naranjo);
 
-        $negro= new Color();
-        $negro->setNombre('Negro')->setCodigo('000000');
-        $manager->persist($negro);
+        $negro=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Negro']);
+        if(!$negro) {
+            $negro = new Color();
+            $negro->setNombre('Negro')->setCodigo('000000');
+            $manager->persist($negro);
+        }
         $this->addReference('clr-negro',$negro);
 
-        $rojo= new Color();
-        $rojo->setNombre('Rojo')->setCodigo('e8121d');
-        $manager->persist($rojo);
+        $rojo=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Rojo']);
+        if(!$rojo) {
+            $rojo = new Color();
+            $rojo->setNombre('Rojo')->setCodigo('e8121d');
+            $manager->persist($rojo);
+        }
         $this->addReference('clr-rojo',$rojo);
 
-        $rosado= new Color();
-        $rosado->setNombre('Rosado')->setCodigo('ff6be1');
-        $manager->persist($rosado);
+        $rosado=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Rosado']);
+        if(!$rosado) {
+            $rosado = new Color();
+            $rosado->setNombre('Rosado')->setCodigo('ff6be1');
+            $manager->persist($rosado);
+        }
         $this->addReference('clr-rosado',$rosado);
 
-        $verde= new Color();
-        $verde->setNombre('Verde')->setCodigo('76ff61');
-        $manager->persist($verde);
+        $verde=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Verde']);
+        if(!$verde) {
+            $verde = new Color();
+            $verde->setNombre('Verde')->setCodigo('76ff61');
+            $manager->persist($verde);
+        }
         $this->addReference('clr-verde',$verde);
 
-        $violeta= new Color();
-        $violeta->setNombre('Violeta')->setCodigo('bc12e6');
-        $manager->persist($violeta);
+        $violeta=$manager->getRepository('ADPerfilBundle:Color')->findOneBy(['nombre' => 'Violeta']);
+        if(!$violeta) {
+            $violeta = new Color();
+            $violeta->setNombre('Violeta')->setCodigo('bc12e6');
+            $manager->persist($violeta);
+        }
         $this->addReference('clr-violeta',$violeta);
+
         $manager->flush();
     }
 
