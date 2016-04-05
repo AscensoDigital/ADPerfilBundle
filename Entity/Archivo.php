@@ -159,7 +159,7 @@ class Archivo
             array_pop($nombreArray);
         }
         $slugify = new Slugify();
-        $nombre=$slugify->slugify(implode('.',$nombreArray)).'.'.$extension;
+        $nombre=$slugify->slugify(implode('.',$nombreArray)).(count($nombreArray)>1 ? '.' : '').$extension;
         $this->file->move($targetDir, $nombre);
 
         $this->setRuta($directorio . DIRECTORY_SEPARATOR . $nombre);
