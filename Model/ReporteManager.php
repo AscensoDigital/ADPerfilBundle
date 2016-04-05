@@ -40,7 +40,7 @@ class ReporteManager
         $this->tokenStorage=$tokenStorage;
     }
 
-    public function getCriterioChoices(ReporteCriterio $reporteCriterio) {
+    public function getCriterioChoices(ReporteCriterio $reporteCriterio = null) {
         if(is_null($reporteCriterio)) {
             return array();
         }
@@ -73,7 +73,7 @@ class ReporteManager
         }
     }
 
-    public function getCriterioNombre(ReporteCriterio $reporteCriterio, $valor) {
+    public function getCriterioNombre(ReporteCriterio $reporteCriterio = null, $valor = null) {
         if(is_null($reporteCriterio) || is_null($valor)) {
             return '';
         }
