@@ -65,6 +65,7 @@ class Archivo
 
     /**
      * @var UploadedFile $file
+     * @Assert\NotBlank
      */
     protected $file;
 
