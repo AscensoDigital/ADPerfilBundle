@@ -28,7 +28,23 @@ class ReporteManager
         $this->perfil_id = $session->get($sessionName,null);
     }
 
+    public function getCriterioChoices(ReporteCriterio $reporteCriterio) {
+        if(is_null($reporteCriterio)) {
+            return array();
+        }
+        switch ($reporteCriterio->getNombre()){
+            case 'periodo':
+                return array(new Dia(0,'Completo'), new Dia(date('Y-m-d'), 'Diario'));
+            default:
+                $metodo=$reporteCriterio->getMetodo();
+                return $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo();
+        }
+    }
+
     public function getCriterioNombre(ReporteCriterio $reporteCriterio, $valor) {
+        if(is_null($reporteCriterio) || is_null($valor)) {
+            return '';
+        }
         switch ($reporteCriterio->getNombre()) {
             case 'periodo':
                 return $valor==0 ? 'Completo' : 'Diario';
@@ -43,14 +59,7 @@ class ReporteManager
         $criterios=array();
         /** @var ReporteCriterio $reporteCriterio */
         foreach ($dat['criterios'] as $nombre => $reporteCriterio) {
-            switch ($nombre){
-                case 'periodo':
-                    $criterios[$nombre]['data']=array(new Dia(0,'Completo'), new Dia(date('Y-m-d'), 'Diario'));
-                    break;
-                default:
-                    $metodo=$reporteCriterio->getMetodo();
-                    $criterios[$nombre]['data']=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo();
-            }
+            $criterios[$nombre]['data']= $this->getCriterioChoices($reporteCriterio);
             $criterios[$nombre]['titulo']=$reporteCriterio->getTitulo();
         }
         $dat['criterios']=$criterios;

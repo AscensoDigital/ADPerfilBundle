@@ -1,0 +1,14 @@
+{{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs')) }}
+{{ render(controller('ADPerfilBundle:Navegacion:menu')) }}
+{{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
+{{ form_start(form) }}
+<div class="panel panel-default">
+    <div class="panel-body">
+        {{ form_widget(form) }}
+    </div>
+    <div class="panel-footer text-right">
+        <button class="btn btn-primary" type="submit">Cargar</button>&nbsp;
+        <a class="btn btn-danger" href="{{ path('ad_perfil_menu', {'menu_slug' : 'reportes'}) }}">Cancelar</a>
+    </div>
+</div>
+{{ form_end(form) }}

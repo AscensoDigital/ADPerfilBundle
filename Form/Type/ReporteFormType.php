@@ -1,6 +1,6 @@
 <?php
 
-namespace AscensoDigital\PerfilBundle\Form;
+namespace AscensoDigital\PerfilBundle\Form\Type;
 
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Entity\ReporteCriterio;

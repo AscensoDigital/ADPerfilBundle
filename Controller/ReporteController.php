@@ -5,7 +5,8 @@ namespace AscensoDigital\PerfilBundle\Controller;
 use AscensoDigital\ComponentBundle\Util\StrUtil;
 use AscensoDigital\PerfilBundle\Entity\Archivo;
 use AscensoDigital\PerfilBundle\Entity\Reporte;
-use AscensoDigital\PerfilBundle\Form\ReporteFormType;
+use AscensoDigital\PerfilBundle\Entity\ReporteXCriterio;
+use AscensoDigital\PerfilBundle\Form\Type\ReporteFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -64,7 +65,38 @@ class ReporteController extends Controller
      * @ParamConverter("reporte", class="ADPerfilBundle:Reporte", options={"repository_method" : "findOneByCodigo" })
      */
     public function loadEstaticoAction(Request $request, Reporte $reporte){
+        $em=$this->getDoctrine()->getManager();
+        $reporteXCriterio=new ReporteXCriterio();
+        $reporteXCriterio->setReporte($reporte);
+        $form=$this->createForm(new ReporteFormType(),$reporteXCriterio,[
+            'criterio_choices' => $this->get('ad_perfil.reporte_manager')->getCriterioChoices($reporte->getReporteCriterio())
+        ]);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            /** @var ReporteXCriterio $rxp */
+            $rxp=$em->getRepository('ADPerfilBundle:ReporteXCriterio')->findOneBy(['reporte' => $reporte->getId(), 'criterioId' => $reporteXCriterio->getCriterioId()]);
+            if($rxp) {
+                $rxp->setArchivo($reporteXCriterio->getArchivo());
+            }
+            else {
+                $rxp=$reporteXCriterio;
+            }
 
+            /** @var Archivo $archivo */
+            $archivo = $rxp->getArchivo();
+            $directorio = "reportes/estaticos";
+            $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(),$rxp->getCriterioId());
+            $nombre = $reporte->getNombreReporte().'-'.$criterio_nombre.'-'.date('Y_m_d_H_i_s');
+            $archivo->upload($directorio, $nombre);
+            $archivo->setCreador($this->getUser());
+            $archivo->setTitulo($nombre);
+            $em->persist($archivo);
+            $em->persist($rxp);
+            $em->flush();
+            $this->addFlash('success','Se registro correctamente el archivo estatico para el reporte: '.$reporte);
+            return $this->redirectToRoute('ad_perfil_reportes');
+        }
+        return $this->render('ADPerfilBundle:Reporte:new.html.twig',['form' => $form->createView()]);
     }
 
     /**

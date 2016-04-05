@@ -1,0 +1,7 @@
+{% extends 'ADPerfilBundle::layout.html.twig' %}
+
+{% block ad_perfil_title %}Reportes{% endblock ad_perfil_title %}
+{% block ad_perfil_subtitle %}Cargar Reporte Estatico{% endblock ad_perfil_subtitle %}
+{% block ad_perfil_content %}
+    {{ include('ADPerfilBundle:Reporte:load-estatico_content.html.twig') }}
+{% endblock ad_perfil_content %}
