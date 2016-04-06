@@ -143,6 +143,10 @@ class ReporteController extends Controller
         if(!is_null($estatico)){
             return $this->downloadFileAction($estatico->getArchivo()->getId());
         }
+        if(is_null($reporte->getMetodo()) || is_null($reporte->getRepositorio())) {
+            $this->addFlash('warning',$reporte->getNombre().': aun no esta disponible para descargarlo.');
+            return $this->redirectToRoute('ad_perfil_reportes');
+        }
         $metodo=$reporte->getMetodo();
         if($reporte->hasCriterio()){
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo($criterio_valor);
