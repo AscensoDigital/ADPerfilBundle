@@ -28,12 +28,12 @@
                         <td>{{ rp.descripcion }}</td>
                         <td>
                             {% set route= rp.route is not null ? rp.route : 'ad_perfil_reporte' %}
-                            <a href="{{ rp.hasCriterio ? '#modal' ~ rp.reporteCriterio | capitalize : path(route, {'reporte_id' : rp.codigo}) }}" {% if rp.hasCriterio %}data-url="{{ path(route, {'reporte_id' : rp.codigo}) }}" data-toggle="modal" data-reporte="{{ rp.nombre }}"{% endif %}><i class="fa fa-fw fa-cloud-download"></i></a>
+                            <a href="{{ rp.hasCriterio ? '#modal' ~ rp.reporteCriterio | capitalize : path(route, {'reporte_id' : rp.codigo}) }}" {% if rp.hasCriterio %}data-url="{{ path(route, {'reporte_id' : rp.codigo}) }}" data-toggle="modal" data-reporte="{{ rp.nombre }}"{% endif %} title="Descargar"><i class="fa fa-fw fa-cloud-download"></i></a>
                             {% if canEdit %}
-                                &nbsp;<a href="{{ path('ad_perfil_reporte_edit', { 'codigo' : rp.codigo }) }}"><i class="fa fa-fw fa-pencil-square-o"></i></a>
+                                &nbsp;<a href="{{ path('ad_perfil_reporte_edit', { 'codigo' : rp.codigo }) }}" title="Editar Reporte"><i class="fa fa-fw fa-pencil-square-o"></i></a>
                             {% endif %}
                             {% if canLoad %}
-                                &nbsp;<a href="{{ path('ad_perfil_reporte_load_estatico', { 'codigo' : rp.codigo }) }}"><i class="fa fa-fw fa-link"></i></a>
+                                &nbsp;<a href="{{ path('ad_perfil_reporte_load_estatico', { 'codigo' : rp.codigo }) }}" title="Cargar Estático"><i class="fa fa-fw fa-link"></i></a>
                             {% endif %}
                         </td>
                     </tr>
