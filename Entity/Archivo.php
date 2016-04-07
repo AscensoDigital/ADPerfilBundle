@@ -155,11 +155,12 @@ class Archivo
         $targetDir = $this->getUploadRootDir() . DIRECTORY_SEPARATOR . $directorio;
         $extension=$this->getExtensionOriginal();
         $nombreArray=explode('.',$nombre);
-        if($nombreArray[count($nombreArray)-1]==$extension){
+        $extNombre='.'.$nombreArray[count($nombreArray)-1];
+        if($extNombre==$extension){
             array_pop($nombreArray);
         }
         $slugify = new Slugify();
-        $nombre=$slugify->slugify(implode('.',$nombreArray)).(count($nombreArray)>1 ? '.' : '').$extension;
+        $nombre=$slugify->slugify(implode('.',$nombreArray)).$extension;
         $this->file->move($targetDir, $nombre);
 
         $this->setRuta($directorio . DIRECTORY_SEPARATOR . $nombre);
