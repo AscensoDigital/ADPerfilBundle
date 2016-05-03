@@ -61,6 +61,13 @@ class Reporte
     /**
      * @var string
      *
+     * @ORM\Column(name="manager", type="string", length=50, nullable=true)
+     */
+    protected $manager;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="repositorio", type="string", length=100, nullable=true)
      */
     protected $repositorio;
@@ -377,5 +384,23 @@ class Reporte
     public function getMetodo()
     {
         return $this->metodo;
+    }
+
+    /**
+     * @param string $manager
+     * @return Reporte
+     */
+    public function setManager($manager)
+    {
+        $this->manager = $manager;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getManager()
+    {
+        return $this->manager;
     }
 }

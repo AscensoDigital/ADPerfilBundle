@@ -131,7 +131,7 @@
             <part>slug</part>
         </key>
     </table>
-    <table x="551" y="374" name="AD_PERFIL_REPORTE">
+    <table x="557" y="355" name="AD_PERFIL_REPORTE">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
@@ -165,6 +165,9 @@
             <default>NULL</default></row>
         <row name="orden" null="1" autoincrement="0">
             <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="manager" null="1" autoincrement="0">
+            <datatype>VARCHAR(50)</datatype>
             <default>NULL</default></row>
         <row name="repositorio" null="1" autoincrement="0">
             <datatype>VARCHAR(100)</datatype>
@@ -213,13 +216,16 @@
             <part>id</part>
         </key>
     </table>
-    <table x="915" y="517" name="AD_PERFIL_REPORTE_CRITERIO">
+    <table x="913" y="508" name="AD_PERFIL_REPORTE_CRITERIO">
         <row name="id" null="1" autoincrement="1">
             <datatype>INTEGER</datatype>
             <default>NULL</default></row>
         <row name="nombre" null="0" autoincrement="0">
             <datatype>VARCHAR(20)</datatype>
         </row>
+        <row name="manager" null="1" autoincrement="0">
+            <datatype>VARCHAR(50)</datatype>
+            <default>NULL</default></row>
         <row name="repositorio" null="1" autoincrement="0">
             <datatype>VARCHAR(100)</datatype>
             <default>NULL</default></row>

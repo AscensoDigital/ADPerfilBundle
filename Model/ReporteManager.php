@@ -49,21 +49,35 @@ class ReporteManager
                 return array(new Dia(0,'Completo'), new Dia(date('Y-m-d'), 'Diario'));
             default:
                 $metodo=is_null($reporteCriterio->getMetodo()) ? 'findAll' : $reporteCriterio->getMetodo();
-                if($reporteCriterio->isIncludeUser() && $reporteCriterio->isIncludePerfil()){
-                    $user=$this->tokenStorage->getToken()->getUser();
-                    $perfil=$this->perfilManager->find($this->perfil_id);
-                    $options=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user,$perfil);
+                if(is_null($reporteCriterio->getManager())) {
+                    if ($reporteCriterio->isIncludeUser() && $reporteCriterio->isIncludePerfil()) {
+                        $user = $this->tokenStorage->getToken()->getUser();
+                        $perfil = $this->perfilManager->find($this->perfil_id);
+                        $options = $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user, $perfil);
+                    } elseif ($reporteCriterio->isIncludeUser()) {
+                        $user = $this->tokenStorage->getToken()->getUser();
+                        $options = $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user);
+                    } elseif ($reporteCriterio->isIncludePerfil()) {
+                        $perfil = $this->perfilManager->find($this->perfil_id);
+                        $options = $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($perfil);
+                    } else {
+                        $options = $this->em->getRepository($reporteCriterio->getRepositorio())->$metodo();
+                    }
                 }
-                elseif ($reporteCriterio->isIncludeUser()){
-                    $user=$this->tokenStorage->getToken()->getUser();
-                    $options=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($user);
-                }
-                elseif ($reporteCriterio->isIncludePerfil()){
-                    $perfil=$this->perfilManager->find($this->perfil_id);
-                    $options=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo($perfil);
-                }
-                else {
-                    $options=$this->em->getRepository($reporteCriterio->getRepositorio())->$metodo();
+                else{
+                    if ($reporteCriterio->isIncludeUser() && $reporteCriterio->isIncludePerfil()) {
+                        $user = $this->tokenStorage->getToken()->getUser();
+                        $perfil = $this->perfilManager->find($this->perfil_id);
+                        $options = $this->em->getRepository($reporteCriterio->getRepositorio(),$reporteCriterio->getManager())->$metodo($user, $perfil);
+                    } elseif ($reporteCriterio->isIncludeUser()) {
+                        $user = $this->tokenStorage->getToken()->getUser();
+                        $options = $this->em->getRepository($reporteCriterio->getRepositorio(),$reporteCriterio->getManager())->$metodo($user);
+                    } elseif ($reporteCriterio->isIncludePerfil()) {
+                        $perfil = $this->perfilManager->find($this->perfil_id);
+                        $options = $this->em->getRepository($reporteCriterio->getRepositorio(),$reporteCriterio->getManager())->$metodo($perfil);
+                    } else {
+                        $options = $this->em->getRepository($reporteCriterio->getRepositorio(),$reporteCriterio->getManager())->$metodo();
+                    }
                 }
                 $ret=array();
                 foreach ($options as $option) {
@@ -81,7 +95,12 @@ class ReporteManager
             case 'periodo':
                 return $valor==0 ? 'Completo' : 'Diario';
             default:
-                $criterio=$this->em->getRepository($reporteCriterio->getRepositorio())->find($valor);
+                if(is_null($reporteCriterio->getManager())) {
+                    $criterio = $this->em->getRepository($reporteCriterio->getRepositorio())->find($valor);
+                }
+                else {
+                    $criterio = $this->em->getRepository($reporteCriterio->getRepositorio(),$reporteCriterio->getManager())->find($valor);
+                }
                 return $criterio ? $criterio->__toString() : '';
         }
     }

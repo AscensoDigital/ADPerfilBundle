@@ -34,6 +34,9 @@ class ReporteFormType extends AbstractType
                 'required' => false
             ])
             ->add('orden')
+            ->add('manager', 'text', [
+                'required' => false
+            ])
             ->add('repositorio','text',[
                 'required' => false
             ])
