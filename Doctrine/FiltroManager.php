@@ -257,6 +257,9 @@ class FiltroManager{
         $query=$this->getQueryBuilder($qb,$excludes,$isNull)->getQuery();
         $sql=$query->getDQL();
         $pos=strpos($sql,'WHERE');
+        if($pos === false){
+            return '';
+        }
         $sql=substr($sql,$pos-1);
         /** @var Parameter $parameter */
         foreach ($query->getParameters() as $parameter) {
