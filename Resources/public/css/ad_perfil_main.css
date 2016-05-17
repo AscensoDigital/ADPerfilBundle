@@ -162,3 +162,7 @@ html {
     background-color: #ff6be1;
     color: #000000;
 }
+
+.label-required {
+    color: red;
+}
