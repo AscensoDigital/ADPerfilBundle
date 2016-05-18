@@ -99,6 +99,7 @@ class FiltroManager{
         foreach ($this->filtrosNormalized as $field => $data) {
             if(!in_array($field,$excludes)) {
                 $operator=$data['operator'];
+                $key=str_replace("-", "_", str_replace(".","_" ,$field));
                 switch($data['type']) {
                     /*case 'fecha':
                         $qb->andWhere($qb->expr()->eq('DATE('.$value['campo'].')','DATE(:fecha)'))
@@ -121,22 +122,22 @@ class FiltroManager{
                     default:
                         if(isset($data['function'])){
                             if(true===$isNull){
-                                $qb->andWhere($qb->expr()->orX($qb->expr()->isNull($field), $qb->expr()->$operator($data['function'].'('.$field.')',$data['function'].'(:valor_'.$data['key'].')')))
-                                    ->setParameter(':valor_'.$data['key'], $data['value']);
+                                $qb->andWhere($qb->expr()->orX($qb->expr()->isNull($field), $qb->expr()->$operator($data['function'].'('.$field.')',$data['function'].'(:valor_'.$key.')')))
+                                    ->setParameter(':valor_'.$key, $data['value']);
                             }
                             else {
-                                $qb->andWhere($qb->expr()->$operator($data['function'].'('.$field.')', $data['function'].'(:valor_' . $data['key'].')'))
-                                    ->setParameter(':valor_' . $data['key'], $data['value']);
+                                $qb->andWhere($qb->expr()->$operator($data['function'].'('.$field.')', $data['function'].'(:valor_' . $key .')'))
+                                    ->setParameter(':valor_' . $key, $data['value']);
                             }
                         }
                         else {
                             if(true===$isNull){
-                                $qb->andWhere($qb->expr()->orX($qb->expr()->isNull($field), $qb->expr()->$operator($field,':valor_'.$data['key'])))
-                                    ->setParameter(':valor_'.$data['key'], $data['value']);
+                                $qb->andWhere($qb->expr()->orX($qb->expr()->isNull($field), $qb->expr()->$operator($field,':valor_'. $key)))
+                                    ->setParameter(':valor_'.$key, $data['value']);
                             }
                             else {
-                                $qb->andWhere($qb->expr()->$operator($field, ':valor_' . $data['key']))
-                                    ->setParameter(':valor_' . $data['key'], $data['value']);
+                                $qb->andWhere($qb->expr()->$operator($field, ':valor_' . $key))
+                                    ->setParameter(':valor_' . $key, $data['value']);
                             }
                         }
                 }
