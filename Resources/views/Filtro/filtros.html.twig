@@ -9,7 +9,7 @@
     <div id="ad_perfil-collapseFiltro" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="ad_perfil-headingFiltros">
         {{ form_start(form) }}
         <div id="ad_perfil-filtro-body" class="panel-body">
-            <div class="col-md-12"><span class="label-required">*</span>: Filtros Obligatorios</div>
+            <div class="col-md-12 alert">* Filtros Obligatorios</div>
             {% for filtro,activo in activos %}
                 <div class="col-md-4">
                     {{ form_label(form[filtro],null,{ 'label_attr' : { 'class' : 'col-md-12'} }) }}

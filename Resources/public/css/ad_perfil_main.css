@@ -163,6 +163,6 @@ html {
     color: #000000;
 }
 
-.label-required {
-    color: red;
+label.required:after {
+    content: ' *';
 }
