@@ -34,14 +34,17 @@ class FiltroManager{
     public function addFiltroValor($filtroName,$value){
         $table_alias=$this->normalizar($filtroName,null,$value);
         $this->filtroValor[$table_alias]=$value;
+        return $this;
     }
 
     public function addNormalizedFiltro($keyField, $filtroNormal) {
         $this->filtrosNormalized[$keyField]=$filtroNormal;
+        return $this;
     }
 
     public function addNormalizedFiltros(array $filtrosAdd){
         $this->filtrosNormalized=$filtrosAdd + $this->filtrosNormalized;
+        return $this;
     }
 
     public function getFiltros($route=null) {
