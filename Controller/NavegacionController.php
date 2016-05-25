@@ -115,7 +115,7 @@ class NavegacionController extends Controller
         $menu=new Menu();
         $menu->setMenuSuperior($menuSuperior)
             ->setOrden($this->get('ad_perfil.menu_manager')->countItems($menuSuperior)+1);
-        $form=$this->createForm(new MenuFormType(),$menu, ['super_admin' => true]);
+        $form=$this->createForm(MenuFormType::class,$menu, ['super_admin' => true]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em=$this->getDoctrine()->getManager();
@@ -143,7 +143,7 @@ class NavegacionController extends Controller
             $this->addFlash('danger','Debes haber seleccionado un menu para editar');
             return $this->redirectToRoute('ad_perfil_menu');
         }
-        $form=$this->createForm(new MenuFormType(),$menu,['super_admin' => $this->isGranted('permiso','ad_perfil-menu-new')]);
+        $form=$this->createForm(MenuFormType::class,$menu,['super_admin' => $this->isGranted('permiso','ad_perfil-menu-new')]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em=$this->getDoctrine()->getManager();

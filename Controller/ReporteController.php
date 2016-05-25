@@ -33,7 +33,7 @@ class ReporteController extends Controller
             return $this->redirectToRoute('ad_perfil_reportes');
         }
         $em=$this->getDoctrine()->getManager();
-        $form=$this->createForm(new ReporteFormType(),$reporte);
+        $form=$this->createForm(ReporteFormType::class,$reporte);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($reporte);
@@ -69,7 +69,7 @@ class ReporteController extends Controller
         $em=$this->getDoctrine()->getManager();
         $reporteXCriterio=new ReporteXCriterio();
         $reporteXCriterio->setReporte($reporte);
-        $form=$this->createForm(new ReporteLoadEstaticoFormType(),$reporteXCriterio,[
+        $form=$this->createForm(ReporteLoadEstaticoFormType::class,$reporteXCriterio,[
             'criterio_choices' => $this->get('ad_perfil.reporte_manager')->getCriterioChoices($reporte->getReporteCriterio())
         ]);
         $form->handleRequest($request);
@@ -110,7 +110,7 @@ class ReporteController extends Controller
     public function newAction(Request $request){
         $em=$this->getDoctrine()->getManager();
         $rp=new Reporte();
-        $form=$this->createForm(new ReporteFormType(),$rp);
+        $form=$this->createForm(ReporteFormType::class,$rp);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $em->persist($rp);
