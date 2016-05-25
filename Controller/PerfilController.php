@@ -43,7 +43,7 @@ class PerfilController extends Controller
                 /** @var PerfilInterface $perfil */
                 if(!isset($perfils[$perfil_id])) {
                     $this->addFlash('danger', 'No tiene acceso al Perfil seleccionado');
-                    $request->getSession()->remove('ut_id');
+                    $request->getSession()->remove($this->getParameter('ad_perfil.session_name'));
                 }
                 else{
                     $perfil=$perfils[$perfil_id];
