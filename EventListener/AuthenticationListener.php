@@ -33,7 +33,7 @@ class AuthenticationListener
 
     public function onSwitchUser(SwitchUserEvent $event) {
         $request=$event->getRequest();
-        $request->getSession()->remove('ut_id');
+        $request->getSession()->remove($this->sessionName);
         $request->getSession()->remove('ad_perfil.perfil_multiple');
         $user=$event->getTargetUser();
         if(is_object($user)) {
