@@ -183,7 +183,7 @@ logging in, creating users, etc.
 Step 7: Update your database schema
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Now that the bundle is configured, the last thing you need to do is update your
+Now that the bundle is configured, you need to do is update your
 database schema because you have added a new entity, the ``User`` class which you
 created in Step 4.
 
@@ -192,3 +192,17 @@ For ORM run the following command.
 .. code-block:: bash
 
     $ php bin/console doctrine:schema:update --force
+
+
+Step 8: Load Fixtures to your database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now that the bundle is configured, the last thing you need to do is load your
+database.
+
+For ORM run the following command.
+
+.. code-block:: bash
+
+    $ php bin/console doctrine:fixtures:load --append
+
