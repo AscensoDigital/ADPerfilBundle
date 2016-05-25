@@ -1,5 +1,5 @@
 Getting Started With ADPerfilBundle
-==================================
+===================================
 
 Prerequisites
 -------------
@@ -20,7 +20,7 @@ Installation is a quick (I promise!) 7 step process:
 7. Update your database schema
 
 Step 1: Download ADPerfilBundle using composer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Require the bundle with composer:
 
@@ -91,7 +91,7 @@ start:
         }
 
 Step 4: Create your Perfil class
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 a) Doctrine ORM User class
 ..........................
@@ -135,7 +135,7 @@ start:
 
 
 Step 5: Configure the ADPerfilBundle
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Add the following configuration to your ``config.yml`` file according to which type
 of datastore you are using.
@@ -162,7 +162,7 @@ of datastore you are using.
 
 
 Step 6: Import ADPerfilBundle routing files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that you have activated and configured the bundle, all that is left to do is
 import the ADPerfilBundle routing files.
@@ -195,7 +195,7 @@ For ORM run the following command.
 
 
 Step 8: Load Fixtures to your database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that the bundle is configured, the last thing you need to do is load your
 database.
@@ -205,4 +205,7 @@ For ORM run the following command.
 .. code-block:: bash
 
     $ php bin/console doctrine:fixtures:load --append
+
+Step 9: Create admin perfil
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
