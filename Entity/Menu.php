@@ -3,6 +3,7 @@
 namespace AscensoDigital\PerfilBundle\Entity;
 
 use Cocur\Slugify\Slugify;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -103,6 +104,20 @@ class Menu
     protected $color;
 
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Menu", mappedBy="menuSuperior", cascade={"persist"} )
+     */
+    protected $menuHijos;
+
+
+
+    public function __construct() {
+        $this->menuHijos = new ArrayCollection();
+    }
+
+
     public function __toString() {
         return (is_null($this->getMenuSuperior()) ? '' : $this->getMenuSuperior()->getNombre().' - ').$this->getNombre();
     }
@@ -158,6 +173,10 @@ class Menu
         $slugify= new Slugify();
         $slugPadre=$this->getMenuSuperiorSlug();
         $this->setSlug((is_null($slugPadre) ? '' : $slugPadre.'_').$slugify->slugify($nombre));
+        /** @var Menu $hijo */
+        foreach ($this->getMenuHijos()->getValues() as $hijo) {
+            $hijo->setNombre($hijo->getNombre());
+        }
         return $this;
     }
 
@@ -332,6 +351,24 @@ class Menu
     public function isVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $menuHijos
+     * @return Menu
+     */
+    public function setMenuHijos($menuHijos)
+    {
+        $this->menuHijos = $menuHijos;
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMenuHijos()
+    {
+        return $this->menuHijos;
     }
 
 
