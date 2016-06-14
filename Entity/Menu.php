@@ -78,7 +78,7 @@ class Menu
     /**
      * @var Menu
      *
-     * @ORM\ManyToOne(targetEntity="Menu")
+     * @ORM\ManyToOne(targetEntity="Menu", inversedBy="menuHijos")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="menu_superior_id", referencedColumnName="id")
      * })
