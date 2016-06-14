@@ -20,7 +20,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class PermisoVoter extends Voter
 {
     const MENU = 'menu'; //slug de menu
-    const ROUTE = 'route';
     const PERMISO = 'permiso'; // nombre del permiso
 
     private $perfil_id;
@@ -32,7 +31,6 @@ class PermisoVoter extends Voter
         try{
             $menus = $em->getRepository('ADPerfilBundle:Menu')->findArrayPermisoByPerfil($this->perfil_id);
             $this->permisos[self::MENU] = isset($menus[self::MENU]) ? $menus[self::MENU] : array();
-            $this->permisos[self::ROUTE] = isset($menus[self::ROUTE]) ? $menus[self::ROUTE] : array();
 
             if(!is_null($this->perfil_id)) {
                 $this->permisos[self::PERMISO] = $em->getRepository('ADPerfilBundle:PerfilXPermiso')->findArrayIdByPerfil($this->perfil_id);
@@ -56,11 +54,11 @@ class PermisoVoter extends Voter
     protected function supports($attribute, $subject)
     {
         // if the attribute isn't one we support, return false
-        if (!in_array($attribute, array(self::MENU, self::ROUTE, self::PERMISO))) {
+        if (!in_array($attribute, array(self::MENU, self::PERMISO))) {
             return false;
         }
 
-        if (in_array($attribute, array(self::MENU, self::ROUTE)) && !is_null($subject) && !$subject instanceof Menu) {
+        if ($attribute == self::MENU && !is_null($subject) && !$subject instanceof Menu) {
             return false;
         }
 
@@ -83,15 +81,6 @@ class PermisoVoter extends Voter
         }
 
         switch($attribute){
-            case self::ROUTE:
-                /** @var Menu $subject */
-                if(isset($this->permisos[$attribute][Permiso::LIBRE]) && in_array($subject->getRoute(), $this->permisos[$attribute][Permiso::LIBRE])){
-                    return true;
-                }
-                if(!isset($this->permisos[$attribute][Permiso::RESTRICT])){
-                    return false;
-                }
-                return in_array($subject->getRoute(), $this->permisos[$attribute][Permiso::RESTRICT]);
             case self::MENU:
                 /** @var Menu $subject */
                 if(isset($this->permisos[$attribute][Permiso::LIBRE]) && in_array($subject->getSlug(), $this->permisos[$attribute][Permiso::LIBRE])){

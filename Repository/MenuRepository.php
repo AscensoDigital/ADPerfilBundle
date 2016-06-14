@@ -33,8 +33,7 @@ class MenuRepository extends EntityRepository {
 
     public function findArrayPermisoByPerfil($perfil_id) {
         $ms=$this->getEntityManager()->createQueryBuilder()
-            ->select('adp_m.route')
-            ->addSelect('adp_m.slug')
+            ->select('adp_m.slug')
             ->addSelect('IDENTITY(adp_m.permiso) as permiso')
             ->from('ADPerfilBundle:Menu','adp_m')
             ->leftJoin('adp_m.permiso','adp_prm')
@@ -46,7 +45,6 @@ class MenuRepository extends EntityRepository {
         $ret=array();
         foreach ($ms as $m) {
             $libre=is_null($m['permiso']) ? Permiso::LIBRE : Permiso::RESTRICT;
-            $ret[PermisoVoter::ROUTE][$libre][]=$m['route'];
             $ret[PermisoVoter::MENU][$libre][]=$m['slug'];
         }
         return $ret;
