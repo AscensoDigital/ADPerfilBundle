@@ -149,7 +149,7 @@ class Menu
     }
 
     private function getTexBuildFolder() {
-        return '../../app/Resources/doc/manual/tex/build';
+        return __DIR__.'/../../../../app/Resources/doc/manual/tex/build';
     }
 
     public function getTitulo() {
@@ -219,7 +219,7 @@ class Menu
                 $fs->rename($this->getTexBuildFolder() . DIRECTORY_SEPARATOR . $this->slug . '.at', $destino);
             }
             elseif(!$fs->exists($destino)) {
-                $template=file_get_contents('../Resources/tex' . DIRECTORY_SEPARATOR . $this->getTemplate().'.tex');
+                $template=file_get_contents(__DIR__.'/../Resources/tex' . DIRECTORY_SEPARATOR . $this->getTemplate().'.tex');
                 $template=str_replace('__NOMBRE__',$this->getNombre(),$template);
                 $template=str_replace('__DESCRIPCION__',$this->getDescripcion(),$template);
                 $fs->dumpFile($destino,$template);
