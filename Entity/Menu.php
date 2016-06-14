@@ -5,6 +5,8 @@ namespace AscensoDigital\PerfilBundle\Entity;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Menu
@@ -134,6 +136,22 @@ class Menu
         return (is_null($this->getMenuSuperior()) ? '': $this->getNombre());
     }
 
+    private function getTemplate() {
+        if(is_null($this->getMenuSuperior())){
+            return 'section';
+        }
+        elseif($this->getMenuSuperior()->getId()!=$this->getMenuBase()->getId()){
+            return 'subsubsection';
+        }
+        else{
+            return 'subsection';
+        }
+    }
+
+    private function getTexBuildFolder() {
+        return '../../app/Resources/doc/manual/tex/build';
+    }
+
     public function getTitulo() {
         return (is_null($this->getMenuSuperior()) ? $this->getNombre() : $this->getMenuSuperior()->getNombre());
     }
@@ -194,6 +212,22 @@ class Menu
      */
     public function setSlug($slug)
     {
+        $fs= New Filesystem();
+        $destino=$this->getTexBuildFolder() . DIRECTORY_SEPARATOR . $slug.'.at';
+        try {
+            if($fs->exists($this->getTexBuildFolder() . DIRECTORY_SEPARATOR . $this->slug.'.at')){
+                $fs->rename($this->getTexBuildFolder() . DIRECTORY_SEPARATOR . $this->slug . '.at', $destino);
+            }
+            elseif(!$fs->exists($destino)) {
+                $template=file_get_contents('../Resources/tex' . DIRECTORY_SEPARATOR . $this->getTemplate().'.tex');
+                $template=str_replace('__NOMBRE__',$this->getNombre(),$template);
+                $template=str_replace('__DESCRIPCION__',$this->getDescripcion(),$template);
+                $fs->dumpFile($destino,$template);
+            }
+        }
+        catch (IOException $e ) {
+
+        }
         $this->slug = $slug;
         return $this;
     }
