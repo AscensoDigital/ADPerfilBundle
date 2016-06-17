@@ -61,7 +61,7 @@ class FiltroFormType extends AbstractType
         foreach ($filtroActivos as $keyFiltro => $filtro) {
             $filtroConf=$this->configurator->getFiltroConfiguration($keyFiltro);
             $options=$filtro+ $filtroConf['options'] + ['required' => false];
-            if(false === $options['required'] && in_array($filtroConf['type'] , [EntityType::class, DependSelectType::class ]){
+            if(false === $options['required'] && in_array($filtroConf['type'] , [EntityType::class, DependSelectType::class ])){
                 $options['placeholder']='';
             }
             if(isset($filtroConf['query_builder_method'])){
