@@ -2,8 +2,10 @@
 
 namespace AscensoDigital\PerfilBundle\Form\Type;
 
+use AscensoDigital\DependSelectBundle\Form\Type\DependSelectType;
 use AscensoDigital\PerfilBundle\Configuration\Configurator;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -59,6 +61,9 @@ class FiltroFormType extends AbstractType
         foreach ($filtroActivos as $keyFiltro => $filtro) {
             $filtroConf=$this->configurator->getFiltroConfiguration($keyFiltro);
             $options=$filtro+ $filtroConf['options'] + ['required' => false];
+            if(false === $options['required'] && in_array($filtroConf['type'] , [EntityType::class, DependSelectType::class ]){
+                $options['placeholder']='';
+            }
             if(isset($filtroConf['query_builder_method'])){
                 $method=$filtroConf['query_builder_method'];
                 if(true===$filtroConf['query_builder_perfil'] && true===$filtroConf['query_builder_user']) {

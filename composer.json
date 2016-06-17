@@ -19,6 +19,7 @@
         "doctrine/doctrine-bundle": "~1.4",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "ascensodigital/component-bundle": "dev-master",
+        "ascensodigital/depend-select-bundle": "dev-master",
         "cocur/slugify": "^2.0",
         "javiereguiluz/easyadmin-bundle": "^1.5"
     },
