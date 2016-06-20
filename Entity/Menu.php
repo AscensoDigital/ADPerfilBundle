@@ -52,7 +52,7 @@ class Menu
      *
      * @ORM\Column(name="orden", type="integer", nullable=false)
      */
-    protected $orden;
+    protected $orden=0;
 
     /**
      * @var string
