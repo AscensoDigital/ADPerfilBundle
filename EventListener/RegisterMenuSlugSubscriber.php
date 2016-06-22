@@ -16,11 +16,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 class RegisterMenuSlugSubscriber implements EventSubscriber {
     private $slugify;
 
-    public function __construct()
-    {
-        $this->slugify = new Slugify();
-    }
-
     public function getSubscribedEvents()
     {
         return array('prePersist', 'preUpdate');
@@ -38,6 +33,9 @@ class RegisterMenuSlugSubscriber implements EventSubscriber {
 
     public function index(LifecycleEventArgs $args)
     {
+        if(is_null($this->slugify)){
+            $this->slugify = new Slugify();
+        }
         $entity = $args->getEntity();
         if($entity instanceof Menu){
             $entity->generateSlug($this->slugify);
