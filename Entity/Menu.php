@@ -124,6 +124,15 @@ class Menu
         return (is_null($this->getMenuSuperior()) ? '' : $this->getMenuSuperior()->getNombre().' - ').$this->getNombre();
     }
 
+    public function generateSlug(Slugify $slugify){
+        $slugPadre=$this->getMenuSuperiorSlug();
+        $this->setSlug((is_null($slugPadre) ? '' : $slugPadre.'_').$slugify->slugify($this->getNombre()));
+        /** @var Menu $hijo */
+        foreach ($this->getMenuHijos()->getValues() as $hijo) {
+            $hijo->generateSlug($slugify);
+        }
+    }
+
     public function getMenuBase(){
         return is_null($this->getMenuSuperior()) ? $this : $this->getMenuSuperior()->getMenuBase();
     }
@@ -188,13 +197,6 @@ class Menu
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-        $slugify= new Slugify();
-        $slugPadre=$this->getMenuSuperiorSlug();
-        $this->setSlug((is_null($slugPadre) ? '' : $slugPadre.'_').$slugify->slugify($nombre));
-        /** @var Menu $hijo */
-        foreach ($this->getMenuHijos()->getValues() as $hijo) {
-            $hijo->setNombre($hijo->getNombre());
-        }
         return $this;
     }
 

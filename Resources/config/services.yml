@@ -25,6 +25,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
+    ad_perfil.menu.subscriber:
+        class: AscensoDigital\PerfilBundle\EventListener\RegisterMenuSlugSubscriber
+        arguments: ["@slugify"]
+        tags:
+            - { name: doctrine.event_subscriber }
+
     ad_perfil.filtro_manager:
         class: AscensoDigital\PerfilBundle\Doctrine\FiltroManager
         arguments: ["@request_stack", "@ad_perfil.configurator"]
