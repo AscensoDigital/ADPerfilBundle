@@ -2,6 +2,7 @@
 
 namespace AscensoDigital\PerfilBundle\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -123,7 +124,7 @@ class Menu
         return (is_null($this->getMenuSuperior()) ? '' : $this->getMenuSuperior()->getNombre().' - ').$this->getNombre();
     }
 
-    public function generateSlug($slugify){
+    public function generateSlug(Slugify $slugify){
         $slugPadre=$this->getMenuSuperiorSlug();
         $this->setSlug((is_null($slugPadre) ? '' : $slugPadre.'_').$slugify->slugify($this->getNombre()));
         /** @var Menu $hijo */

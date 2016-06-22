@@ -27,7 +27,6 @@ services:
 
     ad_perfil.menu.subscriber:
         class: AscensoDigital\PerfilBundle\EventListener\RegisterMenuSlugSubscriber
-        arguments: ["@slugify"]
         tags:
             - { name: doctrine.event_subscriber }
 
