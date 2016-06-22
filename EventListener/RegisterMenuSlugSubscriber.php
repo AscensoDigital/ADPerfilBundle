@@ -4,7 +4,6 @@ namespace AscensoDigital\PerfilBundle\EventListener;
 
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
-use Cocur\Slugify\Slugify;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
@@ -16,7 +15,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 class RegisterMenuSlugSubscriber implements EventSubscriber {
     private $slugify;
 
-    public function __construct(Slugify $slugify)
+    public function __construct($slugify)
     {
         $this->slugify = $slugify;
     }
