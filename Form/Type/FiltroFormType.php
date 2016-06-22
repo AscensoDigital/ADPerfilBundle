@@ -114,6 +114,7 @@ class FiltroFormType extends AbstractType
                         };
                     }
                 }
+                unset($options['query_builder_options']);
             }
             $builder->add($keyFiltro, $filtroConf['type'],$options);
         }
