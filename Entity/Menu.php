@@ -303,9 +303,6 @@ class Menu
     public function setMenuSuperior($menuSuperior)
     {
         $this->menuSuperior = $menuSuperior;
-        if($menuSuperior){
-            $this->setNombre($this->getNombre());
-        }
         return $this;
     }
 
