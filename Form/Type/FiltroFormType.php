@@ -2,7 +2,6 @@
 
 namespace AscensoDigital\PerfilBundle\Form\Type;
 
-use AscensoDigital\DependSelectBundle\Form\Type\DependSelectType;
 use AscensoDigital\PerfilBundle\Configuration\Configurator;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -65,26 +64,55 @@ class FiltroFormType extends AbstractType
                 $options['placeholder']='';
             }
             if(isset($filtroConf['query_builder_method'])){
+                $opt= isset($options['query_builder_options']) ? $options['query_builder_options'] : false;
                 $method=$filtroConf['query_builder_method'];
                 if(true===$filtroConf['query_builder_perfil'] && true===$filtroConf['query_builder_user']) {
-                    $options['query_builder']=function(EntityRepository $er) use ($method,$perfil,$user) {
-                        return $er->$method($user,$perfil);
-                    };
+                    if($opt){
+                        $options['query_builder'] = function (EntityRepository $er) use ($method, $perfil, $user, $opt) {
+                            return $er->$method($user, $perfil, $opt);
+                        };
+                    }
+                    else {
+                        $options['query_builder'] = function (EntityRepository $er) use ($method, $perfil, $user) {
+                            return $er->$method($user, $perfil);
+                        };
+                    }
                 }
                 elseif(true===$filtroConf['query_builder_perfil']){
-                    $options['query_builder']=function(EntityRepository $er) use ($method,$perfil) {
-                        return $er->$method($perfil);
-                    };
+                    if($opt) {
+                        $options['query_builder'] = function (EntityRepository $er) use ($method, $perfil, $opt) {
+                            return $er->$method($perfil, $opt);
+                        };
+                    }
+                    else {
+                        $options['query_builder'] = function (EntityRepository $er) use ($method, $perfil) {
+                            return $er->$method($perfil);
+                        };
+                    }
                 }
                 elseif(true===$filtroConf['query_builder_user']) {
-                    $options['query_builder']=function(EntityRepository $er) use ($method,$user) {
-                        return $er->$method($user);
-                    };
+                    if($opt) {
+                        $options['query_builder'] = function (EntityRepository $er) use ($method, $user, $opt) {
+                            return $er->$method($user, $opt);
+                        };
+                    }
+                    else {
+                        $options['query_builder'] = function (EntityRepository $er) use ($method, $user) {
+                            return $er->$method($user);
+                        };
+                    }
                 }
                 else {
-                    $options['query_builder']=function(EntityRepository $er) use ($method) {
+                    if($opt) {
+                        $options['query_builder'] = function (EntityRepository $er) use ($method, $opt) {
+                            return $er->$method($opt);
+                        };
+                    }
+                    else {
+                        $options['query_builder'] = function (EntityRepository $er) use ($method) {
                             return $er->$method();
                         };
+                    }
                 }
             }
             $builder->add($keyFiltro, $filtroConf['type'],$options);
@@ -105,7 +133,7 @@ class FiltroFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('filtros','route','update'));
-        $resolver->setDefined(array('auto_filter','auto_llenado','perfil','route_params'));
+        $resolver->setDefined(array('auto_filter','auto_llenado','perfil','route_params','query_builder_options'));
         $resolver->setDefaults([
             'auto_filter' => true,
             'auto_llenado' => true,
