@@ -133,7 +133,7 @@ class FiltroFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('filtros','route','update'));
-        $resolver->setDefined(array('auto_filter','auto_llenado','perfil','route_params','query_builder_options'));
+        $resolver->setDefined(array('auto_filter','auto_llenado','perfil','route_params'));
         $resolver->setDefaults([
             'auto_filter' => true,
             'auto_llenado' => true,
