@@ -26,8 +26,8 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
     {
         $mnConfig= new Menu();
         $mnConfig->setOrden(99)
-            ->setNombre('Configuración')
             ->setDescripcion('Inicializar el sistema de menu y permisos')
+            ->setNombre('Configuración')
             ->setColor($this->getReference('clr-negro'))
             ->setIcono('fa fa-cogs')
             ->setPermiso($this->getReference('per-config-index'));
@@ -36,8 +36,8 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
         $perNew= new Menu();
         $perNew->setMenuSuperior($mnConfig)
             ->setOrden(1)
-            ->setNombre('Crear Permiso')
             ->setDescripcion('Crear Permisos y asociar a los perfiles')
+            ->setNombre('Crear Permiso')
             ->setRoute('ad_perfil_permiso_new')
             ->setColor($this->getReference('clr-verde'))
             ->setIcono('fa fa-unlock-alt')
@@ -47,19 +47,43 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
         $perList= new Menu();
         $perList->setMenuSuperior($mnConfig)
             ->setOrden(2)
-            ->setNombre('Listar Permisos')
             ->setDescripcion('Listar los permisos asignados')
+            ->setNombre('Listar Permisos')
             ->setRoute('ad_perfil_permiso_list')
             ->setColor($this->getReference('clr-rosado'))
             ->setIcono('fa fa-list-ul')
             ->setPermiso($this->getReference('per-per-list'));
         $manager->persist($perList);
 
+        $perEditPermiso= new Menu();
+        $perEditPermiso->setMenuSuperior($perList)
+            ->setOrden(1)
+            ->setVisible(false)
+            ->setDescripcion('Editar los roles que pueden utilizar el permiso')
+            ->setNombre('Editar Perfiles por Permiso')
+            ->setRoute('ad_perfil_permiso_edit')
+            ->setColor($this->getReference('clr-celeste'))
+            ->setIcono('fa fa-edit')
+            ->setPermiso($this->getReference('per-per-edit'));
+        $manager->persist($perEditPermiso);
+
+        $perEditPerfil= new Menu();
+        $perEditPerfil->setMenuSuperior($perList)
+            ->setOrden(2)
+            ->setVisible(false)
+            ->setDescripcion('Editar los permisos de un perfil')
+            ->setNombre('Editar Permisos por Perfil')
+            ->setRoute('ad_perfil_permiso_edit_perfil')
+            ->setColor($this->getReference('clr-celeste'))
+            ->setIcono('fa fa-edit')
+            ->setPermiso($this->getReference('per-per-edit'));
+        $manager->persist($perEditPerfil);
+
         $mnNew= new Menu();
         $mnNew->setMenuSuperior($mnConfig)
             ->setOrden(3)
-            ->setNombre('Crear Menu')
             ->setDescripcion('Permite agregar un menu invisible a los principales')
+            ->setNombre('Crear Menu')
             ->setRoute('ad_perfil_menu_new')
             ->setColor($this->getReference('clr-celeste'))
             ->setIcono('fa fa-navicon')
@@ -68,8 +92,8 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
 
         $mnRepo= new Menu();
         $mnRepo->setOrden(98)
-            ->setNombre('Reportes')
             ->setDescripcion('Listado de los descargables del sistema')
+            ->setNombre('Reportes')
             ->setColor($this->getReference('clr-gris'))
             ->setIcono('fa fa-file-excel-o')
             ->setPermiso($this->getReference('per-rep-list'));
@@ -78,8 +102,8 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
         $repList= new Menu();
         $repList->setMenuSuperior($mnRepo)
             ->setOrden(1)
-            ->setNombre('Listar Reportes')
             ->setDescripcion('Listar los reportes disponibles')
+            ->setNombre('Listar Reportes')
             ->setRoute('ad_perfil_reportes')
             ->setColor($this->getReference('clr-amarillo'))
             ->setIcono('fa fa-list-ul')
@@ -89,8 +113,8 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
         $repNew= new Menu();
         $repNew->setMenuSuperior($mnRepo)
             ->setOrden(2)
-            ->setNombre('Crear Reporte')
             ->setDescripcion('Permite configurar un nuevo reporte de PerfilBundle')
+            ->setNombre('Crear Reporte')
             ->setRoute('ad_perfil_reporte_new')
             ->setColor($this->getReference('clr-celeste'))
             ->setIcono('fa fa-plus')
@@ -101,8 +125,8 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
         $repEdit->setMenuSuperior($repList)
             ->setVisible(false)
             ->setOrden(1)
-            ->setNombre('Editar Reporte')
             ->setDescripcion('Permite editar la configuración de un reporte de PerfilBundle')
+            ->setNombre('Editar Reporte')
             ->setRoute('ad_perfil_reporte_edit')
             ->setColor($this->getReference('clr-cafe'))
             ->setIcono('fa fa-pencil-square-o')
@@ -113,8 +137,8 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
         $repLoad->setMenuSuperior($repList)
             ->setVisible(false)
             ->setOrden(2)
-            ->setNombre('Cargar Reporte Estático')
             ->setDescripcion('Permite dejar estatico un reporte de PerfilBundle')
+            ->setNombre('Cargar Reporte Estático')
             ->setRoute('ad_perfil_reporte_load_estatico')
             ->setColor($this->getReference('clr-rojo'))
             ->setIcono('fa fa-link')
