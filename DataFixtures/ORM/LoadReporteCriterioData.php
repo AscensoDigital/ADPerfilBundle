@@ -24,10 +24,14 @@ class LoadReporteCriterioData extends AbstractFixture implements OrderedFixtureI
      */
     public function load(ObjectManager $manager)
     {
-        $periodo= new ReporteCriterio();
-        $periodo->setNombre('periodo')
-            ->setTitulo('Período');
-        $manager->persist($periodo);
+        $periodo= $manager->getRepository('ADPerfilBundle:ReporteCriterio')->findOneBy(['nombre' => 'periodo']);
+        if(!$periodo) {
+            $periodo = new ReporteCriterio();
+            $periodo->setNombre('periodo')
+                ->setTitulo('Período');
+            $manager->persist($periodo);
+        }
+        $this->setReference('rpc-periodo', $periodo);
         $manager->flush();
     }
 
