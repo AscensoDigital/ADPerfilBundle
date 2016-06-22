@@ -24,67 +24,94 @@ class LoadPermisoData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $mnCrear= new Permiso();
-        $mnCrear->setNombre('ad_perfil-menu-new')
-            ->setDescripcion('Crear Menu de PerfilBundle');
-        $manager->persist($mnCrear);
+        $mnCrear=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-menu-new']);
+        if(!$mnCrear) {
+            $mnCrear = new Permiso();
+            $mnCrear->setNombre('ad_perfil-menu-new')
+                ->setDescripcion('Crear Menu de PerfilBundle');
+            $manager->persist($mnCrear);
+        }
         $this->addReference('per-menu-new',$mnCrear);
 
-        $mnEdit= new Permiso();
-        $mnEdit->setNombre('ad_perfil-menu-edit')
-            ->setDescripcion('Editar Menu de PerfilBundle');
-        $manager->persist($mnEdit);
+        $mnEdit=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-menu-edit']);
+        if(!$mnEdit) {
+            $mnEdit = new Permiso();
+            $mnEdit->setNombre('ad_perfil-menu-edit')
+                ->setDescripcion('Editar Menu de PerfilBundle');
+            $manager->persist($mnEdit);
+        }
         $this->addReference('per-menu-edit',$mnEdit);
 
-
-        $perCrear= new Permiso();
-        $perCrear->setNombre('ad_perfil-per-new')
-            ->setDescripcion('Crear Permiso de PerfilBundle');
-        $manager->persist($perCrear);
+        $perCrear=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-per-new']);
+        if(!$perCrear) {
+            $perCrear = new Permiso();
+            $perCrear->setNombre('ad_perfil-per-new')
+                ->setDescripcion('Crear Permiso de PerfilBundle');
+            $manager->persist($perCrear);
+        }
         $this->addReference('per-per-new',$perCrear);
 
-        $perEdit= new Permiso();
-        $perEdit->setNombre('ad_perfil-per-edit')
-            ->setDescripcion('Editar Permiso de PerfilBundle');
-        $manager->persist($perEdit);
+        $perEdit=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-per-edit']);
+        if(!$perEdit) {
+            $perEdit = new Permiso();
+            $perEdit->setNombre('ad_perfil-per-edit')
+                ->setDescripcion('Editar Permiso de PerfilBundle');
+            $manager->persist($perEdit);
+        }
         $this->addReference('per-per-edit',$perEdit);
 
-        $perList= new Permiso();
-        $perList->setNombre('ad_perfil-per-list')
-            ->setDescripcion('Listar Asignación de Permisos de PerfilBundle');
-        $manager->persist($perList);
+        $perList=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-per-list']);
+        if(!$perList) {
+            $perList = new Permiso();
+            $perList->setNombre('ad_perfil-per-list')
+                ->setDescripcion('Listar Asignación de Permisos de PerfilBundle');
+            $manager->persist($perList);
+        }
         $this->addReference('per-per-list',$perList);
 
-
-        $repIndex= new Permiso();
-        $repIndex->setNombre('ad_perfil-mn-reporte')
-            ->setDescripcion('Listado de Reportes de PerfilBundle');
-        $manager->persist($repIndex);
+        $repIndex=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-mn-reporte']);
+        if(!$repIndex) {
+            $repIndex = new Permiso();
+            $repIndex->setNombre('ad_perfil-mn-reporte')
+                ->setDescripcion('Listado de Reportes de PerfilBundle');
+            $manager->persist($repIndex);
+        }
         $this->addReference('per-rep-list',$repIndex);
 
-        $repCrear= new Permiso();
-        $repCrear->setNombre('ad_perfil-rep-new')
-            ->setDescripcion('Crear Reporte de PerfilBundle');
-        $manager->persist($repCrear);
+        $repCrear=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-rep-new']);
+        if(!$repCrear) {
+            $repCrear = new Permiso();
+            $repCrear->setNombre('ad_perfil-rep-new')
+                ->setDescripcion('Crear Reporte de PerfilBundle');
+            $manager->persist($repCrear);
+        }
         $this->addReference('per-rep-new',$repCrear);
 
-        $repEdit= new Permiso();
-        $repEdit->setNombre('ad_perfil-rep-edit')
-            ->setDescripcion('Editar Reporte de PerfilBundle');
-        $manager->persist($repEdit);
+        $repEdit=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-rep-edit']);
+        if(!$repEdit) {
+            $repEdit = new Permiso();
+            $repEdit->setNombre('ad_perfil-rep-edit')
+                ->setDescripcion('Editar Reporte de PerfilBundle');
+            $manager->persist($repEdit);
+        }
         $this->addReference('per-rep-edit',$repEdit);
 
-        $repLoad= new Permiso();
-        $repLoad->setNombre('ad_perfil-rep-load-estatico')
-            ->setDescripcion('Cargar archivo estatico a reporte de PerfilBundle');
-        $manager->persist($repLoad);
+        $repLoad=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-rep-load-estatico']);
+        if(!$repLoad) {
+            $repLoad = new Permiso();
+            $repLoad->setNombre('ad_perfil-rep-load-estatico')
+                ->setDescripcion('Cargar archivo estatico a reporte de PerfilBundle');
+            $manager->persist($repLoad);
+        }
         $this->addReference('per-rep-load',$repLoad);
 
-
-        $confIndex= new Permiso();
-        $confIndex->setNombre('ad_perfil-mn-configuracion')
-            ->setDescripcion('Menu Configuración');
-        $manager->persist($confIndex);
+        $confIndex=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-mn-configuracion']);
+        if(!$confIndex) {
+            $confIndex = new Permiso();
+            $confIndex->setNombre('ad_perfil-mn-configuracion')
+                ->setDescripcion('Menu Configuración');
+            $manager->persist($confIndex);
+        }
         $this->addReference('per-config-index',$confIndex);
 
         $manager->flush();
