@@ -70,6 +70,9 @@ class FiltroManager{
         if(0 === count($this->filtroValor)){
             $this->procesa($route);
         }
+        if(isset($this->filtrosNormalized[$key]['value'])){
+            return $this->filtrosNormalized[$key]['value'];
+        }
         if(isset($this->filtroValor[$key])) {
             return $this->filtroValor[$key];
         }
