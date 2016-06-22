@@ -38,7 +38,8 @@ abstract class Perfil
             }
             if(!$encontrado) {
                 $pxpn=new PerfilXPermiso();
-                $pxpn->setPermiso($p);
+                $pxpn->setPermiso($p)
+                    ->setPerfil($this);
                 $this->addPerfilXPermiso($pxpn);
             }
         }
