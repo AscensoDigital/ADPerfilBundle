@@ -9,7 +9,7 @@
 {% block ad_perfil_javascripts %}
     {{ parent() }}
     {% javascripts
-    'bundles/adperfil/js/ad_perfil.reporte.js' filter='?yui_js' output='js/compiled/reporte.js' %}
+    'bundles/adperfil/js/ad_perfil.reporte.js' filter='?jsqueeze' output='js/compiled/reporte.js' %}
     <script src="{{ asset_url }}" type="text/javascript"></script>
     {% endjavascripts %}
 {% endblock %}
