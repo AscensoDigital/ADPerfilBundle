@@ -24,11 +24,12 @@ class ReporteRepository extends EntityRepository
             ->leftJoin('rp.reporteCriterio','rpcr')
             ->leftJoin('rp.permiso','per')
             ->leftJoin('per.perfilXPermisos','pxp')
-            ->where('pxp.perfil=:perfil OR rp.permiso IS NULL')
+            ->where('rp.permiso IS NULL OR (pxp.perfil=:perfil AND pxp.acceso=:permitido)')
             ->orderBy('rps.orden')
             ->addOrderBy('rpc.orden')
             ->addOrderBy('rp.orden')
             ->setParameter(':perfil',$perfil_id)
+            ->setParameter(':permitido','true')
             ->getQuery()->getResult();
         $ret=array('criterios' => array(), 'reportes' => array());
         /** @var Reporte $rep */
