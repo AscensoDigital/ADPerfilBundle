@@ -28,7 +28,10 @@
                         <td>{{ rp.descripcion }}</td>
                         <td>
                             {% set route= rp.route is not null ? rp.route : 'ad_perfil_reporte' %}
-                            <a href="{{ rp.hasCriterio ? '#modal' ~ rp.reporteCriterio | capitalize : path(route, {'reporte_id' : rp.codigo}) }}" {% if rp.hasCriterio %}data-url="{{ path(route, {'reporte_id' : rp.codigo}) }}" data-toggle="modal" data-reporte="{{ rp.nombre }}"{% endif %} title="Descargar"><i class="fa fa-fw fa-cloud-download"></i></a>
+                            <a href="{{ rp.hasCriterio ? '#modal' ~ rp.reporteCriterio | capitalize : path(route, {'reporte_id' : rp.codigo, 'show_nombre' : 0}) }}" {% if rp.hasCriterio %}data-url="{{ path(route, {'reporte_id' : rp.codigo, 'show_nombre' : 0}) }}" data-toggle="modal" data-reporte="{{ rp.nombre }}"{% endif %} title="Descargar"><i class="fa fa-fw fa-cloud-download"></i></a>
+                            {% if downloadNombre %}
+                            <a href="{{ rp.hasCriterio ? '#modal' ~ rp.reporteCriterio | capitalize : path(route, {'reporte_id' : rp.codigo, 'show_nombre' : 1}) }}" {% if rp.hasCriterio %}data-url="{{ path(route, {'reporte_id' : rp.codigo, 'show_nombre' : 1}) }}" data-toggle="modal" data-reporte="{{ rp.nombre }}"{% endif %} title="Descargar con Nombre"><i class="fa fa-fw fa-info-circle"></i></a>
+                            {% endif %}
                             {% if canEdit %}
                                 &nbsp;<a href="{{ path('ad_perfil_reporte_edit', { 'codigo' : rp.codigo }) }}" title="Editar Reporte"><i class="fa fa-fw fa-pencil-square-o"></i></a>
                             {% endif %}

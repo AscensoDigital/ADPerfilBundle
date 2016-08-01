@@ -105,6 +105,15 @@ class LoadPermisoData extends AbstractFixture implements OrderedFixtureInterface
         }
         $this->addReference('per-rep-load',$repLoad);
 
+        $repDownloadNombre=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-rep-download-nombre']);
+        if(!$repDownloadNombre) {
+            $repDownloadNombre = new Permiso();
+            $repDownloadNombre->setNombre('ad_perfil-rep-download-nombre')
+                ->setDescripcion('Descargar reporte con nombre de PerfilBundle');
+            $manager->persist($repDownloadNombre);
+        }
+        $this->addReference('per-rep-download-nombre',$repDownloadNombre);
+
         $confIndex=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-mn-configuracion']);
         if(!$confIndex) {
             $confIndex = new Permiso();

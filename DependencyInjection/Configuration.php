@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('session_name')->defaultValue('ad_perfil.perfil_id')->end()
                 ->scalarNode('icon_path')->isRequired()->end()
                 ->scalarNode('icon_alt')->isRequired()->end()
+                ->integerNode('proveedor_id')->cannotBeEmpty()->end()
                 ->arrayNode('navegacion')
                     ->addDefaultsIfNotSet()
                     ->children()

@@ -80,6 +80,13 @@ class Reporte
     protected $metodo;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="show_proveedor", type="boolean", nullable=true)
+     */
+    protected $showProveedor = false;
+
+    /**
      * @var Permiso
      *
      * @ORM\ManyToOne(targetEntity="Permiso")
@@ -137,8 +144,8 @@ class Reporte
         return $this->getNombre();
     }
 
-    public function getNombreReporte(){
-        return $this->getCodigo().'-'.$this->getNombre();
+    public function getNombreReporte($show_nombre){
+        return $this->getCodigo().(1==$show_nombre ? '-'.$this->getNombre() : '');
     }
 
     /**
@@ -402,5 +409,23 @@ class Reporte
     public function getManager()
     {
         return $this->manager;
+    }
+
+    /**
+     * @param boolean $showProveedor
+     * @return Reporte
+     */
+    public function setShowProveedor($showProveedor)
+    {
+        $this->showProveedor = $showProveedor;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isShowProveedor()
+    {
+        return $this->showProveedor;
     }
 }

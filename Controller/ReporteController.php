@@ -55,12 +55,14 @@ class ReporteController extends Controller
         return $this->render('ADPerfilBundle:Reporte:list.html.twig', array(
             'data' => $data,
             'canEdit' => $this->isGranted('permiso','ad_perfil-rep-edit'),
-            'canLoad' => $this->isGranted('permiso','ad_perfil-rep-load-estatico')));
+            'canLoad' => $this->isGranted('permiso','ad_perfil-rep-load-estatico'),
+            'downloadNombre' => $this->isGranted('permiso','ad_perfil-rep-download-nombre')));
     }
 
     /**
      * @param Request $request
      * @param Reporte $reporte
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/reporte/load-estatico/{codigo}", name="ad_perfil_reporte_load_estatico")
      * @Security("is_granted('permiso','ad_perfil-rep-load-estatico')")
      * @ParamConverter("reporte", class="ADPerfilBundle:Reporte", options={"repository_method" : "findOneByCodigo" })
@@ -87,7 +89,7 @@ class ReporteController extends Controller
             $archivo = $rxp->getArchivo();
             $directorio = "reportes/estaticos";
             $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(),$rxp->getCriterioId());
-            $nombre = $reporte->getNombreReporte().'-'.$criterio_nombre.'-'.date('Y_m_d_H_i_s');
+            $nombre = $reporte->getNombreReporte(false).'-'.$criterio_nombre.'-'.date('Y_m_d_H_i_s');
             $archivo->upload($directorio, $nombre);
             $archivo->setCreador($this->getUser());
             $archivo->setTitulo($nombre);
@@ -125,10 +127,10 @@ class ReporteController extends Controller
      * @param Reporte $reporte
      * @param $criterio_valor
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @Route("/reporte/{reporte_id}/criterio/{criterio_valor}", name="ad_perfil_reporte", defaults={"criterio_valor" : null})
+     * @Route("/reporte/{reporte_id}/{show_nombre}/criterio/{criterio_valor}", name="ad_perfil_reporte", defaults={"criterio_valor" : null})
      * @ParamConverter("reporte", class="ADPerfilBundle:Reporte", options={"repository_method" : "findOneByCodigo", "mapping" : {"reporte_id" : "codigo"} })
      */
-    public function reporteAction(Reporte $reporte, $criterio_valor){
+    public function reporteAction(Reporte $reporte, $show_nombre, $criterio_valor){
         if(is_null($reporte)){
             $this->addFlash('warning','No existe el reporte solicitado');
             return $this->redirectToRoute('ad_perfil_reportes');
@@ -151,23 +153,25 @@ class ReporteController extends Controller
         if($reporte->hasCriterio()){
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo($criterio_valor);
             $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(),$criterio_valor);
-            $nombre=$reporte->getNombreReporte().'-'.$criterio_nombre;
+            $nombre=$reporte->getNombreReporte($show_nombre).'-'.$criterio_nombre;
         }
         else {
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo();
-            $nombre=$reporte->getNombreReporte();
+            $nombre=$reporte->getNombreReporte($show_nombre);
         }
-        return $this->generarReporte($data, $nombre);
+        $proveedor_id= $reporte->isShowProveedor() ? $this->get('ad_perfil.configurator')->getConfiguration('proveeodr_id') : null;
+        return $this->generarReporte($data, $nombre, $proveedor_id);
     }
     
     /**
      * @param $data
      * @param $nombre_base
+     * @param $proveedor_id
      * @param bool $return_reporte
      * @return Response
      */
-    protected function generarReporte($data,$nombre_base,$return_reporte=true) {
-        $contenido=$this->renderView('ADPerfilBundle:Reporte:reporte.csv.twig', array('data' => $data));
+    protected function generarReporte($data,$nombre_base, $proveedor_id, $return_reporte=true) {
+        $contenido=$this->renderView('ADPerfilBundle:Reporte:reporte.csv.twig', array('data' => $data, 'proveedor_id' => $proveedor_id));
         $file=StrUtil::formatReport($contenido);
         $reporte=$this->saveReporte($nombre_base, $file);
         if($return_reporte){
