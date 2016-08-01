@@ -159,7 +159,7 @@ class ReporteController extends Controller
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo();
             $nombre=$reporte->getNombreReporte($show_nombre);
         }
-        $proveedor_id= $reporte->isShowProveedor() ? $this->get('ad_perfil.configurator')->getConfiguration('proveeodr_id') : null;
+        $proveedor_id= $reporte->isShowProveedor() ? $this->get('ad_perfil.configurator')->getConfiguration('proveedor_id') : null;
         return $this->generarReporte($data, $nombre, $proveedor_id);
     }
     
