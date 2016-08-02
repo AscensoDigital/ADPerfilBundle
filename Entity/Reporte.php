@@ -33,7 +33,7 @@ class Reporte
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo", type="string", length=20, nullable=false, unique=true)
+     * @ORM\Column(name="codigo", type="string", length=30, nullable=false, unique=true)
      */
     protected $codigo;
 
