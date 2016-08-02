@@ -3,9 +3,9 @@ sep=;
 {% for fila in data %}
 {% if encabezado %}
 {% set encabezado=false %}
-{% if proveedor_id > 0 %}IdProveedor;{% endif %}{% for key in fila | keys %}{% if not loop.first %};{% endif %}{{ '"' ~ (key | replace('_',' ') | title) ~ '"' }}{% endfor %}
+{% if proveedor_id > 0 %}IdProveedor;{% endif %}{% for key in fila | keys %}{% if not loop.first %};{% endif %}{{ '"' ~ (key | replace('_',' ') | title) ~ '"' }}{% endfor %}{% if proveedor_id > 0 %};vnumregistro{% endif %}
 
 {% endif %}
-{% if proveedor_id > 0 %}{{ proveedor_id }};{% endif %}{% for dat in fila %}{% if not loop.first %};{% endif %}{{ '"' ~ (dat is null ? 0 : (dat is same as(true) ? 'si' : ( dat is same as(false) ? 'no' : dat | raw))) ~ '"' }}{%  endfor %}
+{% if proveedor_id > 0 %}{{ proveedor_id }};{% endif %}{% for dat in fila %}{% if not loop.first %};{% endif %}{{ '"' ~ (dat is null ? 0 : (dat is same as(true) ? 'si' : ( dat is same as(false) ? 'no' : dat | raw))) ~ '"' }}{%  endfor %}{% if proveedor_id > 0 %};{{ loop.index }}{% endif %}
 
 {% endfor %}
