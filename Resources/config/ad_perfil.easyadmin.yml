@@ -1,8 +1,14 @@
 easy_admin:
-  entities:
-    - AscensoDigital\PerfilBundle\Entity\Color
-    - AscensoDigital\PerfilBundle\Entity\Menu
-    - AscensoDigital\PerfilBundle\Entity\Reporte
-    - AscensoDigital\PerfilBundle\Entity\ReporteCriterio
-    - AscensoDigital\PerfilBundle\Entity\ReporteCategoria
-    - AscensoDigital\PerfilBundle\Entity\ReporteSeccion
+    entities:
+        Color:
+            class: AscensoDigital\PerfilBundle\Entity\Color
+        Menu:
+            class: AscensoDigital\PerfilBundle\Entity\Menu
+        Reporte:
+            class: AscensoDigital\PerfilBundle\Entity\Reporte
+        ReporteCriterio:
+            class: AscensoDigital\PerfilBundle\Entity\ReporteCriterio
+        ReporteCategoria:
+            class: AscensoDigital\PerfilBundle\Entity\ReporteCategoria
+        ReporteSeccion:
+            class: AscensoDigital\PerfilBundle\Entity\ReporteSeccion
