@@ -24,6 +24,15 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $mnMapa= new Menu();
+        $mnMapa->setOrden(100)
+            ->setDescripcion('Mapa del Sitio según perfil')
+            ->setNombre('Mapa del Sitio')
+            ->setColor($this->getReference('clr-verde'))
+            ->setIcono('fa fa-sitemap')
+            ->setPermiso($this->getReference('per-mapa-sitio-index'));
+        $manager->persist($mnMapa);
+
         $mnConfig= new Menu();
         $mnConfig->setOrden(99)
             ->setDescripcion('Inicializar el sistema de menu y permisos')

@@ -60,6 +60,7 @@ class NavegacionController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/mapa-sitio", name="ad_perfil_mapa_sitio")
+     * @Security("is_granted('permiso','ad_perfil-mn-mapa-sitio')")
      */
     public function mapaSitio(Request $request) {
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId(null);

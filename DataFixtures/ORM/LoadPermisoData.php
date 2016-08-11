@@ -123,6 +123,14 @@ class LoadPermisoData extends AbstractFixture implements OrderedFixtureInterface
         }
         $this->addReference('per-config-index',$confIndex);
 
+        $mapIndex=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-mn-mapa-sitio']);
+        if(!$mapIndex) {
+            $mapIndex = new Permiso();
+            $mapIndex->setNombre('ad_perfil-mn-mapa-sitio')
+                ->setDescripcion('Menu Mapa del Sitio');
+            $manager->persist($mapIndex);
+        }
+        $this->addReference('per-mapa-sitio-index',$mapIndex);
         $manager->flush();
     }
 
