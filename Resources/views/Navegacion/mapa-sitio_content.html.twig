@@ -1,0 +1,10 @@
+<ul {% if submenu is not defined %}class="col-md-6"{% endif %}>
+    {% for menu in menus if menu.visible %}
+    <li>
+        {% if menu.icono %}<i class="{{ menu.icono }}"></i>{% endif %}{{ menu.nombre }}
+        {% if menu.menuHijos | length %}
+            {% include('mapa-sitio_content.html.twig',{'menus' : menu.menuHijos, 'submenu' : true}) %}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>

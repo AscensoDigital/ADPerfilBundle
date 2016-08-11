@@ -57,6 +57,17 @@ class NavegacionController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/mapa-sitio", name="ad_perfil_mapa_sitio")
+     */
+    public function mapaSitio(Request $request) {
+        $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId(null);
+        $perfil=$this->get('ad_perfil.perfil_manager')->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
+        return $this->render('ADPerfilBundle:Navegacion:mapa-sitio.html.twig',['menus' => $menus, 'perfil' => $perfil]);
+    }
+
+    /**
      * @param null $menu_id
      * @param bool $lateral Diferencia al menu desplegable principal de las secciones
      * @return \Symfony\Component\HttpFoundation\Response
