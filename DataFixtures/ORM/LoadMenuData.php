@@ -28,6 +28,7 @@ class LoadMenuData extends AbstractFixture implements OrderedFixtureInterface
         $mnMapa->setOrden(100)
             ->setDescripcion('Mapa del Sitio según perfil')
             ->setNombre('Mapa del Sitio')
+            ->setRoute('ad_perfil_mapa_sitio')
             ->setColor($this->getReference('clr-verde'))
             ->setIcono('fa fa-sitemap')
             ->setPermiso($this->getReference('per-mapa-sitio-index'));
