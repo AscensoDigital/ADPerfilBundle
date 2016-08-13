@@ -6,7 +6,7 @@ $(document).ready(function () {
         var modal_id=$(this).attr('href');
         var url=$(this).data('url');
         var nombre=$(this).data('reporte');
-        $('#rep_nombre').html(nombre);
+        $(modal_id+'_rep_nombre').html(nombre);
         $(modal_id).find('a').each(function(){
             $(this).attr('href',url + '/' + $(this).data('valor'));
         });
