@@ -32,6 +32,9 @@ class FiltroManager{
     }
 
     public function addFiltroValor($filtroName,$value){
+        if(0 === count($this->filtroValor)){
+            $this->procesa(null);
+        }
         $table_alias=$this->normalizar($filtroName,null,$value);
         $this->filtroValor[$table_alias]=$value;
         return $this;
