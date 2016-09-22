@@ -62,7 +62,7 @@ class NavegacionController extends Controller
      * @Route("/mapa-sitio", name="ad_perfil_mapa_sitio")
      * @Security("is_granted('permiso','ad_perfil-mn-mapa-sitio')")
      */
-    public function mapaSitio(Request $request) {
+    public function mapaSitioAction(Request $request) {
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId(null);
         $perfil=$this->get('ad_perfil.perfil_manager')->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
         return $this->render('ADPerfilBundle:Navegacion:mapa-sitio.html.twig',['menus' => $menus, 'perfil' => $perfil]);
