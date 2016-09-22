@@ -30,12 +30,18 @@ class ADPerfilTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            new \Twig_SimpleFunction('ad_perfil_get_config', array($this, 'getConfig')),
             new \Twig_SimpleFunction('ad_perfil_get_icon_path', array($this, 'getIconPath')),
             new \Twig_SimpleFunction('ad_perfil_get_icon_alt', array($this, 'getIconAlt')),
             new \Twig_SimpleFunction('ad_perfil_get_homepage_title', array($this, 'getHomepageTitle'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('ad_perfil_get_homepage_route', array($this, 'getHomepageRoute')),
             new \Twig_SimpleFunction('ad_perfil_get_homepage_subtitle', array($this, 'getHomepageSubtitle'), array('is_safe' => array('html'))),
         );
+    }
+
+    public function getConfig($key=null)
+    {
+        return $this->configurator->getConfiguration($key);
     }
 
     public function getIconPath() {

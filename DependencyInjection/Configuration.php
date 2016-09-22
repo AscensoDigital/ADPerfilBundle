@@ -30,6 +30,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('icon_path')->isRequired()->end()
                 ->scalarNode('icon_alt')->isRequired()->end()
                 ->integerNode('proveedor_id')->cannotBeEmpty()->end()
+                ->scalarNode('valor_true')->defaultValue('1')->end()
+                ->scalarNode('valor_false')->defaultValue('0')->end()
                 ->arrayNode('navegacion')
                     ->addDefaultsIfNotSet()
                     ->children()
