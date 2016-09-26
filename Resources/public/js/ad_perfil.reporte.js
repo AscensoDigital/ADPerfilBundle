@@ -7,8 +7,9 @@ $(document).ready(function () {
         var url=$(this).data('url');
         var nombre=$(this).data('reporte');
         $(modal_id+'_rep_nombre').html(nombre);
+        var now= new Date();
         $(modal_id).find('a').each(function(){
-            $(this).attr('href',url + '/' + $(this).data('valor'));
+            $(this).attr('href',url + '/' + $(this).data('valor') + '?v=' + now);
         });
     });
 });
