@@ -83,11 +83,13 @@ class NavegacionController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param Menu|null $menu
      * @param array|null $options
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function pageTitleAction(Menu $menu = null, $options = array()){
+    public function pageTitleAction(Request $request, Menu $menu = null, $options = array()){
+        $options=array_merge($options,$request->attributes->all());
         $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
         $options=is_null($menu) ? [
             'icono' => isset($options['icono']) ? $options['icono'] : $this->getParameter('ad_perfil.navegacion.homepage_icono'),
