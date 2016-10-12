@@ -160,7 +160,8 @@ class ReporteController extends Controller
             $nombre=$reporte->getNombreReporte($show_nombre);
         }
         $proveedor_id= $reporte->isShowProveedor() ? $this->get('ad_perfil.configurator')->getConfiguration('proveedor_id') : null;
-        return $this->generarReporte($data, $nombre, $proveedor_id);
+        $separador = $this->get('ad_perfil.configurator')->getConfiguration('separador_encabezado');
+        return $this->generarReporte($data, $nombre, $proveedor_id, true, $separador);
     }
     
     /**
@@ -170,8 +171,8 @@ class ReporteController extends Controller
      * @param bool $return_reporte
      * @return Response
      */
-    protected function generarReporte($data,$nombre_base, $proveedor_id, $return_reporte=true) {
-        $contenido=$this->renderView('ADPerfilBundle:Reporte:reporte.csv.twig', array('data' => $data, 'proveedor_id' => $proveedor_id));
+    protected function generarReporte($data,$nombre_base, $proveedor_id, $return_reporte=true, $separador = ' ') {
+        $contenido=$this->renderView('ADPerfilBundle:Reporte:reporte.csv.twig', array('data' => $data, 'proveedor_id' => $proveedor_id, 'separador' => $separador));
         $file=StrUtil::formatReport($contenido);
         $reporte=$this->saveReporte($nombre_base, $file);
         if($return_reporte){

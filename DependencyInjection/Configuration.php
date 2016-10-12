@@ -32,6 +32,7 @@ class Configuration implements ConfigurationInterface
                 ->integerNode('proveedor_id')->cannotBeEmpty()->end()
                 ->scalarNode('valor_true')->defaultValue('1')->end()
                 ->scalarNode('valor_false')->defaultValue('0')->end()
+                ->scalarNode('separador_encabezado')->defaultValue(false)->end()
                 ->arrayNode('navegacion')
                     ->addDefaultsIfNotSet()
                     ->children()
