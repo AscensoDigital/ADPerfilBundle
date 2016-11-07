@@ -21,6 +21,25 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ReporteController extends Controller
 {
     /**
+     * @param $id
+     * @return Response
+     * @Route("/reporte/download-file/{id}", name="ad_perfil_reporte_download")
+     */
+    public function downloadFileAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Archivo $file */
+        $file = $em->getRepository('ADPerfilBundle:Archivo')->find($id);
+        if(is_null($file)){
+            throw new NotFoundHttpException('Archivo No encontrado');
+        }
+        $response = new BinaryFileResponse($file->getPath());
+        // Give the file a name:
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT,$file->getNombre());
+
+        return $response;
+    }
+
+    /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/reporte/edit/{codigo}", name="ad_perfil_reporte_edit")
@@ -207,23 +226,5 @@ class ReporteController extends Controller
         $em->persist($archivo);
         $em->flush();
         return array('nombre' =>$nombre, 'archivo' => $archivo);
-    }
-
-    /**
-     * @param $id
-     * @return Response
-     */
-    protected function downloadFileAction($id) {
-        $em = $this->getDoctrine()->getManager();
-        /** @var Archivo $file */
-        $file = $em->getRepository('ADPerfilBundle:Archivo')->find($id);
-        if(is_null($file)){
-            throw new NotFoundHttpException('Archivo No encontrado');
-        }
-        $response = new BinaryFileResponse($file->getPath());
-        // Give the file a name:
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT,$file->getNombre());
-
-        return $response;
     }
 }
