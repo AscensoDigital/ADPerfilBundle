@@ -80,6 +80,11 @@ class Archivo
     protected $creador;
 
 
+    public function __toString()
+    {
+        return $this->getTitulo();
+    }
+
 
     public function getArraySerialize(){
         $ret = array();

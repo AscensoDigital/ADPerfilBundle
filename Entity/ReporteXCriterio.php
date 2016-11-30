@@ -73,6 +73,12 @@ class ReporteXCriterio
      */
     protected $modificador;
 
+
+    public function __toString()
+    {
+        return $this->getReporte().' | '.$this->getCriterioId();
+    }
+
     /**
      * @return int
      */

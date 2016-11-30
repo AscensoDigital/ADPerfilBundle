@@ -50,6 +50,11 @@ class PerfilXPermiso
      */
     protected $permiso;
 
+    public function __toString()
+    {
+        return $this->getPerfil()->getNombre().' - '.$this->getPermiso();
+    }
+
     /**
      * @return int
      */
