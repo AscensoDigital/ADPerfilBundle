@@ -10,11 +10,10 @@ namespace AscensoDigital\PerfilBundle\DataFixtures\ORM;
 
 
 use AscensoDigital\PerfilBundle\Entity\ReporteCriterio;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadReporteCriterioData extends AbstractFixture implements OrderedFixtureInterface
+class LoadReporteCriterioData extends Fixture
 {
 
     /**
@@ -33,15 +32,5 @@ class LoadReporteCriterioData extends AbstractFixture implements OrderedFixtureI
         }
         $this->setReference('rpc-periodo', $periodo);
         $manager->flush();
-    }
-
-    /**
-     * Get the order of this fixture
-     *
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return 4;
     }
 }

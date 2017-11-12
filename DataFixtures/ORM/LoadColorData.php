@@ -10,11 +10,10 @@ namespace AscensoDigital\PerfilBundle\DataFixtures\ORM;
 
 
 use AscensoDigital\PerfilBundle\Entity\Color;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadColorData extends AbstractFixture implements OrderedFixtureInterface
+class LoadColorData extends Fixture
 {
 
     /**
@@ -137,15 +136,5 @@ class LoadColorData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('clr-violeta',$violeta);
 
         $manager->flush();
-    }
-
-    /**
-     * Get the order of this fixture
-     *
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return 1;
     }
 }

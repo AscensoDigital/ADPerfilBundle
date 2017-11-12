@@ -10,11 +10,10 @@ namespace AscensoDigital\PerfilBundle\DataFixtures\ORM;
 
 
 use AscensoDigital\PerfilBundle\Entity\Permiso;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadPermisoData extends AbstractFixture implements OrderedFixtureInterface
+class LoadPermisoData extends Fixture
 {
 
     /**
@@ -132,15 +131,5 @@ class LoadPermisoData extends AbstractFixture implements OrderedFixtureInterface
         }
         $this->addReference('per-mapa-sitio-index',$mapIndex);
         $manager->flush();
-    }
-
-    /**
-     * Get the order of this fixture
-     *
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return 2;
     }
 }
