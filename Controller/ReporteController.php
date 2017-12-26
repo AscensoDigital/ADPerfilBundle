@@ -41,6 +41,7 @@ class ReporteController extends Controller
 
     /**
      * @param Request $request
+     * @param Reporte $reporte
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/reporte/edit/{codigo}", name="ad_perfil_reporte_edit")
      * @Security("is_granted('permiso','ad_perfil-rep-edit')")
@@ -144,6 +145,7 @@ class ReporteController extends Controller
 
     /**
      * @param Reporte $reporte
+     * @param $show_nombre
      * @param $criterio_valor
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/reporte/{reporte_id}/{show_nombre}/criterio/{criterio_valor}", name="ad_perfil_reporte", defaults={"criterio_valor" : null})
@@ -189,12 +191,13 @@ class ReporteController extends Controller
      * @param $proveedor_id
      * @param $separador
      * @param bool $return_reporte
+     * @param \DateTime $fecha
      * @return Response
      */
-    protected function generarReporte($data,$nombre_base, $proveedor_id, $separador, $return_reporte=true) {
+    protected function generarReporte($data,$nombre_base, $proveedor_id, $separador, $return_reporte=true, $fecha = null) {
         $contenido=$this->renderView('ADPerfilBundle:Reporte:reporte.csv.twig', array('data' => $data, 'proveedor_id' => $proveedor_id, 'separador' => $separador));
         $file=StrUtil::formatReport($contenido);
-        $reporte=$this->saveReporte($nombre_base, $file);
+        $reporte=$this->saveReporte($nombre_base, $file, $fecha);
         if($return_reporte){
             $response=new Response($file);
             $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=ISO-8859-1');
@@ -211,10 +214,13 @@ class ReporteController extends Controller
     /**
      * @param $nombre_base
      * @param $file
+     * @param $fecha
      * @return array
      */
-    protected function saveReporte($nombre_base,$file) {
-        $fecha=new \DateTime();
+    protected function saveReporte($nombre_base, $file, $fecha) {
+        if(is_null($fecha)) {
+            $fecha = new \DateTime();
+        }
         $nombre=$nombre_base.'-'.$fecha->format('Y_m_d_H_i_s').'.csv';
         $archivo= new Archivo();
         $archivo->setMimeType('text/vnd.ms-excel')
