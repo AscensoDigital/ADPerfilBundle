@@ -35,8 +35,6 @@ class PermisoVoter extends Voter
             if(!is_null($this->perfil_id)) {
                 $this->permisos[self::PERMISO] = $em->getRepository('ADPerfilBundle:PerfilXPermiso')->findArrayIdByPerfil($this->perfil_id);
             }
-        } catch(DBALException $e) {
-            return;
         } catch(\PDOException $e) {
             return;
         }
