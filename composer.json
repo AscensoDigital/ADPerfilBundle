@@ -8,7 +8,7 @@
     "authors": [
         {
             "name": "Claudio Corvalan",
-            "email": "claudio.corvalan@ennea.cl"
+            "email": "corvalanclaudio7@gmail.com"
         }
     ],
     "require": {
@@ -27,5 +27,6 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^2.3"
-    }
+    },
+    "version": "1.0.0"
 }
