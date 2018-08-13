@@ -40,6 +40,7 @@ services:
           - '@session'
           - '@doctrine.orm.entity_manager'
           - "%ad_perfil.session_name%"
+        public: true
 
     ad_perfil.perfil_manager:
         class: AscensoDigital\PerfilBundle\Model\PerfilManager

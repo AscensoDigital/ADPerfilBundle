@@ -16,6 +16,7 @@ class NavegacionController extends Controller
 {
     /**
      * @param Menu|null $menu
+     * @param MenuManager $menuManager
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/index/{menu_slug}", name="ad_perfil_menu", defaults={"menu_slug" : null})
      * @ParamConverter("menu", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
@@ -50,8 +51,8 @@ class NavegacionController extends Controller
      * @param Menu|null $menu
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function breadcrumbsAction(Menu $menu = null, MenuManager $menuManager){
-        $menu=is_null($menu) ? $menuManager->getMenuActual() : $menu;
+    public function breadcrumbsAction(Menu $menu = null){
+        $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
         return $this->render('ADPerfilBundle:Navegacion:breadcrumbs.html.twig', [
             'menu' => $menu,
             'homepage_route' => $this->getParameter('ad_perfil.navegacion.homepage_route'),
@@ -60,6 +61,8 @@ class NavegacionController extends Controller
 
     /**
      * @param Request $request
+     * @param MenuManager $menuManager
+     * @param PerfilManager $perfilManager
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/mapa-sitio", name="ad_perfil_mapa_sitio")
      * @Security("is_granted('permiso','ad_perfil-mn-mapa-sitio')")
@@ -75,12 +78,12 @@ class NavegacionController extends Controller
      * @param bool $lateral Diferencia al menu desplegable principal de las secciones
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function menuAction($menu_id=null, $lateral=false, MenuManager $menuManager) {
+    public function menuAction($menu_id=null, $lateral=false) {
         $menu_id= $lateral===true ? 0 : $menu_id;
-        $menus=$menuManager->getMenusByMenuId($menu_id);
+        $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
         return $this->render('ADPerfilBundle:Navegacion:menu-'.(false===$lateral ? 'nav' : 'li').'.html.twig', [
             'menus' => $menus,
-            'menuActual' => $menuManager->getMenuActual()
+            'menuActual' => $this->get('ad_perfil.menu_manager')->getMenuActual()
         ]);
     }
 
@@ -90,9 +93,9 @@ class NavegacionController extends Controller
      * @param array|null $options
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function pageTitleAction(Request $request, Menu $menu = null, $options = array(), MenuManager $menuManager){
+    public function pageTitleAction(Request $request, Menu $menu = null, $options = array()){
         $options=array_merge($options,$request->attributes->all());
-        $menu=is_null($menu) ? $menuManager->getMenuActual() : $menu;
+        $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
         $options=is_null($menu) ? [
             'icono' => isset($options['icono']) ? $options['icono'] : $this->getParameter('ad_perfil.navegacion.homepage_icono'),
             'color' => isset($options['color']) ? $options['color'] : $this->getParameter('ad_perfil.navegacion.homepage_color'),
@@ -111,17 +114,18 @@ class NavegacionController extends Controller
      * @param null $menu_id
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function submenuAction($menu_id=null, MenuManager $menuManager) {
-        $menus=$menuManager->getSubmenusByMenuId($menu_id);
+    public function submenuAction($menu_id=null) {
+        $menus=$this->get('ad_perfil.menu_manager')->getSubmenusByMenuId($menu_id);
         return $this->render('ADPerfilBundle:Navegacion:menu-nav-tab.html.twig', [
             'menus' => $menus,
-            'menuActual' => $menuManager->getMenuActual()
+            'menuActual' => $this->get('ad_perfil.menu_manager')->getMenuActual()
         ]);
     }
 
     /**
      * @param Request $request
      * @param Menu|null $menuSuperior
+     * @param MenuManager $menuManager
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/menu/new/{menu_slug}", name="ad_perfil_menu_new", defaults={"menu_slug" : null})
      * @ParamConverter("menuSuperior", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
