@@ -11,9 +11,10 @@ namespace AscensoDigital\PerfilBundle\DataFixtures\ORM;
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadMenuData extends Fixture
+class LoadMenuData extends Fixture implements DependentFixtureInterface
 {
 
     /**
