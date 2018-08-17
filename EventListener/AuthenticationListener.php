@@ -26,7 +26,7 @@ class AuthenticationListener
     public function onFormLogin(InteractiveLoginEvent $event) {
         $user=$event->getAuthenticationToken()->getUser();
         if(is_object($user)) {
-            $perfils=$user->getPerfils();
+            $perfils=is_null($user->getPerfils()) ?  [] : $user->getPerfils();
             $this->setPerfilId($event->getRequest(), $perfils);
         }
     }
@@ -37,7 +37,7 @@ class AuthenticationListener
         $request->getSession()->remove('ad_perfil.perfil_multiple');
         $user=$event->getTargetUser();
         if(is_object($user)) {
-            $perfils=$user->getPerfils();
+            $perfils=is_null($user->getPerfils()) ?  [] : $user->getPerfils();
             $this->setPerfilId($event->getRequest(), $perfils);
         }
     }
