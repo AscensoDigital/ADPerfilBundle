@@ -18,6 +18,7 @@ class ADPerfilExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritDoc}
+     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -82,6 +83,7 @@ class ADPerfilExtension extends Extension implements PrependExtensionInterface
      * Allow an extension to prepend the extension configurations.
      *
      * @param ContainerBuilder $container
+     * @throws \Exception
      */
     public function prepend(ContainerBuilder $container)
     {
