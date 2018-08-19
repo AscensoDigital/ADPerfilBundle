@@ -9,11 +9,19 @@
 namespace AscensoDigital\PerfilBundle\Repository;
 
 
+use AscensoDigital\PerfilBundle\Entity\Menu;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Security\PermisoVoter;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class MenuRepository extends EntityRepository {
+class MenuRepository extends ServiceEntityRepository {
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Menu::class);
+    }
 
     public function countItems($menu_id) {
         $qb=$this->getEntityManager()->createQueryBuilder();
@@ -28,7 +36,11 @@ class MenuRepository extends EntityRepository {
         }
         $qb->andWhere('adp_m.visible=:visible')
             ->setParameter(':visible','true');
-        return $qb->getQuery()->getSingleScalarResult();
+        try {
+            return $qb->getQuery()->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     public function findArrayPermisoByPerfil($perfil_id) {
@@ -72,15 +84,19 @@ class MenuRepository extends EntityRepository {
     }
 
     public function findOneByRoute($route) {
-        return $this->createQueryBuilder('adp_m')
-            ->addSelect('adp_ms')
-            ->addSelect('adp_c')
-            ->leftJoin('adp_m.color','adp_c')
-            ->leftJoin('adp_m.menuSuperior','adp_ms')
-            ->where('adp_m.route=:route')
-            ->setParameter(':route',$route)
-            ->setMaxResults(1)
-            ->getQuery()->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('adp_m')
+                ->addSelect('adp_ms')
+                ->addSelect('adp_c')
+                ->leftJoin('adp_m.color', 'adp_c')
+                ->leftJoin('adp_m.menuSuperior', 'adp_ms')
+                ->where('adp_m.route=:route')
+                ->setParameter(':route', $route)
+                ->setMaxResults(1)
+                ->getQuery()->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 
     public function getQueryBuilderOrderNombre() {

@@ -11,9 +11,15 @@ namespace AscensoDigital\PerfilBundle\Repository;
 
 use AscensoDigital\PerfilBundle\Doctrine\FiltroManager;
 use AscensoDigital\PerfilBundle\Entity\PerfilXPermiso;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class PerfilXPermisoRepository extends EntityRepository {
+class PerfilXPermisoRepository extends ServiceEntityRepository {
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, PerfilXPermiso::class);
+    }
 
     public function findArrayIdByPerfil($perfil_id) {
         $prms=$this->getEntityManager()->createQueryBuilder()

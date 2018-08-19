@@ -10,10 +10,17 @@ namespace AscensoDigital\PerfilBundle\Repository;
 
 
 use AscensoDigital\PerfilBundle\Entity\Reporte;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ReporteRepository extends EntityRepository
+class ReporteRepository extends ServiceEntityRepository
 {
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Reporte::class);
+    }
+
     public function findArrayByPerfil($perfil_id){
         $reps=$this->createQueryBuilder('rp')
             ->addSelect('rpc')
@@ -48,19 +55,23 @@ class ReporteRepository extends EntityRepository
     
     public function findOneByCodigo($codigo){
         $codigo= is_array($codigo) ? $codigo['codigo'] : $codigo;
-        return $this->createQueryBuilder('rp')
-            ->addSelect('per')
-            ->addSelect('rpc')
-            ->addSelect('rps')
-            ->addSelect('rpcr')
-            ->addSelect('rpxc')
-            ->join('rp.reporteCategoria','rpc')
-            ->join('rp.reporteSeccion','rps')
-            ->leftJoin('rp.permiso','per')
-            ->leftJoin('rp.reporteCriterio','rpcr')
-            ->leftJoin('rp.reporteXCriterios','rpxc')
-            ->where('rp.codigo=:codigo')
-            ->setParameter(':codigo',$codigo)
-            ->getQuery()->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('rp')
+                ->addSelect('per')
+                ->addSelect('rpc')
+                ->addSelect('rps')
+                ->addSelect('rpcr')
+                ->addSelect('rpxc')
+                ->join('rp.reporteCategoria', 'rpc')
+                ->join('rp.reporteSeccion', 'rps')
+                ->leftJoin('rp.permiso', 'per')
+                ->leftJoin('rp.reporteCriterio', 'rpcr')
+                ->leftJoin('rp.reporteXCriterios', 'rpxc')
+                ->where('rp.codigo=:codigo')
+                ->setParameter(':codigo', $codigo)
+                ->getQuery()->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 }

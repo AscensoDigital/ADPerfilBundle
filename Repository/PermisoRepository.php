@@ -10,9 +10,16 @@ namespace AscensoDigital\PerfilBundle\Repository;
 
 
 use AscensoDigital\PerfilBundle\Doctrine\FiltroManager;
-use Doctrine\ORM\EntityRepository;
+use AscensoDigital\PerfilBundle\Entity\Permiso;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class PermisoRepository extends EntityRepository {
+class PermisoRepository extends ServiceEntityRepository {
+
+    public function __construct(RegistryInterface $registry)
+    {
+        parent::__construct($registry, Permiso::class);
+    }
 
     public function findAllOrderNombre()
     {
