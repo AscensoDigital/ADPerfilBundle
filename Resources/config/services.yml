@@ -100,27 +100,27 @@ services:
         tags: ['console.command']
 
 # REPOSITORY CLASS
-    ad_perfil.repository.color:
-        class: AscensoDigital\PerfilBundle\Repository\ColorRepository
-        tags: ['doctrine.repository_service']
-        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+#    ad_perfil.repository.color:
+#        class: AscensoDigital\PerfilBundle\Repository\ColorRepository
+#        tags: ['doctrine.repository_service']
+#        arguments: ['@doctrine.orm.entity_manager', '@?']
 
-    ad_perfil.repository.menu:
-        class: AscensoDigital\PerfilBundle\Repository\MenuRepository
-        tags: ['doctrine.repository_service']
-        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+#    ad_perfil.repository.menu:
+#        class: AscensoDigital\PerfilBundle\Repository\MenuRepository
+#        tags: ['doctrine.repository_service']
+#        arguments: ['@doctrine.orm.entity_manager', '@?']
 
-    ad_perfil.repository.perfil_x_permiso:
-        class: AscensoDigital\PerfilBundle\Repository\PerfilXPermisoRepository
-        tags: ['doctrine.repository_service']
-        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+#    ad_perfil.repository.perfil_x_permiso:
+#        class: AscensoDigital\PerfilBundle\Repository\PerfilXPermisoRepository
+#        tags: ['doctrine.repository_service']
+#        arguments: ['@doctrine.orm.entity_manager', '@?']
 
-    ad_perfil.repository.permiso:
-        class: AscensoDigital\PerfilBundle\Repository\PermisoRepository
-        tags: ['doctrine.repository_service']
-        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+ #   ad_perfil.repository.permiso:
+ #       class: AscensoDigital\PerfilBundle\Repository\PermisoRepository
+ #       tags: ['doctrine.repository_service']
+ #       arguments: ['@doctrine.orm.entity_manager', '@?']
 
-    ad_perfil.repository.reporte:
-        class: AscensoDigital\PerfilBundle\Repository\ReporteRepository
-        tags: ['doctrine.repository_service']
-        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+ #   ad_perfil.repository.reporte:
+ #       class: AscensoDigital\PerfilBundle\Repository\ReporteRepository
+ #       tags: ['doctrine.repository_service']
+ #       arguments: ['@doctrine.orm.entity_manager', '@?']
