@@ -3,16 +3,15 @@
 namespace AscensoDigital\PerfilBundle\Controller;
 
 
-use AscensoDigital\PerfilBundle\Doctrine\FiltroManager;
+
 use AscensoDigital\PerfilBundle\Form\Type\FiltroFormType;
-use AscensoDigital\PerfilBundle\Model\PerfilManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Exception\LogicException;
 use Symfony\Component\HttpFoundation\Request;
 
 class FiltroController extends Controller {
 
-    /* public function filtroNameAction(Request $request, PerfilManager $perfilManager, FiltroManager $filtroManager) {
+    /* public function filtroNameAction(Request $request) {
         $options=array(
             'route' => 'route_name', # required
             'route_params' => array(), # optional
@@ -27,7 +26,7 @@ class FiltroController extends Controller {
         return $this->filtroAction($request, $options);
     } */
 
-    public function permisoAction(Request $request, PerfilManager $perfilManager, FiltroManager $filtroManager) {
+    public function permisoAction(Request $request) {
         $options=array(
             'route' => 'ad_perfil_permiso_list_table',
             'update' => 'table-permisos',
@@ -36,16 +35,16 @@ class FiltroController extends Controller {
                 'adperfil_permiso' => []
             ),
         );
-        return $this->filtroAction($request, $options, $perfilManager, $filtroManager);
+        return $this->filtroAction($request, $options);
     }
 
-    protected function filtroAction(Request $request, $options, PerfilManager $perfilManager, FiltroManager $filtroManager) {
+    protected function filtroAction(Request $request, $options) {
         $options=$this->validateOptions($options);
-        $options['perfil']=$perfilManager->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
+        $options['perfil']=$this->get('ad_perfil.perfil_manager')->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
         
         $form = $this->createForm(FiltroFormType::class, null, $options);
 
-        $filtro_values=$filtroManager->getFiltros($options['route']);
+        $filtro_values=$this->get('ad_perfil.filtro_manager')->getFiltros($options['route']);
         if(true===$options['auto_llenado'] && count($filtro_values)){
             $request->request->set('ad_perfil_filtros', $filtro_values);
             $request->setMethod('post');
