@@ -9,16 +9,9 @@
 namespace AscensoDigital\PerfilBundle\Repository;
 
 
-use AscensoDigital\PerfilBundle\Entity\Color;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\EntityRepository;
 
-class ColorRepository extends ServiceEntityRepository {
-
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, Color::class);
-    }
+class ColorRepository extends EntityRepository {
 
     public function getQueryBuilderOrderNombre() {
         return $this->createQueryBuilder('adp_c')

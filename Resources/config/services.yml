@@ -77,6 +77,7 @@ services:
         tags:
             - { name: security.voter }
 
+# FIXTURES DATA
     ad_perfil.fixtures.color:
         class: AscensoDigital\PerfilBundle\DataFixtures\ORM\LoadColorData
         tags: ['doctrine.fixture.orm']
@@ -93,6 +94,33 @@ services:
         class: AscensoDigital\PerfilBundle\DataFixtures\ORM\LoadReporteCriterioData
         tags: ['doctrine.fixture.orm']
 
+# COMMAND
     ad_perfil.command.asociar_super_admin:
         class: AscensoDigital\PerfilBundle\Command\AsociarSuperAdminCommand
-        tags: ["console.command"]
+        tags: ['console.command']
+
+# REPOSITORY CLASS
+    ad_perfil.repository.color:
+        class: AscensoDigital\PerfilBundle\Repository\ColorRepository
+        tags: ['doctrine.repository_service']
+        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+
+    ad_perfil.repository.menu:
+        class: AscensoDigital\PerfilBundle\Repository\MenuRepository
+        tags: ['doctrine.repository_service']
+        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+
+    ad_perfil.repository.perfil_x_permiso:
+        class: AscensoDigital\PerfilBundle\Repository\PerfilXPermisoRepository
+        tags: ['doctrine.repository_service']
+        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+
+    ad_perfil.repository.permiso:
+        class: AscensoDigital\PerfilBundle\Repository\PermisoRepository
+        tags: ['doctrine.repository_service']
+        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']
+
+    ad_perfil.repository.reporte:
+        class: AscensoDigital\PerfilBundle\Repository\ReporteRepository
+        tags: ['doctrine.repository_service']
+        arguments: ['@doctrine.orm.entity_manager.abstract', '@?']

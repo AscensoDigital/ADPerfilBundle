@@ -10,17 +10,11 @@ namespace AscensoDigital\PerfilBundle\Repository;
 
 
 use AscensoDigital\PerfilBundle\Entity\Reporte;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ReporteRepository extends ServiceEntityRepository
+class ReporteRepository extends EntityRepository
 {
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, Reporte::class);
-    }
-
     public function findArrayByPerfil($perfil_id){
         $reps=$this->createQueryBuilder('rp')
             ->addSelect('rpc')

@@ -9,19 +9,12 @@
 namespace AscensoDigital\PerfilBundle\Repository;
 
 
-use AscensoDigital\PerfilBundle\Entity\Menu;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Security\PermisoVoter;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class MenuRepository extends ServiceEntityRepository {
-
-    public function __construct(RegistryInterface $registry)
-    {
-        parent::__construct($registry, Menu::class);
-    }
+class MenuRepository extends EntityRepository {
 
     public function countItems($menu_id) {
         $qb=$this->getEntityManager()->createQueryBuilder();
@@ -39,7 +32,7 @@ class MenuRepository extends ServiceEntityRepository {
         try {
             return $qb->getQuery()->getSingleScalarResult();
         } catch (NonUniqueResultException $e) {
-            return 0;
+            return null;
         }
     }
 
