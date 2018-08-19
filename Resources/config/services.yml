@@ -33,6 +33,7 @@ services:
     ad_perfil.filtro_manager:
         class: AscensoDigital\PerfilBundle\Doctrine\FiltroManager
         arguments: ["@request_stack", "@ad_perfil.configurator"]
+        public: true
 
     ad_perfil.menu_manager:
         class: AscensoDigital\PerfilBundle\Model\MenuManager
@@ -47,6 +48,7 @@ services:
         arguments:
           - '@doctrine.orm.entity_manager'
           - "%ad_perfil.perfil_class%"
+        public: true
 
     ad_perfil.reporte_manager:
         class: AscensoDigital\PerfilBundle\Model\ReporteManager
@@ -56,6 +58,7 @@ services:
           - "%ad_perfil.session_name%"
           - '@ad_perfil.perfil_manager'
           - '@security.token_storage'
+        public: true
 
     ad_perfil.twig_extension:
         class: AscensoDigital\PerfilBundle\Twig\ADPerfilTwigExtension
@@ -87,5 +90,9 @@ services:
         tags: ['doctrine.fixture.orm']
 
     ad_perfil.fixtures.repo.criterio:
-            class: AscensoDigital\PerfilBundle\DataFixtures\ORM\LoadReporteCriterioData
-            tags: ['doctrine.fixture.orm']
+        class: AscensoDigital\PerfilBundle\DataFixtures\ORM\LoadReporteCriterioData
+        tags: ['doctrine.fixture.orm']
+
+    ad_perfil.command.asociar_super_admin:
+        class: AscensoDigital\PerfilBundle\Command\AsociarSuperAdminCommand
+        tags: ["console.command"]
