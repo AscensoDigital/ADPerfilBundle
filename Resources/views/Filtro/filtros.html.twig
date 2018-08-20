@@ -1,24 +1,27 @@
-<div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="ad_perfil-headingFiltros">
-        <h4 class="panel-title">
+{% set class-base = ad_component_get_bootstrap_version()==4 ? 'card' : 'panel' %}
+<div class="{{ class-base }} {{ class-base }}-default">
+    <div class="{{ class-base }}-heading" role="tab" id="ad_perfil-headingFiltros">
+        <h4 class="{{ class-base }}-title">
             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#ad_perfil-collapseFiltro" aria-expanded="true" aria-controls="ad_perfil-collapseFiltro">
                 <span class="caret"></span> Filtros
             </a>
         </h4>
     </div>
-    <div id="ad_perfil-collapseFiltro" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="ad_perfil-headingFiltros">
+    <div id="ad_perfil-collapseFiltro" class="{{ class-base }}-collapse collapse in" role="tabpanel" aria-labelledby="ad_perfil-headingFiltros">
         {{ form_start(form) }}
-        <div id="ad_perfil-filtro-body" class="panel-body">
-            <div class="col-md-12 text-left"><span class="label label-info"><strong>*</strong> Filtros Obligatorios</span></div>
+        <div id="ad_perfil-filtro-body" class="{{ class-base }}-body">
+            <div class="row"><div class="col-12 text-left"><span class="label label-info"><strong>*</strong> Filtros Obligatorios</span></div></div>
+            <div class="row">
             {% for filtro,activo in activos %}
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
                     {{ form_label(form[filtro],null,{ 'label_attr' : { 'class' : 'col-md-12'} }) }}
                     {{ form_widget(form[filtro]) }}
                 </div>
             {% endfor %}
+            </div>
             {{ form_widget(form) }}
         </div>
-        <div class="panel-footer text-right">
+        <div class="{{ class-base }}-footer text-right">
             <button id="ad_perfil-btn-filtros" type="submit" class="btn btn-primary"> Listar</button>&nbsp;
             <button id="reset" type="button" class="btn btn-danger">Limpiar Filtros</button>
         </div>
