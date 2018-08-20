@@ -12,6 +12,7 @@ services:
     ad_perfil.configurator:
         class: AscensoDigital\PerfilBundle\Configuration\Configurator
         arguments: ['%ad_perfil.config%']
+        public: true
 
     ad_perfil.filtro.form.type:
         class: AscensoDigital\PerfilBundle\Form\Type\FiltroFormType

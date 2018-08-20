@@ -4,8 +4,6 @@ namespace AscensoDigital\PerfilBundle\Controller;
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
 use AscensoDigital\PerfilBundle\Form\Type\MenuFormType;
-use AscensoDigital\PerfilBundle\Model\MenuManager;
-use AscensoDigital\PerfilBundle\Model\PerfilManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -16,16 +14,15 @@ class NavegacionController extends Controller
 {
     /**
      * @param Menu|null $menu
-     * @param MenuManager $menuManager
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/index/{menu_slug}", name="ad_perfil_menu", defaults={"menu_slug" : null})
      * @ParamConverter("menu", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
      * @Security("is_granted('menu',menu)")
      */
-    public function indexAction(Menu $menu = null, MenuManager $menuManager ) {
-        $menuManager->setMenuActual($menu);
+    public function indexAction(Menu $menu = null) {
+        $this->get('ad_perfil.menu_manager')->setMenuActual($menu);
         $menu_id=is_null($menu) ? null : $menu->getId();
-        $menus=$menuManager->getMenusByMenuId($menu_id);
+        $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
         $canCreate=$this->isGranted('permiso','ad_perfil-menu-new');
         if(!$canCreate && 1==count($menus)){
             /** @var Menu $mn */
@@ -61,15 +58,13 @@ class NavegacionController extends Controller
 
     /**
      * @param Request $request
-     * @param MenuManager $menuManager
-     * @param PerfilManager $perfilManager
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/mapa-sitio", name="ad_perfil_mapa_sitio")
      * @Security("is_granted('permiso','ad_perfil-mn-mapa-sitio')")
      */
-    public function mapaSitioAction(Request $request, MenuManager $menuManager, PerfilManager $perfilManager) {
-        $menus=$menuManager->getMenusByMenuId(null);
-        $perfil=$perfilManager->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
+    public function mapaSitioAction(Request $request) {
+        $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId(null);
+        $perfil=$this->get('ad_perfil.perfil_manager')->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
         return $this->render('ADPerfilBundle:Navegacion:mapa-sitio.html.twig',['menus' => $menus, 'perfil' => $perfil]);
     }
 
@@ -125,16 +120,15 @@ class NavegacionController extends Controller
     /**
      * @param Request $request
      * @param Menu|null $menuSuperior
-     * @param MenuManager $menuManager
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/menu/new/{menu_slug}", name="ad_perfil_menu_new", defaults={"menu_slug" : null})
      * @ParamConverter("menuSuperior", class="ADPerfilBundle:Menu", options={"mapping" : {"menu_slug" : "slug" }})
      * @Security("is_granted('permiso','ad_perfil-menu-new')")
      */
-    public function createAction(Request $request, Menu $menuSuperior = null, MenuManager $menuManager){
+    public function createAction(Request $request, Menu $menuSuperior = null){
         $menu=new Menu();
         $menu->setMenuSuperior($menuSuperior)
-            ->setOrden($menuManager->countItems($menuSuperior)+1);
+            ->setOrden($this->get('ad_perfil.menu_manager')->countItems($menuSuperior)+1);
         $form=$this->createForm(MenuFormType::class,$menu, ['super_admin' => true]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -142,7 +136,7 @@ class NavegacionController extends Controller
             $em->persist($menu);
             $em->flush();
             $this->addFlash('success','Se creo correctamente el Menú '.$menu);
-            return $this->redirectToRoute('ad_perfil_menu',[ 'menu_slug' => $menuManager->getSlugActual()]);
+            return $this->redirectToRoute('ad_perfil_menu',[ 'menu_slug' => $this->get('ad_perfil.menu_manager')->getSlugActual()]);
         }
         return $this->render('ADPerfilBundle:Navegacion:menu-new.html.twig', [
             'form' => $form->createView(),

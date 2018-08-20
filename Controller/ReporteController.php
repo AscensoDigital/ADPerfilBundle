@@ -3,13 +3,11 @@
 namespace AscensoDigital\PerfilBundle\Controller;
 
 use AscensoDigital\ComponentBundle\Util\StrUtil;
-use AscensoDigital\PerfilBundle\Configuration\Configurator;
 use AscensoDigital\PerfilBundle\Entity\Archivo;
 use AscensoDigital\PerfilBundle\Entity\Reporte;
 use AscensoDigital\PerfilBundle\Entity\ReporteXCriterio;
 use AscensoDigital\PerfilBundle\Form\Type\ReporteFormType;
 use AscensoDigital\PerfilBundle\Form\Type\ReporteLoadEstaticoFormType;
-use AscensoDigital\PerfilBundle\Model\ReporteManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -71,9 +69,9 @@ class ReporteController extends Controller
      * @Route("/reportes", name="ad_perfil_reportes")
      * @Security("is_granted('permiso','ad_perfil-mn-reporte')")
      */
-    public function listAction(ReporteManager $reporteManager)
+    public function listAction()
     {
-        $data=$reporteManager->getDataReportesForList();
+        $data=$this->get('ad_perfil.reporte_manager')->getDataReportesForList();
         return $this->render('ADPerfilBundle:Reporte:list.html.twig', array(
             'data' => $data,
             'canEdit' => $this->isGranted('permiso','ad_perfil-rep-edit'),
@@ -89,12 +87,12 @@ class ReporteController extends Controller
      * @Security("is_granted('permiso','ad_perfil-rep-load-estatico')")
      * @ParamConverter("reporte", class="ADPerfilBundle:Reporte", options={"repository_method" : "findOneByCodigo" })
      */
-    public function loadEstaticoAction(Request $request, Reporte $reporte, ReporteManager $reporteManager){
+    public function loadEstaticoAction(Request $request, Reporte $reporte){
         $em=$this->getDoctrine()->getManager();
         $reporteXCriterio=new ReporteXCriterio();
         $reporteXCriterio->setReporte($reporte);
         $form=$this->createForm(ReporteLoadEstaticoFormType::class,$reporteXCriterio,[
-            'criterio_choices' => $reporteManager->getCriterioChoices($reporte->getReporteCriterio())
+            'criterio_choices' => $this->get('ad_perfil.reporte_manager')->getCriterioChoices($reporte->getReporteCriterio())
         ]);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -110,7 +108,7 @@ class ReporteController extends Controller
             /** @var Archivo $archivo */
             $archivo = $rxp->getArchivo();
             $directorio = "reportes/estaticos";
-            $criterio_nombre=$reporteManager->getCriterioNombre($reporte->getReporteCriterio(),$rxp->getCriterioId());
+            $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(),$rxp->getCriterioId());
             $nombre = $reporte->getNombreReporte(false).'-'.$criterio_nombre.'-'.date('Y_m_d_H_i_s');
             $archivo->upload($directorio, $nombre);
             $archivo->setCreador($this->getUser());
@@ -153,7 +151,7 @@ class ReporteController extends Controller
      * @Route("/reporte/{reporte_id}/{show_nombre}/criterio/{criterio_valor}", name="ad_perfil_reporte", defaults={"criterio_valor" : null})
      * @ParamConverter("reporte", class="ADPerfilBundle:Reporte", options={"repository_method" : "findOneByCodigo", "mapping" : {"reporte_id" : "codigo"} })
      */
-    public function reporteAction(Reporte $reporte, $show_nombre, $criterio_valor, ReporteManager $reporteManager, Configurator $configurator){
+    public function reporteAction(Reporte $reporte, $show_nombre, $criterio_valor){
         if(is_null($reporte)){
             $this->addFlash('warning','No existe el reporte solicitado');
             return $this->redirectToRoute('ad_perfil_reportes');
@@ -175,15 +173,15 @@ class ReporteController extends Controller
         $metodo=$reporte->getMetodo();
         if($reporte->hasCriterio()){
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo($criterio_valor);
-            $criterio_nombre=$reporteManager->getCriterioNombre($reporte->getReporteCriterio(),$criterio_valor);
+            $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(),$criterio_valor);
             $nombre=$reporte->getNombreReporte($show_nombre).'-'.$criterio_nombre;
         }
         else {
             $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo();
             $nombre=$reporte->getNombreReporte($show_nombre);
         }
-        $proveedor_id= $reporte->isShowProveedor() ? $configurator->getConfiguration('proveedor_id') : null;
-        $separador = $configurator->getConfiguration('separador_encabezado');
+        $proveedor_id= $reporte->isShowProveedor() ? $this->get('ad_perfil.configurator')->getConfiguration('proveedor_id') : null;
+        $separador = $this->get('ad_perfil.configurator')->getConfiguration('separador_encabezado');
         return $this->generarReporte($data, $nombre, $proveedor_id, $separador);
     }
 

@@ -2,12 +2,11 @@
 
 namespace AscensoDigital\PerfilBundle\Controller;
 
-use AscensoDigital\PerfilBundle\Doctrine\FiltroManager;
+
 use AscensoDigital\PerfilBundle\Entity\Perfil;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosFormType;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosPerfilFormType;
-use AscensoDigital\PerfilBundle\Model\PerfilManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,9 +21,9 @@ class PermisoController extends Controller
      * @Route("/permisos/edit/{nombre}", name="ad_perfil_permiso_edit")
      * @Security("is_granted('permiso','ad_perfil-per-edit')")
      */
-    public function editAction(Request $request, Permiso $permiso, PerfilManager $perfilManager) {
+    public function editAction(Request $request, Permiso $permiso) {
         $em=$this->getDoctrine()->getManager();
-        $perfils=$perfilManager->findAllOrderRole();
+        $perfils=$this->get('ad_perfil.perfil_manager')->findAllOrderRole();
         $permiso->loadPerfils($perfils);
         $form=$this->createForm(PermisosFormType::class,$permiso);
         $form->handleRequest($request);
@@ -43,12 +42,12 @@ class PermisoController extends Controller
      * @Route("/permisos/edit-perfil/{slug}", name="ad_perfil_permiso_edit_perfil")
      * @Security("is_granted('permiso','ad_perfil-per-edit')")
      */
-    public function editByPerfilAction(Request $request, $slug, PerfilManager $perfilManager) {
+    public function editByPerfilAction(Request $request, $slug) {
         $em=$this->getDoctrine()->getManager();
         $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findAllOrderNombre();
 
         /** @var Perfil $perfil */
-        $perfil=$perfilManager->findPerfilBy(['slug' => $slug]);
+        $perfil=$this->get('ad_perfil.perfil_manager')->findPerfilBy(['slug' => $slug]);
         $perfil->loadPermisos($permisos);
 
         $form=$this->createForm(PermisosPerfilFormType::class,$perfil);
@@ -75,11 +74,11 @@ class PermisoController extends Controller
      * @Route("/permisos/list-table", name="ad_perfil_permiso_list_table")
      * @Security("is_granted('permiso','ad_perfil-per-list')")
      */
-    public function listTableAction(FiltroManager $filtroManager, PerfilManager $perfilManager) {
+    public function listTableAction() {
         $em = $this->getDoctrine()->getManager();
-        $perfils=$perfilManager->findByFiltro($filtroManager);
-        $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro($filtroManager);
-        $pxps=$em->getRepository('ADPerfilBundle:PerfilXPermiso')->findByFiltros($filtroManager);
+        $perfils=$this->get('ad_perfil.perfil_manager')->findByFiltro($this->get('ad_perfil.filtro_manager'));
+        $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro($this->get('ad_perfil.filtro_manager'));
+        $pxps=$em->getRepository('ADPerfilBundle:PerfilXPermiso')->findByFiltros($this->get('ad_perfil.filtro_manager'));
         return $this->render('ADPerfilBundle:Permiso:list-table.html.twig',array('permisos' => $permisos, 'perfils' => $perfils, 'pxps' => $pxps));
     }
 
@@ -89,10 +88,10 @@ class PermisoController extends Controller
      * @Route("/permisos/new", name="ad_perfil_permiso_new")
      * @Security("is_granted('permiso','ad_perfil-per-new')")
      */
-    public function newAction(Request $request, PerfilManager $perfilManager) {
+    public function newAction(Request $request) {
         $em=$this->getDoctrine()->getManager();
         $permiso=new Permiso();
-        $perfils=$perfilManager->findAllOrderRole();
+        $perfils=$this->get('ad_perfil.perfil_manager')->findAllOrderRole();
         $permiso->loadPerfils($perfils);
 
         $form=$this->createForm(PermisosFormType::class,$permiso);
