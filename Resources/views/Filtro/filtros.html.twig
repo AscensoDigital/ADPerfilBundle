@@ -1,4 +1,5 @@
-{% set class_base = ad_component_get_bootstrap_version()==4 ? 'card' : 'panel' %}
+{% set isV4 = ad_component_get_bootstrap_version()==4 %}
+{% set class_base = isV4 ? 'card' : 'panel' %}
 <div class="{{ class_base }} {{ class_base }}-default">
     <div class="{{ class_base }}-heading" role="tab" id="ad_perfil-headingFiltros">
         <h4 class="{{ class_base }}-title">
@@ -7,7 +8,7 @@
             </a>
         </h4>
     </div>
-    <div id="ad_perfil-collapseFiltro" class="{{ class_base }}-collapse collapse in" role="tabpanel" aria-labelledby="ad_perfil-headingFiltros">
+    <div id="ad_perfil-collapseFiltro" class="{{ class_base }}-collapse collapse {% isV4 ? 'show' : 'in' %}" role="tabpanel" aria-labelledby="ad_perfil-headingFiltros">
         {{ form_start(form) }}
         <div id="ad_perfil-filtro-body" class="{{ class_base }}-body">
             <div class="row"><div class="col-12 text-left"><span class="label label-info"><strong>*</strong> Filtros Obligatorios</span></div></div>
