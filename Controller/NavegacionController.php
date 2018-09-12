@@ -34,7 +34,7 @@ class NavegacionController extends Controller
                 return $this->redirectToRoute('ad_perfil_menu',['menu_slug' => $mn->getSlug()]);
             }
         }
-        return $this->render('ADPerfilBundle:Navegacion:index.html.twig', [
+        return $this->render('@ADPerfil/Navegacion/index.html.twig', [
             'menus' => $menus,
             'menuActual' => $menu,
             'title' => is_null($menu) ? $this->getParameter('ad_perfil.navegacion.homepage_name') : $menu->getTitulo(),
@@ -50,7 +50,7 @@ class NavegacionController extends Controller
      */
     public function breadcrumbsAction(Menu $menu = null){
         $menu=is_null($menu) ? $this->get('ad_perfil.menu_manager')->getMenuActual() : $menu;
-        return $this->render('ADPerfilBundle:Navegacion:breadcrumbs.html.twig', [
+        return $this->render('@ADPerfil/Navegacion/breadcrumbs.html.twig', [
             'menu' => $menu,
             'homepage_route' => $this->getParameter('ad_perfil.navegacion.homepage_route'),
             'homepage_name' => $this->getParameter('ad_perfil.navegacion.homepage_name')]);
@@ -65,7 +65,7 @@ class NavegacionController extends Controller
     public function mapaSitioAction(Request $request) {
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId(null);
         $perfil=$this->get('ad_perfil.perfil_manager')->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
-        return $this->render('ADPerfilBundle:Navegacion:mapa-sitio.html.twig',['menus' => $menus, 'perfil' => $perfil]);
+        return $this->render('@ADPerfil/Navegacion/mapa-sitio.html.twig',['menus' => $menus, 'perfil' => $perfil]);
     }
 
     /**
@@ -76,7 +76,7 @@ class NavegacionController extends Controller
     public function menuAction($menu_id=null, $lateral=false) {
         $menu_id= $lateral===true ? 0 : $menu_id;
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
-        return $this->render('ADPerfilBundle:Navegacion:menu-'.(false===$lateral ? 'nav' : 'li').'.html.twig', [
+        return $this->render('@ADPerfil/Navegacion/menu-'.(false===$lateral ? 'nav' : 'li').'.html.twig', [
             'menus' => $menus,
             'menuActual' => $this->get('ad_perfil.menu_manager')->getMenuActual()
         ]);
@@ -102,7 +102,7 @@ class NavegacionController extends Controller
             'title' => isset($options['title']) ? $options['title'] : $menu->getTitulo(),
             'subtitle' => isset($options['subtitle']) ? $options['subtitle'] : $menu->getSubtitulo()
         ];
-        return $this->render('ADPerfilBundle:Navegacion:page-title.html.twig', $options);
+        return $this->render('@ADPerfil/Navegacion/page-title.html.twig', $options);
     }
 
     /**
@@ -111,7 +111,7 @@ class NavegacionController extends Controller
      */
     public function submenuAction($menu_id=null) {
         $menus=$this->get('ad_perfil.menu_manager')->getSubmenusByMenuId($menu_id);
-        return $this->render('ADPerfilBundle:Navegacion:menu-nav-tab.html.twig', [
+        return $this->render('@ADPerfil/Navegacion/menu-nav-tab.html.twig', [
             'menus' => $menus,
             'menuActual' => $this->get('ad_perfil.menu_manager')->getMenuActual()
         ]);
@@ -138,7 +138,7 @@ class NavegacionController extends Controller
             $this->addFlash('success','Se creo correctamente el Menú '.$menu);
             return $this->redirectToRoute('ad_perfil_menu',[ 'menu_slug' => $this->get('ad_perfil.menu_manager')->getSlugActual()]);
         }
-        return $this->render('ADPerfilBundle:Navegacion:menu-new.html.twig', [
+        return $this->render('@ADPerfil/Navegacion/menu-new.html.twig', [
             'form' => $form->createView(),
             'menuSuperior' => $menuSuperior
         ]);
@@ -166,7 +166,7 @@ class NavegacionController extends Controller
             $this->addFlash('success','Se actualizó correctamente el Menú '.$menu);
             return $this->redirectToRoute('ad_perfil_menu',[ 'menu_slug' => $menu->getMenuSuperiorSlug()]);
         }
-        return $this->render('ADPerfilBundle:Navegacion:menu-edit.html.twig', [
+        return $this->render('@ADPerfil/Navegacion/menu-edit.html.twig', [
             'form' => $form->createView(),
             'menu' => $menu
         ]);

@@ -51,12 +51,12 @@ class PerfilController extends Controller
                 }
             }
         }
-        return $this->render('ADPerfilBundle:Perfil:showActive.html.twig', ['perfil'=> $perfilStr,'multiple' => $multiple]);
+        return $this->render('@ADPerfil/Perfil/showActive.html.twig', ['perfil'=> $perfilStr,'multiple' => $multiple]);
     }
 
     public function showOptionAction(){
         $perfils= $this->getUser() ? $this->getUser()->getPerfils() : array();
-        return $this->render('ADPerfilBundle:Perfil:showOption.html.twig',['perfils' => $perfils, 'sesionName' => $this->getParameter('ad_perfil.session_name')]);
+        return $this->render('@ADPerfil/Perfil/showOption.html.twig',['perfils' => $perfils, 'sesionName' => $this->getParameter('ad_perfil.session_name')]);
     }
 
     private function removeFiltros(Request $request) {

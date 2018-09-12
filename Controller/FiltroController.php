@@ -51,7 +51,7 @@ class FiltroController extends Controller {
             $form->handleRequest($request);
         }
 
-        return $this->render('ADPerfilBundle:Filtro:filtros.html.twig', array(
+        return $this->render('@ADPerfil/Filtro/filtros.html.twig', array(
             'form' => $form->createView(),
             'activos' => $options['filtros']));
     }

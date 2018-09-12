@@ -17,7 +17,8 @@
         "cocur/slugify": "^3.1",
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "friendsofsymfony/user-bundle": "^2.1",
-        "ascensodigital/component-bundle": "^2.0"
+        "ascensodigital/component-bundle": "^2.0",
+        "sensio/framework-extra-bundle": "^5.2"
     },
     "require-dev": {
         "doctrine/orm": "^2.6"
@@ -36,5 +37,5 @@
     "conflict": {
         "symfony/symfony": "*"
     },
-    "version": "2.0.18"
+    "version": "2.0.19"
 }
