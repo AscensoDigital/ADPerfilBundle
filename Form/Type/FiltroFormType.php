@@ -127,17 +127,19 @@ class FiltroFormType extends AbstractType
                 'data-route' => $options['route'],
                 'data-update' => $options['update'],
                 'data-auto-filter' => $options['auto_filter'] ? 1 : 0,
-                'data-auto-llenado' => $options['auto_llenado'] ? 1 : 0
+                'data-auto-llenado' => $options['auto_llenado'] ? 1 : 0,
+                'data-auto-hidden' => $options['auto_hidden'] ? 1 : 0
             );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('filtros','route','update'));
-        $resolver->setDefined(array('auto_filter','auto_llenado','perfil','route_params'));
+        $resolver->setDefined(array('auto_filter','auto_llenado','auto_hidden','perfil','route_params'));
         $resolver->setDefaults([
             'auto_filter' => true,
             'auto_llenado' => true,
+            'auto_hidden' => true,
             'perfil' => null,
             'route_params' => array(),
             'csrf_protection' => false

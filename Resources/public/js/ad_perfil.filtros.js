@@ -1,11 +1,11 @@
 $(document).ready(function(){
-    var filtroBody=$("#ad_perfil-filtro-body");
-    var frm_filtro=$('#ad_perfil-frm-filtros');
+    const filtroBody=$("#ad_perfil-filtro-body");
+    const frm_filtro=$('#ad_perfil-frm-filtros');
     frm_filtro.on('submit',function(){
         filtroBody.children('.alert-danger').remove();
-        var error='';
+        let error='';
         frm_filtro.find(':input[required="required"]').each(function() {
-            var elemento= this;
+            let elemento= this;
             ids=elemento.id.split('_');
             ids.splice(0,3);
             if($(elemento).val()===null || $(elemento).val().length===0) {
@@ -14,30 +14,30 @@ $(document).ready(function(){
         });
         if(1 === frm_filtro.data('auto-llenado')) {
             frm_filtro.find(':input').each(function () {
-                var elemento = this;
+                let elemento = this;
                 ids = elemento.id.split('_');
                 ids.splice(0,3);
-                var name = elemento.id + '_' + frm_filtro.data('route');
+                let name = elemento.id + '_' + frm_filtro.data('route');
                 if (elemento.multiple) {
                     name = name + '_multiple'
                 }
                 if ($(elemento).val() === null || $(elemento).val().length === 0) {
                     sessionStorage.removeItem(name);
                 }
-                else if (elemento.id != 'ad_perfil_filtros__token') {
+                else if (elemento.id !== 'ad_perfil_filtros__token') {
                     sessionStorage.setItem(name, JSON.stringify($(elemento).val()));
                 }
             });
         }
-        if(''!=error) {
-            var divError='<div></div>';
+        if(''!==error) {
+            let divError='<div></div>';
             $(divError).append(error).addClass('alert alert-danger');
             filtroBody.prepend(divError);
             return false;
         }
 
-        var destino="#" + frm_filtro.data('update');
-        var url= frm_filtro.attr('action');
+        let destino="#" + frm_filtro.data('update');
+        let url= frm_filtro.attr('action');
         $('#ad_perfil-btn-filtros').prepend('<i class="fa fa-refresh fa-spin"></i>').prop('disabled', true);
         $.ajax({
             type: 'POST',
@@ -48,15 +48,17 @@ $(document).ready(function(){
                 $(destino).html(data);
                 $('i.fa-spin').remove();
                 $('#ad_perfil-btn-filtros').prop('disabled', false);
-                $('#ad_perfil-collapseFiltro').collapse('hide');
+                if(1 === frm_filtro.data('auto-hidden')) {
+                    $('#ad_perfil-collapseFiltro').collapse('hide');
+                }
                 return true;
             },
             error : function (obj) {
                 $('i.fa-spin').remove();
                 $('#ad_perfil-btn-filtros').prop('disabled', false);
 
-                var error="Error de Conexion: "+ obj.statusText;
-                var divError='<div class="alert alert-danger">'+ error + '</div>';
+                let error="Error de Conexion: "+ obj.statusText;
+                let divError='<div class="alert alert-danger">'+ error + '</div>';
                 filtroBody.prepend(divError);
                 return false;
             }
@@ -70,19 +72,19 @@ $(document).ready(function(){
         });
     });
 
-    var filtrar=false;
-    var requerido=true;
+    let filtrar=false;
+    let requerido=true;
     frm_filtro.find(':input').each(function() {
-        var elemento= this;
+        let elemento= this;
         ids = elemento.id.split('_');
         ids.splice(0,3);
-        var name = elemento.id + '_' + frm_filtro.data('route');
+        let name = elemento.id + '_' + frm_filtro.data('route');
         if (elemento.multiple) {
             name = name + '_multiple'
         }
         if(1 === frm_filtro.data('auto-llenado')) {
             if ($(elemento).val() === null || $(elemento).val().length === 0) {
-                var valor = JSON.parse(sessionStorage.getItem(name));
+                let valor = JSON.parse(sessionStorage.getItem(name));
                 if (valor != null) {
                     $(elemento).val(valor);
                     if ($(elemento).val()) {
@@ -91,7 +93,7 @@ $(document).ready(function(){
                 }
             }
         }
-        if($(elemento).attr('required')=='required' && ($(elemento).val()===null || $(elemento).val().length===0)) {
+        if($(elemento).attr('required')==='required' && ($(elemento).val()===null || $(elemento).val().length===0)) {
             requerido=false;
         }
         if($(elemento).val()) {
@@ -102,9 +104,4 @@ $(document).ready(function(){
     if(1 === frm_filtro.data('auto-filter') && filtrar && requerido) {
         frm_filtro.submit();
     }
-   /* $('.fecha').datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        dateFormat: "yy-mm-dd"
-    });*/
 });

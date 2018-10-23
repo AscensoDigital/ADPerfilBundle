@@ -22,6 +22,7 @@ class FiltroController extends Controller {
             ),
             'auto_filter' => true, # optional define ejecucion automatica si los filtros required estan con valores default: true
             'auto_llenado' => true # optional define si los filtros son guardados para volver a presentarlos default: true
+            'auto_hidden' => true # optional define si el formulario de filtros se oculta al realizar el filtrado default: true
         );
         return $this->filtroAction($request, $options);
     } */
@@ -70,6 +71,7 @@ class FiltroController extends Controller {
         $defaults=array(
             'auto_filter' => true,
             'auto_llenado' => true,
+            'auto_hidden' => true,
             'route_params' => array()
         );
         return $options + $defaults;
