@@ -4,20 +4,23 @@ Getting Started With ADPerfilBundle
 Prerequisites
 -------------
 
-This version of the bundle requires Symfony 2.7+.
+This version of the bundle requires Symfony >=4.1.
 
 Installation
 ------------
 
-Installation is a quick (I promise!) 7 step process:
+Installation is 10 step process:
 
 1. Download ADPerfilBundle using composer
 2. Enable the Bundle
-3. Create your User class
-4. Create your Perfil class
+3. Create your Perfil class
+4. Create your User class
 5. Configure the ADPerfilBundle
 6. Import FOSUserBundle routing
 7. Update your database schema
+8. Load Fixtures to your database
+9. Create admin perfil
+10. Set up as ``super-admin`` the admin perfil
 
 Step 1: Download ADPerfilBundle using composer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,125 +29,172 @@ Require the bundle with composer:
 
 .. code-block:: bash
 
-    $ composer require ascensodigital/perfil-bundle "dev-master"
+    $ composer require ascensodigital/perfil-bundle
 
 Composer will install the bundle to your project's ``vendor/ascensodigital/perfil-bundle`` directory.
 
 Step 2: Enable the bundle
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Enable the bundle in the kernel::
+Enable the bundle in the bundles.php::
 
     <?php
-    // app/AppKernel.php
+    // config/bundles.php
 
-    public function registerBundles()
+    return [
+            // ...
+            AscensoDigital\PerfilBundle\ADPerfilBundle::class => ['all' => true],
+            AscensoDigital\ComponentBundle\ADComponentBundle::class => ['all' => true],
+            // ...
+        ];
+
+Step 3: Create your Perfil class
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+a) Doctrine ORM Perfil class
+..........................
+
+If you're persisting your profiles via the Doctrine ORM, then your ``Perfil`` class
+should live in the ``Entity`` namespace of your app and look like this to
+start:
+
+    <?php
+    // src/Entity/Perfil.php
+
+    namespace App\Entity;
+
+    use AscensoDigital\PerfilBundle\Entity\Perfil as BasePerfil;
+    use AscensoDigital\PerfilBundle\Model\PerfilInterface;
+    use Doctrine\ORM\Mapping as ORM;
+
+    /**
+     * @ORM\Entity
+     * @ORM\Table(name="ad_perfil")
+     */
+    class Perfil extends BasePerfil implements PerfilInterface
     {
-        $bundles = array(
-            // ...
-            new AscensoDigital\PerfilBundle\ADPerfilBundle(),
-            // ...
-        );
+        /**
+         * @ORM\Id
+         * @ORM\Column(type="integer")
+         * @ORM\GeneratedValue(strategy="AUTO")
+         */
+        protected $id;
+
+        public function __construct()
+        {
+            parent::__construct();
+            // your own logic
+        }
     }
 
-Step 3: Create your User class
+Step 4: Create your User class
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 a) Doctrine ORM User class
 ..........................
 
 If you're persisting your users via the Doctrine ORM, then your ``User`` class
-should live in the ``Entity`` namespace of your bundle and look like this to
+should live in the ``Entity`` namespace of your app and look like this to
 start:
 
-.. configuration-block::
+    <?php
+    // src/Entity/Usuario.php
 
-    .. code-block:: php-annotations
+    namespace App\Entity;
 
-        <?php
-        // src/AppBundle/Entity/Usuario.php
+    use AscensoDigital\PerfilBundle\Model\User as BaseUser;
+    use AscensoDigital\PerfilBundle\Model\UserInterface;
+    use Doctrine\ORM\Mapping as ORM;
 
-        namespace AppBundle\Entity;
-
-        use AscensoDigital\PerfilBundle\Model\User as BaseUser;
-        use AscensoDigital\PerfilBundle\Model\PerfilInterface;
-        use Doctrine\ORM\Mapping as ORM;
+    /**
+     * @ORM\Entity
+     */
+    class Usuario extends BaseUser implements UserInterface
+    {
+        /**
+         * @ORM\Id
+         * @ORM\Column(type="integer")
+         * @ORM\GeneratedValue(strategy="AUTO")
+         */
+        protected $id;
 
         /**
-         * @ORM\Entity
-         * @ORM\Table(name="ad_user")
+         * @var ArrayCollection
+         * @ORM\OneToMany(targetEntity="UsuarioXPerfil", mappedBy="usuario")
          */
-        class Usuario extends BaseUser implements UsuarioInterface
-        {
-            /**
-             * @ORM\Id
-             * @ORM\Column(type="integer")
-             * @ORM\GeneratedValue(strategy="AUTO")
-             */
-            protected $id;
+        private $usuarioXPerfils;
 
-            public function __construct()
-            {
-                parent::__construct();
-                // your own logic
-            }
+        public function __construct()
+        {
+            parent::__construct();
+            $this->usuarioXPerfils = new ArrayCollection();
+            // your own logic
         }
 
-Step 4: Create your Perfil class
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        public function getPerfils()
+        {
+            if(null==$this->perfils || 0==count($this->perfils)) {
+                if($this->getUsuarioXPerfils()->count()) {
+                    /** @var UsuarioXPerfil $uxp */
+                    foreach ($this->getUsuarioXPerfils()->getValues() as $uxp) {
+                        if($uxp->getActive()) {
+                            $this->perfils[$uxp->getPerfil()->getId()] = $uxp->getPerfil();
+                        }
+                    }
+                }
+            }
+            return $this->perfils;
+        }
+    }
+
+Step 5: Create your UserXPerfil class
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 a) Doctrine ORM User class
 ..........................
 
-If you're persisting your users via the Doctrine ORM, then your ``Perfil`` class
-should live in the ``Entity`` namespace of your bundle and look like this to
+If you're persisting your users via the Doctrine ORM, then your ``UserXPerfil`` class
+should live in the ``Entity`` namespace of your app and look like this to
 start:
 
-.. configuration-block::
+    <?php
+    // src/Entity/UsuarioXPerfil.php
 
-    .. code-block:: php-annotations
+    namespace App\Entity;
 
-        <?php
-        // src/AppBundle/Entity/Perfil.php
+    use AscensoDigital\PerfilBundle\Model\UsuarioXPerfil as BaseUsuarioXPerfil;
+    use Doctrine\ORM\Mapping as ORM;
 
-        namespace AppBundle\Entity;
-
-        use AscensoDigital\PerfilBundle\Entity\Perfil as BasePerfil;
-        use AscensoDigital\PerfilBundle\Model\PerfilInterface;
-        use Doctrine\ORM\Mapping as ORM;
-
+    /**
+     * @ORM\Entity
+     */
+    class UsuarioXPerfil extends BaseUsuarioXPerfil
+    {
         /**
-         * @ORM\Entity
-         * @ORM\Table(name="ad_perfil")
+         * @ORM\Id
+         * @ORM\Column(type="integer")
+         * @ORM\GeneratedValue(strategy="AUTO")
          */
-        class Perfil extends BasePerfil implements PerfilInterface
+        protected $id;
+
+        public function __construct()
         {
-            /**
-             * @ORM\Id
-             * @ORM\Column(type="integer")
-             * @ORM\GeneratedValue(strategy="AUTO")
-             */
-            protected $id;
-
-            public function __construct()
-            {
-                parent::__construct();
-                // your own logic
-            }
+            parent::__construct();
+            // your own logic
         }
+    }
 
-
-Step 5: Configure the ADPerfilBundle
+Step 6: Configure the ADPerfilBundle
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Add the following configuration to your ``config.yml`` file according to which type
+Create config file ``ad_perfil.yaml`` in ``config/packages/`` and Add the following configuration according to which type
 of datastore you are using.
 
 .. configuration-block::
 
     .. code-block:: yaml
 
-        # app/config/config.yml
+        # config/packages/ad_perfil.yaml
         ad_perfil:
             perfil_class: AppBundle\Entity\Perfil
             perfil_table_alias: pr
@@ -154,14 +204,16 @@ of datastore you are using.
                 homepage_title: Titulo Sitio
                 homepage_subtitle: Subtitulo Sitio
 
+        #config/packages/doctrine.yaml
         doctrine:
             orm:
+                # ...
                 resolve_target_entities:
-                    AscensoDigital\PerfilBundle\Model\PerfilInterface: AppBundle\Entity\Perfil
-                    AscensoDigital\PerfilBundle\Model\UserInterface: AppBundle\Entity\Usuario
+                    AscensoDigital\PerfilBundle\Model\PerfilInterface: App\Entity\Perfil
+                    AscensoDigital\PerfilBundle\Model\UserInterface: App\Entity\Usuario
 
 
-Step 6: Import ADPerfilBundle routing files
+Step 7: Import ADPerfilBundle routing files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that you have activated and configured the bundle, all that is left to do is
@@ -174,13 +226,13 @@ logging in, creating users, etc.
 
     .. code-block:: yaml
 
-        # app/config/routing.yml
+        # config/routes.yml
         ad_perfil:
             resource: "@ADPerfilBundle/Controller/"
             type: annotation
             prefix: /ad-perfil
 
-Step 7: Update your database schema
+Step 8: Update your database schema
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that the bundle is configured, you need to do is update your
@@ -194,7 +246,7 @@ For ORM run the following command.
     $ php bin/console doctrine:schema:update --force
 
 
-Step 8: Load Fixtures to your database
+Step 9: Load Fixtures to your database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now that the bundle is configured, the last thing you need to do is load your
@@ -206,6 +258,6 @@ For ORM run the following command.
 
     $ php bin/console doctrine:fixtures:load --append
 
-Step 9: Create admin perfil
+Step 10: Create admin perfil
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
