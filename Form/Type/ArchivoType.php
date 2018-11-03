@@ -7,7 +7,12 @@
  */
 
 namespace AscensoDigital\PerfilBundle\Form\Type;
+use AscensoDigital\ComponentBundle\Form\Type\DateTimeHiddenType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,29 +21,28 @@ class ArchivoType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $optionsFecha = $options['show_publicacion'] ? ['widget' => 'single_text'] : [];
+
         $builder
-            ->add('titulo', $options['show_titulo'] ? 'text' : 'hidden', array(
+            ->add('titulo', $options['show_titulo'] ? TextType::class : HiddenType::class, [
                 'label' => 'Título'
-            ))
-            ->add('file', 'file', array(
+            ])
+            ->add('file', FileType::class, [
                 'label' => 'Archivo'
-            ))
-            ->add('fecha_publicacion', 'datetime_hidden');
+            ])
+            ->add('fecha_publicacion', $options['show_publicacion'] ? DateTimeType::class : DateTimeHiddenType::class, $optionsFecha);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefined(array(
             'show_titulo',
+            'show_publicacion'
         ));
         $resolver->setDefaults(array(
             'data_class' => 'AscensoDigital\PerfilBundle\Entity\Archivo',
             'show_titulo' => false,
+            'show_publicacion' => false
         ));
-    }
-
-    public function getName()
-    {
-        return 'archivo';
     }
 }
