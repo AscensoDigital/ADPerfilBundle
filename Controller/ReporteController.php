@@ -24,6 +24,8 @@ class ReporteController extends Controller
      * @param $id
      * @return Response
      * @Route("/reporte/download-file/{id}", name="ad_perfil_reporte_download")
+     * @Route("/download-file/{id}", name="ad_perfil_download_file")
+     * @Security("has_role('ROLE_USER')")
      */
     public function downloadFileAction($id) {
         $em = $this->getDoctrine()->getManager();
