@@ -169,6 +169,10 @@ class Reporte
         return !is_null($this->getReporteCriterio());
     }
 
+    public function isExternalUrl() {
+        return substr_count($this->getRoute(),"http")>0;
+    }
+
     /**
      * @return int
      */
