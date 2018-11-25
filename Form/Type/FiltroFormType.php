@@ -122,8 +122,10 @@ class FiltroFormType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options) {
         $view->vars['action'] = $this->router->generate($options['route'],$options['route_params']);
+        $saveAs= isset($options['save_as']) ? $options['save_as'] : $options['route'];
         $view->vars['attr']= $view->vars['attr'] + array(
                 'id' => 'ad_perfil-frm-filtros',
+                'data-save-as' => $saveAs,
                 'data-route' => $options['route'],
                 'data-update' => $options['update'],
                 'data-auto-filter' => $options['auto_filter'] ? 1 : 0,
@@ -135,7 +137,7 @@ class FiltroFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(array('filtros','route','update'));
-        $resolver->setDefined(array('auto_filter','auto_llenado','auto_hidden','perfil','route_params'));
+        $resolver->setDefined(array('auto_filter','auto_llenado','auto_hidden','perfil','route_params','save_as'));
         $resolver->setDefaults([
             'auto_filter' => true,
             'auto_llenado' => true,

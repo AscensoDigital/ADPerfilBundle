@@ -17,7 +17,7 @@ $(document).ready(function(){
                 let elemento = this;
                 ids = elemento.id.split('_');
                 ids.splice(0,3);
-                let name = elemento.id + '_' + frm_filtro.data('route');
+                let name = elemento.id + '_' + frm_filtro.data('save-as');
                 if (elemento.multiple) {
                     name = name + '_multiple'
                 }
@@ -78,7 +78,7 @@ $(document).ready(function(){
         let elemento= this;
         ids = elemento.id.split('_');
         ids.splice(0,3);
-        let name = elemento.id + '_' + frm_filtro.data('route');
+        let name = elemento.id + '_' + frm_filtro.data('save-as');
         if (elemento.multiple) {
             name = name + '_multiple'
         }

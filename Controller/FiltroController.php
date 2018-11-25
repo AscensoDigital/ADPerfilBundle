@@ -16,6 +16,7 @@ class FiltroController extends Controller {
             'route' => 'route_name', # required
             'route_params' => array(), # optional
             'update' => 'id_etiqueta_update', # required
+            'save_as' => 'etiqueta para guardado de filtros' #optional
             'filtros' => array(
                 'filtro_key1' => array('required'=> true, 'multiple' => false), #arreglo de opciones para sobreescribir las definidas en config del filtro
                 'filtro_key2' => array()
@@ -44,8 +45,8 @@ class FiltroController extends Controller {
         $options['perfil']=$this->get('ad_perfil.perfil_manager')->find($request->getSession()->get($this->getParameter('ad_perfil.session_name')));
         
         $form = $this->createForm(FiltroFormType::class, null, $options);
-
-        $filtro_values=$this->get('ad_perfil.filtro_manager')->getFiltros($options['route']);
+        $saveAs = isset($options['save_as']) ? $options['save_as'] : $options['route'];
+        $filtro_values=$this->get('ad_perfil.filtro_manager')->getFiltros($saveAs);
         if(true===$options['auto_llenado'] && count($filtro_values)){
             $request->request->set('ad_perfil_filtros', $filtro_values);
             $request->setMethod('post');
