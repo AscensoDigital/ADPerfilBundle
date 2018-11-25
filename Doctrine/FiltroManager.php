@@ -54,9 +54,10 @@ class FiltroManager{
         $request=$this->getRequest();
         $null_request=is_null($request);
         $route= is_null($route) ? (is_null($this->route) ? ($null_request ? '' : $request->attributes->get('_route')) : $this->route) : $route;
-        $filtros= $null_request ? array() : $request->get('ad_perfil_filtros',$request->get('filtros_'.$route,$request->getSession()->get('filtros_'.$route,array())));
+        $saveAs=$request->query->has('save-as') ? $request->query->get('save-as') : $route;
+        $filtros = $null_request ? array() : $request->get('ad_perfil_filtros', $request->get('filtros_'.$saveAs, $request->getSession()->get('filtros_'.$saveAs, array())));
         if(false===$null_request){
-            $request->getSession()->set('filtros_'.$route, $filtros);
+            $request->getSession()->set('filtros_'.$saveAs, $filtros);
         }
 
         return $filtros;

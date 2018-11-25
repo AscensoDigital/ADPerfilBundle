@@ -37,7 +37,7 @@ $(document).ready(function(){
         }
 
         let destino="#" + frm_filtro.data('update');
-        let url= frm_filtro.attr('action');
+        let url= frm_filtro.attr('action')+ (frm_filtro.data('save-as')!==undefined ? '?save-as='+frm_filtro.data('save-as') : '');
         $('#ad_perfil-btn-filtros').prepend('<i class="fa fa-refresh fa-spin"></i>').prop('disabled', true);
         $.ajax({
             type: 'POST',
