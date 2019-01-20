@@ -166,19 +166,24 @@ class ReporteController extends Controller
         if(!is_null($estatico)){
             return $this->downloadFileAction($estatico->getArchivo()->getId());
         }
-        if(is_null($reporte->getMetodo()) || is_null($reporte->getRepositorio())) {
-            $this->addFlash('warning',$reporte->getNombre().': aun no esta disponible para descargarlo.');
-            return $this->redirectToRoute('ad_perfil_reportes');
-        }
-        $metodo=$reporte->getMetodo();
-        if($reporte->hasCriterio()){
-            $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo($criterio_valor);
-            $criterio_nombre=$this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(),$criterio_valor);
-            $nombre=$reporte->getNombreReporte($show_nombre).'-'.$criterio_nombre;
+        if($reporte->getSql()) {
+            $data=$this->getDoctrine()->getRepository(Reporte::class)->executeSql($reporte->getSql());
+            $nombre = $reporte->getNombreReporte($show_nombre);
         }
         else {
-            $data=$this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo();
-            $nombre=$reporte->getNombreReporte($show_nombre);
+            if (is_null($reporte->getMetodo()) || is_null($reporte->getRepositorio())) {
+                $this->addFlash('warning', $reporte->getNombre() . ': aun no esta disponible para descargarlo.');
+                return $this->redirectToRoute('ad_perfil_reportes');
+            }
+            $metodo = $reporte->getMetodo();
+            if ($reporte->hasCriterio()) {
+                $data = $this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo($criterio_valor);
+                $criterio_nombre = $this->get('ad_perfil.reporte_manager')->getCriterioNombre($reporte->getReporteCriterio(), $criterio_valor);
+                $nombre = $reporte->getNombreReporte($show_nombre) . '-' . $criterio_nombre;
+            } else {
+                $data = $this->getDoctrine()->getRepository($reporte->getRepositorio())->$metodo();
+                $nombre = $reporte->getNombreReporte($show_nombre);
+            }
         }
         $proveedor_id= $reporte->isShowProveedor() ? $this->get('ad_perfil.configurator')->getConfiguration('proveedor_id') : null;
         $separador = $this->get('ad_perfil.configurator')->getConfiguration('separador_encabezado');
