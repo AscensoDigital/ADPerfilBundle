@@ -80,6 +80,12 @@ class Reporte
     protected $metodo;
 
     /**
+     * @var string
+     * @ORM\Column(name="sql", type="text", nullable=true)
+     */
+    protected $sql;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="show_proveedor", type="boolean", nullable=true)
@@ -432,4 +438,23 @@ class Reporte
     {
         return $this->showProveedor;
     }
+
+    /**
+     * @param string $sql
+     * @return Reporte
+     */
+    public function setSql($sql)
+    {
+        $this->sql = $sql;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSql()
+    {
+        return $this->sql;
+    }
+
 }

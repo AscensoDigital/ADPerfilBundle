@@ -15,6 +15,11 @@ use Doctrine\ORM\NonUniqueResultException;
 
 class ReporteRepository extends EntityRepository
 {
+    public function executeSql($sql) {
+        $conn=$this->getEntityManager()->getConnection();
+        return $conn->fetchAll($sql);
+    }
+
     public function findArrayByPerfil($perfil_id){
         $reps=$this->createQueryBuilder('rp')
             ->addSelect('rpc')

@@ -42,6 +42,9 @@ class ReporteFormType extends AbstractType
             ])
             ->add('metodo','text',[
                 'required' => false
+            ])
+            ->add('sql','text', [
+                'required' => false
             ]);
     }
 
