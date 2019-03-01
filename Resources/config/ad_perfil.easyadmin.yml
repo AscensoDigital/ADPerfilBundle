@@ -4,6 +4,16 @@ easy_admin:
             class: AscensoDigital\PerfilBundle\Entity\Color
         Menu:
             class: AscensoDigital\PerfilBundle\Entity\Menu
+            form:
+                fields:
+                - nombre
+                - descripcion
+                - orden
+                - icono
+                - route
+                - menuSuperior
+                - permiso
+                - color
         Reporte:
             class: AscensoDigital\PerfilBundle\Entity\Reporte
         ReporteCriterio:
