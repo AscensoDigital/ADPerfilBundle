@@ -18,7 +18,7 @@ class PermisosPerfilFormType extends AbstractType
         $builder
             ->add('perfilXPermisos',CollectionType::class,array(
                 'label' => 'Asignación',
-                'type'   => PerfilXPermisoType::class,
+                'entry_type'   => PerfilXPermisoType::class,
                 'by_reference' => false,
                 'options' => array('label_entity' => 'Permiso')
             ));
