@@ -62,6 +62,8 @@ class Permiso
         $perfilXPermiso->setAcceso(true)
             ->setPerfil($perfil);
         $this->addPerfilXPermiso($perfilXPermiso);
+
+        return $this;
     }
 
     public function loadPerfils($prfs) {
