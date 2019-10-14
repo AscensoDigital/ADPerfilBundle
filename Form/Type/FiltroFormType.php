@@ -58,7 +58,13 @@ class FiltroFormType extends AbstractType
         $user=$this->tokenStorage->getToken()->getUser();
         $perfil=$options['perfil'];
         foreach ($filtroActivos as $keyFiltro => $filtro) {
-            $filtroConf=$this->configurator->getFiltroConfiguration($keyFiltro);
+            if(isset($filtro['adperfil_config'])) {
+                $filtroConf=$filtro['adperfil_config'] + $this->configurator->getFiltroConfiguration($keyFiltro);
+                unset($filtro['adperfil_config']);
+            }
+            else {
+                $filtroConf= $this->configurator->getFiltroConfiguration($keyFiltro);
+            }
             $options=$filtro+ $filtroConf['options'] + ['required' => false];
             if(false === $options['required'] && $filtroConf['type']==EntityType::class){
                 $options['placeholder']='';
