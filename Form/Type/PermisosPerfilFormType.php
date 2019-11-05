@@ -20,7 +20,7 @@ class PermisosPerfilFormType extends AbstractType
                 'label' => 'Asignación',
                 'entry_type'   => PerfilXPermisoType::class,
                 'by_reference' => false,
-                'options' => array('label_entity' => 'Permiso')
+                'entry_options' => array('label_entity' => 'Permiso')
             ));
     }
 
