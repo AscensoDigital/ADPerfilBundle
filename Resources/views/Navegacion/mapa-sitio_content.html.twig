@@ -4,7 +4,7 @@
             {% if menu.icono %}<i class="fa-fw {{ menu.icono }}"></i>&nbsp;{% endif %}
             <a href="{% if menu.route != '' %}{{ path(menu.route) }}{% else %}{{ path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}{% endif %}">{{ menu.nombre | title }}</a>
             {% if menu.menuHijos | length %}
-                {{ include('ADPerfilBundle:Navegacion:mapa-sitio_content.html.twig',{'menus' : menu.menuHijos, 'submenu' : true}) }}
+                {{ include('@ADPerfil/Navegacion/mapa-sitio_content.html.twig',{'menus' : menu.menuHijos, 'submenu' : true}) }}
             {% endif %}
         </li>
     {% endfor %}

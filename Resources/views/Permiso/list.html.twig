@@ -1,9 +1,9 @@
-{% extends 'ADPerfilBundle::layout.html.twig' %}
+{% extends '@ADPerfil/layout.html.twig' %}
 
 {% block ad_perfil_title %}Permisos{% endblock %}
 {% block ad_perfil_subtitle %}Listado{% endblock %}
 
 {% block ad_perfil_content %}
-    {{ include('ADPerfilBundle:Permiso:list_content.html.twig') }}
+    {{ include('@ADPerfil/Permiso/list_content.html.twig') }}
     <script src="{{ asset('bundles/adperfil/js/ad_perfil.filtros.js') }}" type="application/javascript"></script>
 {% endblock %}

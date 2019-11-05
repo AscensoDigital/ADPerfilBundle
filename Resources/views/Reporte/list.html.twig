@@ -1,15 +1,12 @@
-{% extends 'ADPerfilBundle::layout.html.twig' %}
+{% extends '@ADPerfil/layout.html.twig' %}
 
 {% block ad_perfil_title %}Reportes{% endblock ad_perfil_title %}
 
 {% block ad_perfil_content %}
-    {{ include('ADPerfilBundle:Reporte:list_content.html.twig') }}
+    {{ include('@ADPerfil/Reporte/list_content.html.twig') }}
 {% endblock ad_perfil_content %}
 
 {% block ad_perfil_javascripts %}
     {{ parent() }}
-    {% javascripts
-    'bundles/adperfil/js/ad_perfil.reporte.js' filter='?jsqueeze' output='js/compiled/reporte.js' %}
-    <script src="{{ asset_url }}" type="text/javascript"></script>
-    {% endjavascripts %}
+    <script src="{{ asset('bundles/adperfil/js/ad_perfil.reporte.js') }}" type="text/javascript"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'ADPerfilBundle::layout.html.twig' %}
+{% extends '@ADPerfil/layout.html.twig' %}
 
 {% block ad_perfil_title %}Mapa Del Sitio{% endblock ad_perfil_title %}
 {% block ad_perfil_subtitle %}{{ perfil }}{% endblock ad_perfil_subtitle %}
@@ -6,5 +6,5 @@
 {% block ad_perfil_content %}
     {{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
 
-    {{ include('ADPerfilBundle:Navegacion:mapa-sitio_content.html.twig') }}
+    {{ include('@ADPerfil/Navegacion/mapa-sitio_content.html.twig') }}
 {% endblock ad_perfil_content %}
