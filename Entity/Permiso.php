@@ -56,6 +56,15 @@ class Permiso
         return $this->getNombre().' - '.$this->getDescripcion();
     }
 
+    public function addPerfil(PerfilInterface $perfil) {
+        $perfilXPermiso = new PerfilXPermiso();
+        $perfilXPermiso->setAcceso(true)
+            ->setPerfil($perfil);
+        $this->addPerfilXPermiso($perfilXPermiso);
+
+        return $this;
+    }
+
     public function loadPerfils($prfs) {
         /** @var PerfilInterface $prf */
         foreach($prfs as $prf) {
@@ -127,6 +136,9 @@ class Permiso
      */
     public function addPerfilXPermiso(PerfilXPermiso $perfilXPermisos)
     {
+        if(is_null($perfilXPermisos->getPermiso()))  {
+            $perfilXPermisos->setPermiso($this);
+        }
         $this->perfilXPermisos[] = $perfilXPermisos;
 
         return $this;
