@@ -102,9 +102,4 @@ $(document).ready(function(){
     if(1 === frm_filtro.data('auto-filter') && filtrar && requerido) {
         frm_filtro.submit();
     }
-    $('.fecha').datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        dateFormat: "yy-mm-dd"
-    });
 });
