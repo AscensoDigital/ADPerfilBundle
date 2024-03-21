@@ -40,6 +40,36 @@ class ReporteController extends Controller
     }
 
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/reporte/download-permisos", name="ad_perfil_download_permisos")
+     * @Security("is_granted('permiso','ad_perfil-per-download-permisos')")
+     */
+    public function downloadPermisosAction() {
+        $em = $this->getDoctrine()->getManager();
+        $filtros = $this->get('ad_perfil.filtro_manager');
+        $perfils=$this->get('ad_perfil.perfil_manager')->findByFiltro($filtros);
+        $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro($filtros);
+        $pxps=$em->getRepository('ADPerfilBundle:PerfilXPermiso')->findByFiltros($filtros);
+        $data = [];
+        $data[0] = ['Permisos'];
+        foreach ($perfils as $perfil) {
+            $data[0][] = $perfil->getSlug();
+        }
+        $fila = 1;
+        foreach ($permisos as $permiso) {
+            $data[$fila] = [$permiso->getNombre()];
+            foreach ($perfils as $perfil) {
+                $data[$fila][] = isset($pxps[$permiso->getId()]) && isset($pxps[$permiso->getId()][$perfil->getId()]) && $pxps[$permiso->getId()][$perfil->getId()] ? 1 : 0;
+            }
+            $fila++;
+        }
+        $proveedor_id= null;
+        $separador = $this->get('ad_perfil.configurator')->getConfiguration('separador_encabezado');
+        $nombre = "permisos-sistema";
+        return $this->generarReporte($data, $nombre, $proveedor_id, $separador);
+    }
+
+    /**
      * @param Request $request
      * @param Reporte $reporte
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response

@@ -2,6 +2,9 @@
 {{ render(controller('ADPerfilBundle:Navegacion:menu')) }}
 {{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
 <div class="row">{{ render(controller('ADPerfilBundle:Filtro:permiso')) }}</div>
+{% if is_granted('permiso','ad_perfil-per-download-permisos') %}
+    <div class="row"><a class="btn btn-primary btn-sm" href="{{ path('ad_perfil_download_permisos') }}">Descargar Permisos</a></div>
+{% endif %}
 <div id="table-permisos" class="row">
     <div class="alert alert-info">Para ver los permisos realice los filtros requeridos.</div>
 </div>
