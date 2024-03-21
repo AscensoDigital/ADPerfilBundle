@@ -11,7 +11,7 @@ namespace AscensoDigital\PerfilBundle\DataFixtures\ORM;
 
 use AscensoDigital\PerfilBundle\Entity\ReporteCriterio;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadReporteCriterioData extends Fixture
 {
@@ -23,7 +23,7 @@ class LoadReporteCriterioData extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $periodo= $manager->getRepository('ADPerfilBundle:ReporteCriterio')->findOneBy(['nombre' => 'periodo']);
+        $periodo= $manager->getRepository('ADPerfilBundle:ReporteCriterio')->findOneBy(array('nombre' => 'periodo'));
         if(!$periodo) {
             $periodo = new ReporteCriterio();
             $periodo->setNombre('periodo')

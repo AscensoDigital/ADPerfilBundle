@@ -11,7 +11,7 @@ namespace AscensoDigital\PerfilBundle\DataFixtures\ORM;
 
 use AscensoDigital\PerfilBundle\Entity\Color;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadColorData extends Fixture
 {

@@ -11,7 +11,7 @@ namespace AscensoDigital\PerfilBundle\DataFixtures\ORM;
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadMenuData extends Fixture
 {
@@ -32,6 +32,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-sitemap')
             ->setPermiso($this->getReference('per-mapa-sitio-index'));
         $manager->persist($mnMapa);
+        $this->addReference('ad-perfil-mn-mapa',$mnMapa);
 
         $mnConfig= new Menu();
         $mnConfig->setOrden(99)
@@ -41,6 +42,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-cogs')
             ->setPermiso($this->getReference('per-config-index'));
         $manager->persist($mnConfig);
+        $this->addReference('ad-perfil-mn-config',$mnConfig);
 
         $perNew= new Menu();
         $perNew->setMenuSuperior($mnConfig)
@@ -52,6 +54,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-unlock-alt')
             ->setPermiso($this->getReference('per-per-new'));
         $manager->persist($perNew);
+        $this->addReference('ad-perfil-mn-per-new',$perNew);
 
         $perList= new Menu();
         $perList->setMenuSuperior($mnConfig)
@@ -63,6 +66,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-list-ul')
             ->setPermiso($this->getReference('per-per-list'));
         $manager->persist($perList);
+        $this->addReference('ad-perfil-mn-per-list',$perList);
 
         $perEditPermiso= new Menu();
         $perEditPermiso->setMenuSuperior($perList)
@@ -75,6 +79,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-edit')
             ->setPermiso($this->getReference('per-per-edit'));
         $manager->persist($perEditPermiso);
+        $this->addReference('ad-perfil-mn-per-edit-permiso',$perEditPermiso);
 
         $perEditPerfil= new Menu();
         $perEditPerfil->setMenuSuperior($perList)
@@ -87,6 +92,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-edit')
             ->setPermiso($this->getReference('per-per-edit'));
         $manager->persist($perEditPerfil);
+        $this->addReference('ad-perfil-mn-per-edit-perfil',$perEditPerfil);
 
         $mnNew= new Menu();
         $mnNew->setMenuSuperior($mnConfig)
@@ -98,6 +104,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-navicon')
             ->setPermiso($this->getReference('per-menu-new'));
         $manager->persist($mnNew);
+        $this->addReference('ad-perfil-mn-menu-new',$mnNew);
 
         $mnRepo= new Menu();
         $mnRepo->setOrden(98)
@@ -107,6 +114,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-file-excel-o')
             ->setPermiso($this->getReference('per-rep-list'));
         $manager->persist($mnRepo);
+        $this->addReference('ad-perfil-mn-repo',$mnRepo);
 
         $repList= new Menu();
         $repList->setMenuSuperior($mnRepo)
@@ -118,6 +126,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-list-ul')
             ->setPermiso($this->getReference('per-rep-list'));
         $manager->persist($repList);
+        $this->addReference('ad-perfil-mn-repo-list',$repList);
 
         $repNew= new Menu();
         $repNew->setMenuSuperior($mnRepo)
@@ -129,6 +138,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-plus')
             ->setPermiso($this->getReference('per-rep-new'));
         $manager->persist($repNew);
+        $this->addReference('ad-perfil-mn-repo-new',$repNew);
 
         $repEdit= new Menu();
         $repEdit->setMenuSuperior($repList)
@@ -141,6 +151,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-pencil-square-o')
             ->setPermiso($this->getReference('per-rep-edit'));
         $manager->persist($repEdit);
+        $this->addReference('ad-perfil-mn-repo-edit',$repEdit);
 
         $repLoad= new Menu();
         $repLoad->setMenuSuperior($repList)
@@ -153,13 +164,14 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-link')
             ->setPermiso($this->getReference('per-rep-load'));
         $manager->persist($repLoad);
+        $this->addReference('ad-perfil-mn-repo-load',$repLoad);
 
         $manager->flush();
     }
 
     public function getDependencies()
     {
-        return [LoadColorData::class,
-            LoadPermisoData::class];
+        return array(LoadColorData::class,
+            LoadPermisoData::class);
     }
 }
