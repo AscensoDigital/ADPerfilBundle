@@ -1,0 +1,9 @@
+{% extends 'ADPerfilBundle::layout.html.twig' %}
+
+{% block ad_perfil_title %}Permisos{% endblock %}
+{% block ad_perfil_subtitle %}Cargar por perfil{% endblock %}
+
+
+{% block ad_perfil_content %}
+    {{ include('ADPerfilBundle:Permiso:load_content.html.twig') }}
+{% endblock %}

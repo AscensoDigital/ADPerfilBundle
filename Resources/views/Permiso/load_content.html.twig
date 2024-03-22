@@ -1,0 +1,16 @@
+{{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs')) }}
+{{ render(controller('ADPerfilBundle:Navegacion:menu')) }}
+{{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
+
+<div class="panel panel-default">
+    {{ form_start(form, {'class' => 'form-horizontal'}) }}
+        <div class="panel-body">
+            {{ form_errors(form) }}
+            {{ form_row(form.file) }}
+        </div>
+        <div class="panel-footer text-right">
+            <button class="btn-primary btn" type="submit">Cargar Permisos</button>&nbsp;
+            <a class="btn btn-danger" href="{{ path('ad_perfil_permiso_list') }}">Cancelar</a>
+        </div>
+    {{ form_end(form) }}
+</div>

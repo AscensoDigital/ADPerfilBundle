@@ -11,6 +11,7 @@ namespace AscensoDigital\PerfilBundle\Repository;
 
 use AscensoDigital\PerfilBundle\Doctrine\FiltroManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 class PermisoRepository extends EntityRepository {
 
@@ -33,6 +34,20 @@ class PermisoRepository extends EntityRepository {
             ->where('adp_prm.nombre LIKE :nombre')
             ->setParameter(':nombre',$nombre.'%')
             ->getQuery()->getResult();
+    }
+
+    public function findOneByNombreJoinPerfils($nombre) {
+        try {
+            return $this->getQueryBuilderOrderNombre()
+                ->addSelect('adp_pxp')
+                ->leftJoin('adp_prm.perfilXPermisos', 'adp_pxp')
+                ->where('adp_prm.nombre=:nombre')
+                ->setParameter(':nombre', $nombre)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 
     public function getQueryBuilderOrderNombre() {

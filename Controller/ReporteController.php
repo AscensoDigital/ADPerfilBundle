@@ -4,6 +4,7 @@ namespace AscensoDigital\PerfilBundle\Controller;
 
 use AscensoDigital\ComponentBundle\Util\StrUtil;
 use AscensoDigital\PerfilBundle\Entity\Archivo;
+use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Entity\Reporte;
 use AscensoDigital\PerfilBundle\Entity\ReporteXCriterio;
 use AscensoDigital\PerfilBundle\Form\Type\ReporteFormType;
@@ -51,15 +52,12 @@ class ReporteController extends Controller
         $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro($filtros);
         $pxps=$em->getRepository('ADPerfilBundle:PerfilXPermiso')->findByFiltros($filtros);
         $data = [];
-        $data[0] = ['Permisos'];
-        foreach ($perfils as $perfil) {
-            $data[0][] = $perfil->getSlug();
-        }
-        $fila = 1;
+        $fila = 0;
+        /** @var Permiso $permiso */
         foreach ($permisos as $permiso) {
-            $data[$fila] = [$permiso->getNombre()];
+            $data[$fila] = ['permiso' => $permiso->getNombre(), 'descripcion' => $permiso->getDescripcion()];
             foreach ($perfils as $perfil) {
-                $data[$fila][] = isset($pxps[$permiso->getId()]) && isset($pxps[$permiso->getId()][$perfil->getId()]) && $pxps[$permiso->getId()][$perfil->getId()] ? 1 : 0;
+                $data[$fila][$perfil->getSlug()] = isset($pxps[$permiso->getId()]) && isset($pxps[$permiso->getId()][$perfil->getId()]) && $pxps[$permiso->getId()][$perfil->getId()] ? 1 : '';
             }
             $fila++;
         }

@@ -84,6 +84,17 @@ class Permiso
         }
     }
 
+    public function setPerfilAcceso($perfilSlug, $acceso) {
+        /** @var PerfilXPermiso $pxp */
+        foreach($this->getPerfilXPermisos() as $pxp) {
+            if($pxp->getPerfil()->getSlug()==$perfilSlug){
+                $pxp->setAcceso($acceso);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @return int
      */

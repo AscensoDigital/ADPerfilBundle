@@ -4,8 +4,10 @@ namespace AscensoDigital\PerfilBundle\Controller;
 
 use AscensoDigital\PerfilBundle\Entity\Perfil;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
+use AscensoDigital\PerfilBundle\Form\Type\CsvPermisosType;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosFormType;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosPerfilFormType;
+use AscensoDigital\PerfilBundle\Util\CsvPermisos;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -103,5 +105,61 @@ class PermisoController extends Controller
             return $this->redirectToRoute('ad_perfil_permiso_list');
         }
         return $this->render('ADPerfilBundle:Permiso:formulario.html.twig',array('form' => $form->createView(), 'subtitle' => 'Crear'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/permisos/load", name="ad_perfil_permiso_load")
+     * @Security("is_granted('permiso','ad_perfil-per-load')")
+     */
+    public function loadAction(Request $request) {
+        $em=$this->getDoctrine()->getManager();
+        $csvPermisos = new CsvPermisos();
+
+        $form=$this->createForm(CsvPermisosType::class, $csvPermisos);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            if (($gestor = $csvPermisos->getFile()->openFile()) !== false) {
+                $separador = $this->get('ad_perfil.configurator')->getConfiguration('separador_encabezado');
+                $readEncabezado = true;
+                $perfils=$this->get('ad_perfil.perfil_manager')->findAllOrderRole();
+                $arrPerfilSlugs = [];
+                $countPermisos = 0;
+                while (($datos = fgetcsv($gestor, 0, $separador)) !== false) {
+                    // $numero = count($datos);
+                    // var_dump($datos);
+                    if($readEncabezado) {
+                        foreach ($datos as $key => $perfilSlug) {
+                            if($key>1) {
+                                $arrPerfilSlugs[$key] = $perfilSlug;
+                            }
+                        }
+                        $readEncabezado = false;
+                        continue;
+                    }
+                    /** @var Permiso $permiso */
+                    $permiso = $em->getRepository('ADPerfilBundle:Permiso')->findOneByNombreJoinPerfils($datos[0]);
+                    if($permiso) {
+                        $permiso->loadPerfils($perfils);
+                        foreach ($datos as $key => $acceso) {
+                            if($key>1) {
+                                $boolAcceso = $acceso == 1;
+                                $permiso->setPerfilAcceso($arrPerfilSlugs[$key], $boolAcceso);
+                            }
+                        }
+                        $em->persist($permiso);
+                        $countPermisos++;
+                    }
+                }
+                $em->flush();
+                $this->addFlash('success',"Se registro correctamente $countPermisos permisos.");
+                return $this->redirectToRoute('ad_perfil_permiso_list');
+            }
+            else {
+                $this->addFlash('danger','No se pudo arbir el archivo cargado.');
+            }
+        }
+        return $this->render('ADPerfilBundle:Permiso:load.html.twig',array('form' => $form->createView()));
     }
 }
