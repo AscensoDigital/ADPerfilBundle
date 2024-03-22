@@ -68,6 +68,15 @@ class LoadPermisoData extends Fixture
         }
         $this->addReference('per-per-list',$perList);
 
+        $perLoad=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-per-load']);
+        if(!$perLoad) {
+            $perLoad = new Permiso();
+            $perLoad->setNombre('ad_perfil-per-load')
+                ->setDescripcion('Cargar Asignación de Permisos de PerfilBundle');
+            $manager->persist($perLoad);
+        }
+        $this->addReference('per-per-load',$perLoad);
+
         $perDownload=$manager->getRepository('ADPerfilBundle:Permiso')->findOneBy(['nombre' => 'ad_perfil-per-download-permisos']);
         if(!$perDownload) {
             $perDownload = new Permiso();

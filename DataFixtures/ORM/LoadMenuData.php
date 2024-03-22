@@ -68,6 +68,18 @@ class LoadMenuData extends Fixture
         $manager->persist($perList);
         $this->addReference('ad-perfil-mn-per-list',$perList);
 
+        $perLoad= new Menu();
+        $perLoad->setMenuSuperior($mnConfig)
+            ->setOrden(3)
+            ->setDescripcion('Cargar Asignación de los permisos')
+            ->setNombre('Cargar Permisos')
+            ->setRoute('ad_perfil_permiso_load')
+            ->setColor($this->getReference('clr-morado'))
+            ->setIcono('fa fa-list-ul')
+            ->setPermiso($this->getReference('per-per-load'));
+        $manager->persist($perList);
+        $this->addReference('ad-perfil-mn-per-list',$perList);
+
         $perEditPermiso= new Menu();
         $perEditPermiso->setMenuSuperior($perList)
             ->setOrden(1)
@@ -96,7 +108,7 @@ class LoadMenuData extends Fixture
 
         $mnNew= new Menu();
         $mnNew->setMenuSuperior($mnConfig)
-            ->setOrden(3)
+            ->setOrden(4)
             ->setDescripcion('Permite agregar un menu invisible a los principales')
             ->setNombre('Crear Menu')
             ->setRoute('ad_perfil_menu_new')
