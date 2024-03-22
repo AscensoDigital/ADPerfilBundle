@@ -10,6 +10,7 @@ namespace AscensoDigital\PerfilBundle\Repository;
 
 
 use AscensoDigital\PerfilBundle\Doctrine\FiltroManager;
+use AscensoDigital\PerfilBundle\Entity\Permiso;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 
@@ -18,6 +19,20 @@ class PermisoRepository extends EntityRepository {
     public function findAllOrderNombre()
     {
         return $this->getQueryBuilderOrderNombre()->getQuery()->getResult();
+    }
+
+    public function findArrayAllByNombreJoinPerfils() {
+        $rs = $this->getQueryBuilderOrderNombre()
+            ->addSelect('adp_pxp')
+            ->leftJoin('adp_prm.perfilXPermisos', 'adp_pxp')
+            ->getQuery()
+            ->getResult();
+        $ret = [];
+        /** @var Permiso $r */
+        foreach ($rs as $r) {
+            $ret[$r->getNombre()] = $r;
+        }
+        return $ret;
     }
 
     public function findByFiltro(FiltroManager $filtros) {

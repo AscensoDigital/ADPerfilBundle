@@ -10,6 +10,7 @@ namespace AscensoDigital\PerfilBundle\Util;
 
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CsvPermisos
 {
@@ -17,8 +18,8 @@ class CsvPermisos
      * @var UploadedFile $file
      * @Assert\NotBlank
      * @Assert\File(
-     *     mimeTypes = {"text/csv"},
-     *     mimeTypesMessage = "Caargar solo archivos formato .csv"
+     *     mimeTypes = {"text/csv","text/plain"},
+     *     mimeTypesMessage = "Cargar solo archivos formato .csv"
      * )
      */
     protected $file;

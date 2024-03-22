@@ -7,6 +7,7 @@ use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Form\Type\CsvPermisosType;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosFormType;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosPerfilFormType;
+use AscensoDigital\PerfilBundle\Model\PerfilInterface;
 use AscensoDigital\PerfilBundle\Util\CsvPermisos;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -121,35 +122,41 @@ class PermisoController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
             if (($gestor = $csvPermisos->getFile()->openFile()) !== false) {
-                $separador = $this->get('ad_perfil.configurator')->getConfiguration('separador_encabezado');
                 $readEncabezado = true;
-                $perfils=$this->get('ad_perfil.perfil_manager')->findAllOrderRole();
+                $perfils = $this->get('ad_perfil.perfil_manager')->findAllOrderRole();
+                $permisos = $em->getRepository('ADPerfilBundle:Permiso')->findArrayAllByNombreJoinPerfils();
                 $arrPerfilSlugs = [];
                 $countPermisos = 0;
-                while (($datos = fgetcsv($gestor, 0, $separador)) !== false) {
+                while (($datos = $gestor->fgetcsv(';')) !== false) {
                     // $numero = count($datos);
                     // var_dump($datos);
-                    if($readEncabezado) {
+                    if($readEncabezado && $datos[0]!== "sep=") {
                         foreach ($datos as $key => $perfilSlug) {
                             if($key>1) {
-                                $arrPerfilSlugs[$key] = $perfilSlug;
+                                /** @var PerfilInterface $perfil */
+                                foreach ($perfils as $perfil) {
+                                    if($perfil->getSlug()==$perfilSlug) {
+                                        $arrPerfilSlugs[$key] = $perfil;
+                                    }
+                                }
                             }
                         }
                         $readEncabezado = false;
                         continue;
                     }
+
                     /** @var Permiso $permiso */
-                    $permiso = $em->getRepository('ADPerfilBundle:Permiso')->findOneByNombreJoinPerfils($datos[0]);
+                    $permiso = $permisos[$datos[0]];
                     if($permiso) {
-                        $permiso->loadPerfils($perfils);
                         foreach ($datos as $key => $acceso) {
-                            if($key>1) {
+                            if(isset($arrPerfilSlugs[$key])) {
                                 $boolAcceso = $acceso == 1;
                                 $permiso->setPerfilAcceso($arrPerfilSlugs[$key], $boolAcceso);
                             }
                         }
                         $em->persist($permiso);
                         $countPermisos++;
+                        unset($permisos[$datos[0]]);
                     }
                 }
                 $em->flush();
