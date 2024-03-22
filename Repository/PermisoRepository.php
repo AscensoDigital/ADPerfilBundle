@@ -21,10 +21,8 @@ class PermisoRepository extends EntityRepository {
         return $this->getQueryBuilderOrderNombre()->getQuery()->getResult();
     }
 
-    public function findArrayAllByNombreJoinPerfils() {
+    public function findArrayAllByNombre() {
         $rs = $this->getQueryBuilderOrderNombre()
-            ->addSelect('adp_pxp')
-            ->leftJoin('adp_prm.perfilXPermisos', 'adp_pxp')
             ->getQuery()
             ->getResult();
         $ret = [];

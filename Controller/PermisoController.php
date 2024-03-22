@@ -3,6 +3,7 @@
 namespace AscensoDigital\PerfilBundle\Controller;
 
 use AscensoDigital\PerfilBundle\Entity\Perfil;
+use AscensoDigital\PerfilBundle\Entity\PerfilXPermiso;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Form\Type\CsvPermisosType;
 use AscensoDigital\PerfilBundle\Form\Type\PermisosFormType;
@@ -124,12 +125,14 @@ class PermisoController extends Controller
             if (($gestor = $csvPermisos->getFile()->openFile()) !== false) {
                 $readEncabezado = true;
                 $perfils = $this->get('ad_perfil.perfil_manager')->findAllOrderRole();
-                $permisos = $em->getRepository('ADPerfilBundle:Permiso')->findArrayAllByNombreJoinPerfils();
+                $permisos = $em->getRepository('ADPerfilBundle:Permiso')->findArrayAllByNombre();
+                $arrPerfilXPermisos = $em->getRepository('ADPerfilBundle:PerfilXPermiso')->findAllArray();
+                /** @var PerfilInterface[] $arrPerfilSlugs */
                 $arrPerfilSlugs = [];
                 $countPermisos = 0;
                 while (($datos = $gestor->fgetcsv(';')) !== false) {
                     // $numero = count($datos);
-                    // var_dump($datos);
+                    // dump($datos);
                     if($readEncabezado && $datos[0]!== "sep=") {
                         foreach ($datos as $key => $perfilSlug) {
                             if($key>1) {
@@ -146,17 +149,39 @@ class PermisoController extends Controller
                     }
 
                     /** @var Permiso $permiso */
-                    $permiso = $permisos[$datos[0]];
+                    $permiso = isset($permisos[$datos[0]]) ? $permisos[$datos[0]] : false;
+                    // dump($permiso);
                     if($permiso) {
                         foreach ($datos as $key => $acceso) {
-                            if(isset($arrPerfilSlugs[$key])) {
-                                $boolAcceso = $acceso == 1;
-                                $permiso->setPerfilAcceso($arrPerfilSlugs[$key], $boolAcceso);
+                            $boolAcceso = $acceso == 1;
+                            // dump($boolAcceso);
+                            if( isset($arrPerfilSlugs[$key]) ) {
+                                // dump($arrPerfilXPermisos[$permiso->getNombre()][$arrPerfilSlugs[$key]->getSlug()]);
+                                if(isset($arrPerfilXPermisos[$permiso->getNombre()][$arrPerfilSlugs[$key]->getSlug()])) {
+                                    // dump($arrPerfilXPermisos[$permiso->getNombre()][$arrPerfilSlugs[$key]->getSlug()] != $boolAcceso);
+                                    if($arrPerfilXPermisos[$permiso->getNombre()][$arrPerfilSlugs[$key]->getSlug()]!= $boolAcceso) {
+                                        /** @var PerfilXPermiso $pxp */
+                                        $pxp = $em->getRepository('ADPerfilBundle:PerfilXPermiso')->findOneByPermisoNombrePerfilSlug($permiso->getNombre(), $arrPerfilSlugs[$key]->getSlug());
+                                        $pxp->setAcceso($boolAcceso);
+                                        $em->persist($pxp);
+                                        $countPermisos++;
+                                    }
+                                }
+                                else {
+                                    $pxp = new PerfilXPermiso();
+                                    $pxp->setPerfil($arrPerfilSlugs[$key])
+                                        ->setPermiso($permiso)
+                                        ->setAcceso($boolAcceso);
+                                    $em->persist($pxp);
+                                    $countPermisos++;
+                                }
                             }
                         }
-                        $em->persist($permiso);
-                        $countPermisos++;
-                        unset($permisos[$datos[0]]);
+                        // dump($countPermisos);
+                    }
+                    if($countPermisos % 100 == 0) {
+                        $em->flush();
+                        // return;
                     }
                 }
                 $em->flush();
