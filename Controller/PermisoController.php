@@ -167,7 +167,7 @@ class PermisoController extends Controller
                                         $countPermisos++;
                                     }
                                 }
-                                else {
+                                elseif($boolAcceso) {
                                     $pxp = new PerfilXPermiso();
                                     $pxp->setPerfil($arrPerfilSlugs[$key])
                                         ->setPermiso($permiso)
