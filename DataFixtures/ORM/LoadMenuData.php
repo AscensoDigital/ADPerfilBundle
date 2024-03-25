@@ -77,7 +77,7 @@ class LoadMenuData extends Fixture
             ->setColor($this->getReference('clr-morado'))
             ->setIcono('fa fa-cloud-upload')
             ->setPermiso($this->getReference('per-per-load'));
-        $manager->persist($perList);
+        $manager->persist($perLoad);
         $this->addReference('ad-perfil-mn-per-load',$perLoad);
 
         $perEditPermiso= new Menu();
