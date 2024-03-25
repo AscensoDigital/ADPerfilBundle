@@ -78,7 +78,7 @@ class LoadMenuData extends Fixture
             ->setIcono('fa fa-cloud-upload')
             ->setPermiso($this->getReference('per-per-load'));
         $manager->persist($perList);
-        $this->addReference('ad-perfil-mn-per-list',$perList);
+        $this->addReference('ad-perfil-mn-per-load',$perLoad);
 
         $perEditPermiso= new Menu();
         $perEditPermiso->setMenuSuperior($perList)
