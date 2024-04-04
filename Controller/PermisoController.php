@@ -2,6 +2,7 @@
 
 namespace AscensoDigital\PerfilBundle\Controller;
 
+use AscensoDigital\ComponentBundle\Util\StrUtil;
 use AscensoDigital\PerfilBundle\Entity\Perfil;
 use AscensoDigital\PerfilBundle\Entity\PerfilXPermiso;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
@@ -138,7 +139,7 @@ class PermisoController extends Controller
                             if($key>1) {
                                 /** @var PerfilInterface $perfil */
                                 foreach ($perfils as $perfil) {
-                                    if($perfil->getSlug()==$perfilSlug) {
+                                    if (StrUtil::ucwords(StrUtil::strtolower($perfil->getSlug())) == $perfilSlug) {
                                         $arrPerfilSlugs[$key] = $perfil;
                                     }
                                 }
