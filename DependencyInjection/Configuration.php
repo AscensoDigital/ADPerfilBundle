@@ -33,6 +33,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('valor_true')->defaultValue('1')->end()
                 ->scalarNode('valor_false')->defaultValue('0')->end()
                 ->scalarNode('separador_encabezado')->defaultValue(false)->end()
+                ->scalarNode('csv_permisos_path')->defaultValue('%kernel.root_dir%/config/ad_perfil_permisos.csv')->end()
                 ->arrayNode('navegacion')
                     ->addDefaultsIfNotSet()
                     ->children()

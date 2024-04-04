@@ -28,6 +28,7 @@ class ADPerfilExtension extends Extension implements PrependExtensionInterface
         $container->setParameter('ad_perfil.perfil_class',$config['perfil_class']);
         $container->setParameter('ad_perfil.session_name',$config['session_name']);
         $container->setParameter('ad_perfil.route_redirect',$config['route_redirect']);
+        $container->setParameter('ad_perfil.csv_permisos_path',$config['csv_permisos_path']);
 
         $container->setParameter('ad_perfil.navegacion.homepage_route',$config['navegacion']['homepage_route']);
         $container->setParameter('ad_perfil.navegacion.homepage_name',$config['navegacion']['homepage_name']);
