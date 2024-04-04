@@ -133,7 +133,7 @@ class PermisoController extends Controller
                 while (($datos = $gestor->fgetcsv(';')) !== false) {
                     // $numero = count($datos);
                     // dump($datos);
-                    if($readEncabezado && $datos[0]!== "sep=") {
+                    if($readEncabezado && !in_array($datos[0], ["sep=", "sep=;"])) {
                         foreach ($datos as $key => $perfilSlug) {
                             if($key>1) {
                                 /** @var PerfilInterface $perfil */
