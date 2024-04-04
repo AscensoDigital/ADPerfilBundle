@@ -9,6 +9,7 @@ use AscensoDigital\PerfilBundle\Entity\Reporte;
 use AscensoDigital\PerfilBundle\Entity\ReporteXCriterio;
 use AscensoDigital\PerfilBundle\Form\Type\ReporteFormType;
 use AscensoDigital\PerfilBundle\Form\Type\ReporteLoadEstaticoFormType;
+use AscensoDigital\PerfilBundle\Model\PerfilInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -56,6 +57,7 @@ class ReporteController extends Controller
         /** @var Permiso $permiso */
         foreach ($permisos as $permiso) {
             $data[$fila] = ['permiso' => $permiso->getNombre(), 'descripcion' => $permiso->getDescripcion()];
+            /** @var PerfilInterface $perfil */
             foreach ($perfils as $perfil) {
                 $data[$fila][$perfil->getSlug()] = isset($pxps[$permiso->getId()]) && isset($pxps[$permiso->getId()][$perfil->getId()]) && $pxps[$permiso->getId()][$perfil->getId()] ? 1 : '';
             }
