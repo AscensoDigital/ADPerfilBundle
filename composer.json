@@ -28,7 +28,13 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^2.3",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5",
+        "symfony/validator": "^2.1"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "version": "1.4.7"
 }

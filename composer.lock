@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9c82e5b26fa5220c4baa5113641b74ad",
+    "content-hash": "8ee81b63482ef6f1d5a9f6e3977916b3",
     "packages": [
         {
             "name": "ascensodigital/component-bundle",

@@ -18,6 +18,7 @@ class CsvPermisos
      * @var UploadedFile $file
      * @Assert\NotBlank
      * @Assert\File(
+     *     maxSize = "10M",
      *     mimeTypes = {"text/csv","text/plain"},
      *     mimeTypesMessage = "Cargar solo archivos formato .csv"
      * )
