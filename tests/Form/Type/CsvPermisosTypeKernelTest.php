@@ -12,6 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class CsvPermisosTypeKernelTest extends WebTestCase
 {
+    /**
+     * @group functional
+     */
     public function testSubmitValidFileViaRequest()
     {
         $client = static::createClient();
