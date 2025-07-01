@@ -123,29 +123,24 @@ class ArchivoTest extends TestCase
     {
         $archivo = new Archivo();
 
-        $fsMock = $this->getMockBuilder(Filesystem::class)
-            ->onlyMethods(['dumpFile'])
+        $mockFs = $this->getMockBuilder(\Symfony\Component\Filesystem\Filesystem::class)
+            ->setMethods(['dumpFile'])
             ->getMock();
 
-        $fsMock->expects($this->once())
+        $mockFs->expects($this->once())
             ->method('dumpFile');
 
-        $file = 'contenido de archivo de prueba';
-        $directorio = 'pruebas';
-        $nombre = 'documento.txt';
+        $archivo->setFilesystem($mockFs);
 
-        // Sobreescribimos el método internamente para usar el Filesystem mock
-        $refFs = new \ReflectionClass(Filesystem::class);
-        $prop = $refFs->getProperty('fs');
-        $prop->setAccessible(true);
-        $prop->setValue($archivo, $fsMock);
+        $fileContent = 'contenido';
+        $directorio = 'test_dir';
+        $nombre = 'Mi archivo.pdf';
 
-        // Ejecutar manualmente ya que no está inyectado: usamos una versión dummy de saveFile
-        $slugify = new \Cocur\Slugify\Slugify();
-        $slugifiedName = $slugify->slugify('documento') . '.txt';
+        $archivo->saveFile($directorio, $nombre, $fileContent, true);
 
-        $archivo->saveFile($directorio, $nombre, $file, true);
-        $this->assertEquals('pruebas' . DIRECTORY_SEPARATOR . $slugifiedName, $archivo->getRuta());
+        $slugified = (new \Cocur\Slugify\Slugify())->slugify('Mi archivo') . '.pdf';
+
+        $this->assertEquals('test_dir' . DIRECTORY_SEPARATOR . $slugified, $archivo->getRuta());
         $this->assertTrue($archivo->getVisible());
     }
 

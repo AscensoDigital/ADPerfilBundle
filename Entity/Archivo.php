@@ -79,6 +79,8 @@ class Archivo
      */
     protected $creador;
 
+    /** @var Filesystem|null */
+    private $fs;
 
     public function __toString()
     {
@@ -132,7 +134,7 @@ class Archivo
     public function saveFile($directorio, $nombre, $file, $visible = false)
     {
         $targetDir = $this->getUploadRootDir() . DIRECTORY_SEPARATOR . $directorio;
-        $fs = new Filesystem();
+        $fs = $this->getFilesystem();
         $nombreArray=explode('.',$nombre);
         $extension=array_pop($nombreArray);
         $slugify = new Slugify();
@@ -341,5 +343,15 @@ class Archivo
     public function getFile()
     {
         return $this->file;
+    }
+
+    public function setFilesystem(Filesystem $fs)
+    {
+        $this->fs = $fs;
+    }
+
+    public function getFilesystem()
+    {
+        return $this->fs ?: new Filesystem();
     }
 }
