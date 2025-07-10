@@ -31,7 +31,19 @@ doctrine:
     memory: true
   orm:
     auto_generate_proxy_classes: true
-    auto_mapping: true
+    metadata_cache_driver: array
+    query_cache_driver: array
+    result_cache_driver: array
+    resolve_target_entities:
+      AscensoDigital\PerfilBundle\Model\UserInterface: Tests\AscensoDigital\PerfilBundle\Entity\Dummy\UserDummy
+
+    mappings:
+      ADPerfilBundle:
+        type: annotation
+        is_bundle: true
+        dir: Entity
+        prefix: AscensoDigital\PerfilBundle\Entity
+
 
 ad_perfil:
   perfil_class: Tests\AscensoDigital\PerfilBundle\Entity\Dummy\PerfilDummy

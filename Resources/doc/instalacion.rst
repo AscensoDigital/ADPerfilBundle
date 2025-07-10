@@ -43,6 +43,12 @@ Instalación
         navegacion:
             homepage_title: Título del Sitio
 
+    doctrine:
+        orm:
+            resolve_target_entities:
+                AscensoDigital\PerfilBundle\Model\PerfilInterface: AppBundle\Entity\UsuarioTipo
+                AscensoDigital\PerfilBundle\Model\UserInterface: AppBundle\Entity\Usuario
+
 5. Importa las rutas del bundle:
 
 .. code-block:: yaml

@@ -1,14 +1,3 @@
-Tests Funcionales
-=================
-
-1. No cargues `easy_admin` en entorno de test:
-
-.. code-block:: php
-
-    if ($container->getParameter('kernel.environment') !== 'test') {
-        $loader->load('ad_perfil.easyadmin.yml');
-    }
-
 2. Configura `config_test.yml`:
 
 .. code-block:: yaml
@@ -34,6 +23,8 @@ Tests Funcionales
         orm:
             auto_generate_proxy_classes: true
             auto_mapping: true
+            resolve_target_entities:
+                AscensoDigital\PerfilBundle\Model\UserInterface: Tests\AscensoDigital\PerfilBundle\Entity\Dummy\UserDummy
 
     security:
         providers:
@@ -58,15 +49,3 @@ Tests Funcionales
         proveedor_id: 1
         navegacion:
             homepage_title: 'Test'
-
-3. Usa un test con `WebTestCase`:
-
-.. code-block:: php
-
-    $client = static::createClient();
-    $client->request(
-        'POST',
-        '/ruta-dummy',
-        [],
-        ['form' => ['file' => $uploadedFile]]
-    );
