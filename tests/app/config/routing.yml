@@ -1,0 +1,3 @@
+ad_perfil:
+    resource: "@ADPerfilBundle/Controller/"
+    type:     annotation

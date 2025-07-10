@@ -1,0 +1,43 @@
+parameters:
+  request_listener.http_port: 80
+  request_listener.https_port: 443
+
+framework:
+  router:
+    resource: "%kernel.root_dir%/config/routing.yml"
+  secret: test
+  test: ~
+  session:
+    storage_id: session.storage.mock_file
+
+security:
+  providers:
+    in_memory:
+      memory: ~
+  firewalls:
+    test:
+      pattern: ^/
+      anonymous: true
+
+twig:
+  debug: '%kernel.debug%'
+  strict_variables: '%kernel.debug%'
+  paths:
+    "%kernel.root_dir%/../../Resources/views": ~
+
+doctrine:
+  dbal:
+    driver: pdo_sqlite
+    memory: true
+  orm:
+    auto_generate_proxy_classes: true
+    auto_mapping: true
+
+ad_perfil:
+  perfil_class: Tests\AscensoDigital\PerfilBundle\Entity\Dummy\PerfilDummy
+  perfil_table_alias: perfil
+  icon_path: 'tests/Fixtures/icono_dummy.png'
+  icon_alt: 'Ícono de prueba'
+  proveedor_id: 1
+  navegacion:
+    homepage_title: 'Test'

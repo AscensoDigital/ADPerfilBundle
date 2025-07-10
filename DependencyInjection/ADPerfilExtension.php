@@ -87,6 +87,8 @@ class ADPerfilExtension extends Extension implements PrependExtensionInterface
     public function prepend(ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('ad_perfil.easyadmin.yml');
+        if ($container->getParameter('kernel.environment') !== 'test') {
+            $loader->load('ad_perfil.easyadmin.yml');
+        }
     }
 }

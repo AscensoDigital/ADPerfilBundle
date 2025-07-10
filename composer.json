@@ -21,7 +21,8 @@
         "ascensodigital/component-bundle": "^1.2.3",
         "cocur/slugify": "^2.0",
         "javiereguiluz/easyadmin-bundle": "^1.5",
-        "ext-json": "*"
+        "ext-json": "*",
+        "symfony/form": "^2.8"
     },
     "autoload": {
         "psr-4": { "AscensoDigital\\PerfilBundle\\": "" }
