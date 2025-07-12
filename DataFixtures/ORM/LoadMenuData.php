@@ -11,7 +11,8 @@ namespace AscensoDigital\PerfilBundle\DataFixtures\ORM;
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectManager; // ✅ correcto para Symfony 2.x
+
 
 class LoadMenuData extends Fixture
 {
