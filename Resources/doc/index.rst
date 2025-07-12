@@ -13,3 +13,5 @@ ADPerfilBundle Documentation
    easyadmin
    tests_funcionales
    ejemplos
+   permiso_voter
+

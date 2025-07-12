@@ -2,130 +2,193 @@
 
 namespace Tests\Security;
 
+use AscensoDigital\PerfilBundle\Security\PermisoVoter;
 use AscensoDigital\PerfilBundle\Entity\Menu;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
-use AscensoDigital\PerfilBundle\Entity\PerfilXPermiso;
 use AscensoDigital\PerfilBundle\Repository\MenuRepository;
 use AscensoDigital\PerfilBundle\Repository\PerfilXPermisoRepository;
-use AscensoDigital\PerfilBundle\Security\PermisoVoter;
+use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Doctrine\ORM\EntityManager;
-use Tests\AscensoDigital\PerfilBundle\Entity\Dummy\PerfilDummy;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class PermisoVoterTest extends TestCase
 {
-    public function testVoteOnAttributeForValidPermission()
+    private function getVoter(array $permisos = [], $perfilId = 1)
     {
-        $perfil = $this->createMock(\AscensoDigital\PerfilBundle\Model\PerfilInterface::class);
-        $perfil->method('getId')->willReturn(1);
-        $perfil->method('getNombre')->willReturn('Perfil Dummy');
-        $perfil->method('getSlug')->willReturn('perfil-dummy');
-
-
-        // Mock de Session
         $session = $this->createMock(Session::class);
-        $session->expects($this->once())
-            ->method('get')
-            ->with('perfil_id')
-            ->willReturn($perfil->getId());
+        $session->method('get')->willReturn($perfilId);
 
-        // Mock de MenuRepository
-        $menuRepo = $this->createMock(MenuRepository::class);
-        $menuRepo->expects($this->once())
-            ->method('findArrayPermisoByPerfil')
-            ->with($perfil->getId())
-            ->willReturn([
-                PermisoVoter::MENU => [
-                    Permiso::RESTRICT => ['inicio']
-                ]
-            ]);
+        $repoMenu = $this->createMock(MenuRepository::class);
+        $repoMenu->method('findArrayPermisoByPerfil')->willReturn([
+            'menu' => $permisos['menu'] ?? [],
+        ]);
 
-        // Mock de PerfilXPermiso repository
-        $perfilXPermisoRepo = $this->createMock(PerfilXPermisoRepository::class);
-        $perfilXPermisoRepo->expects($this->once())
-            ->method('findArrayIdByPerfil')
-            ->with($perfil->getId())
-            ->willReturn(['ad_perfil-mn-mapa-sitio']);
-
-        // Mock de EntityManager con repositorios encadenados
-        $em = $this->createMock(EntityManager::class);
-        $em->expects($this->any())
-            ->method('getRepository')
-            ->willReturnCallback(function ($entity) use ($menuRepo, $perfilXPermisoRepo) {
-                switch ($entity) {
-                    case 'ADPerfilBundle:Menu':
-                    case Menu::class:
-                        return $menuRepo;
-                    case 'ADPerfilBundle:PerfilXPermiso':
-                    case PerfilXPermiso::class:
-                        return $perfilXPermisoRepo;
-                    default:
-                        return $this->createMock(\Doctrine\Common\Persistence\ObjectRepository::class);
-                }
-            });
-
-        // Crear el Voter ya con mocks armados
-        $voter = new PermisoVoter($session, $em, 'perfil_id');
-
-        // Token de autenticación simulado
-        $token = new UsernamePasswordToken('test_user', null, 'main', ['ROLE_USER']);
-
-        $result = $voter->vote($token, 'ad_perfil-mn-mapa-sitio', [PermisoVoter::PERMISO]);
-        $this->assertSame(VoterInterface::ACCESS_GRANTED, $result, 'El Voter debe retornar ACCESS_GRANTED.');
-    }
-
-    public function testVoteOnAttributeForInvalidPermission()
-    {
-        $perfil = $this->createMock(\AscensoDigital\PerfilBundle\Model\PerfilInterface::class);
-        $perfil->method('getId')->willReturn(1);
-        $perfil->method('getNombre')->willReturn('Perfil Dummy');
-        $perfil->method('getSlug')->willReturn('perfil-dummy');
-
-        $session = $this->createMock(Session::class);
-        $session->expects($this->once())
-            ->method('get')
-            ->with('perfil_id')
-            ->willReturn($perfil->getId());
-
-        $menuRepo = $this->createMock(MenuRepository::class);
-        $menuRepo->expects($this->once())
-            ->method('findArrayPermisoByPerfil')
-            ->with($perfil->getId())
-            ->willReturn([
-                PermisoVoter::MENU => [
-                    Permiso::RESTRICT => ['inicio']
-                ]
-            ]);
-
-        $perfilXPermisoRepo = $this->createMock(PerfilXPermisoRepository::class);
-        $perfilXPermisoRepo->expects($this->once())
-            ->method('findArrayIdByPerfil')
-            ->with($perfil->getId())
-            ->willReturn([]); // no tiene permisos
+        $repoPermiso = $this->createMock(PerfilXPermisoRepository::class);
+        $repoPermiso->method('findArrayIdByPerfil')->willReturn(
+            $permisos['permiso'] ?? []
+        );
 
         $em = $this->createMock(EntityManager::class);
-        $em->expects($this->any())
-            ->method('getRepository')
-            ->willReturnCallback(function ($entity) use ($menuRepo, $perfilXPermisoRepo) {
-                switch ($entity) {
-                    case 'ADPerfilBundle:Menu':
-                    case Menu::class:
-                        return $menuRepo;
-                    case 'ADPerfilBundle:PerfilXPermiso':
-                    case PerfilXPermiso::class:
-                        return $perfilXPermisoRepo;
-                    default:
-                        return $this->createMock(\Doctrine\Common\Persistence\ObjectRepository::class);
-                }
-            });
+        $em->method('getRepository')->willReturnMap([
+            ['ADPerfilBundle:Menu', $repoMenu],
+            ['ADPerfilBundle:PerfilXPermiso', $repoPermiso],
+        ]);
 
-        $voter = new PermisoVoter($session, $em, 'perfil_id');
-        $token = new UsernamePasswordToken('test_user', null, 'main', ['ROLE_USER']);
-
-        $result = $voter->vote($token, 'invalid-permission', [PermisoVoter::PERMISO]);
-        $this->assertSame(VoterInterface::ACCESS_DENIED, $result, 'El Voter debe retornar ACCESS_DENIED para permisos inválidos.');
+        return new PermisoVoter($session, $em, 'perfil');
     }
+
+    private function callSupports($voter, $attribute, $subject)
+    {
+        $ref = new \ReflectionClass($voter);
+        $method = $ref->getMethod('supports');
+        $method->setAccessible(true);
+        return $method->invoke($voter, $attribute, $subject);
+    }
+
+    private function callVote($voter, $attribute, $subject)
+    {
+        $token = $this->createMock(TokenInterface::class);
+        $token->method('getUser')->willReturn(new \stdClass());
+        return $this->invokeVote($voter, $attribute, $subject, $token);
+    }
+
+    private function invokeVote($voter, $attribute, $subject, $token)
+    {
+        $ref = new \ReflectionClass($voter);
+        $method = $ref->getMethod('voteOnAttribute');
+        $method->setAccessible(true);
+        return $method->invoke($voter, $attribute, $subject, $token);
+    }
+
+    // === TESTS ===
+
+    public function testSupportsWithInvalidAttribute()
+    {
+        $voter = $this->getVoter();
+        $this->assertFalse($this->callSupports($voter, 'invalid', null));
+    }
+
+    public function testSupportsWithInvalidSubject()
+    {
+        $voter = $this->getVoter();
+        $this->assertFalse($this->callSupports($voter, PermisoVoter::MENU, 'string'));
+    }
+
+    public function testSupportsWithValidMenuNullSubject()
+    {
+        $voter = $this->getVoter();
+        $this->assertTrue($this->callSupports($voter, PermisoVoter::MENU, null));
+    }
+
+    public function testVoteMenuLibrePermitido()
+    {
+        $menu = new Menu();
+        $menu->setSlug('dashboard');
+        $voter = $this->getVoter(['menu' => [Permiso::LIBRE => ['dashboard']]]);
+        $this->assertTrue($this->callVote($voter, PermisoVoter::MENU, $menu));
+    }
+
+    public function testVoteMenuRestrictPermitido()
+    {
+        $menu = new Menu();
+        $menu->setSlug('admin');
+        $voter = $this->getVoter(['menu' => [Permiso::RESTRICT => ['admin']]]);
+        $this->assertTrue($this->callVote($voter, PermisoVoter::MENU, $menu));
+    }
+
+    public function testVoteMenuNoPermitido()
+    {
+        $menu = new Menu();
+        $menu->setSlug('config');
+        $voter = $this->getVoter(['menu' => [Permiso::RESTRICT => ['admin']]]);
+        $this->assertFalse($this->callVote($voter, PermisoVoter::MENU, $menu));
+    }
+
+    public function testVotePermisoPermitido()
+    {
+        $voter = $this->getVoter(['permiso' => ['PERM_EDIT']]);
+        $this->assertTrue($this->callVote($voter, PermisoVoter::PERMISO, 'PERM_EDIT'));
+    }
+
+    public function testVotePermisoDenegado()
+    {
+        $voter = $this->getVoter(['permiso' => ['PERM_VIEW']]);
+        $this->assertFalse($this->callVote($voter, PermisoVoter::PERMISO, 'PERM_EDIT'));
+    }
+
+    public function testVoteUsuarioAnonimo()
+    {
+        $voter = $this->getVoter();
+        $token = $this->createMock(TokenInterface::class);
+        $token->method('getUser')->willReturn(null);
+        $this->assertFalse($this->invokeVote($voter, PermisoVoter::PERMISO, 'PERM_EDIT', $token));
+    }
+
+    public function testVotePerfilIdNull()
+    {
+        $session = $this->createMock(Session::class);
+        $session->method('get')->willReturn(null);
+
+        $repoMenu = $this->createMock(MenuRepository::class);
+        $repoMenu->method('findArrayPermisoByPerfil')->willReturn([]);
+
+        $repoPermiso = $this->createMock(PerfilXPermisoRepository::class);
+        $repoPermiso->method('findArrayIdByPerfil')->willReturn([]);
+
+        $em = $this->createMock(EntityManager::class);
+        $em->method('getRepository')->willReturnMap([
+            ['ADPerfilBundle:Menu', $repoMenu],
+            ['ADPerfilBundle:PerfilXPermiso', $repoPermiso],
+        ]);
+
+        $voter = new PermisoVoter($session, $em, 'perfil');
+
+        $token = $this->createMock(TokenInterface::class);
+        $token->method('getUser')->willReturn(new \stdClass());
+
+        $result = $this->invokeVote($voter, PermisoVoter::PERMISO, 'PERM_EDIT', $token);
+        $this->assertFalse($result);
+    }
+
+    public function testVoteWithUnknownAttributeThrowsException()
+    {
+        $voter = $this->getVoter();
+        $token = $this->createMock(TokenInterface::class);
+        $token->method('getUser')->willReturn(new \stdClass());
+
+        $this->expectException(\LogicException::class);
+        $this->invokeVote($voter, 'desconocido', 'cualquier', $token);
+    }
+
+    public function testVoteMenuWithNullSubjectReturnsTrue()
+    {
+        $voter = $this->getVoter();
+        $this->assertTrue($this->callVote($voter, PermisoVoter::MENU, null));
+    }
+
+    public function testVoteMenuLibreSlugPermitido()
+    {
+        $menu = new Menu();
+        $menu->setSlug('ayuda');
+
+        $voter = $this->getVoter([
+            'menu' => [Permiso::LIBRE => ['ayuda']]
+        ]);
+
+        $this->assertTrue($this->callVote($voter, PermisoVoter::MENU, $menu));
+    }
+
+    public function testVoteMenuRestrictSlugDenegado()
+    {
+        $menu = new Menu();
+        $menu->setSlug('oculto');
+
+        $voter = $this->getVoter([
+            'menu' => [Permiso::RESTRICT => ['admin', 'config']]
+        ]);
+
+        $this->assertFalse($this->callVote($voter, PermisoVoter::MENU, $menu));
+    }
+
 }

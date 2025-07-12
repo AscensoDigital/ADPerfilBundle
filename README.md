@@ -9,3 +9,5 @@ Documentación completa disponible en [`Resources/doc/index.rst`](Resources/doc/
 - [Tests funcionales](Resources/doc/tests_funcionales.rst)
 - [Filtros](Resources/doc/filtros.rst)
 - [EasyAdmin](Resources/doc/easyadmin.rst)
+- [PermisoVoter](Resources/doc/permiso_voter.rst)
+
