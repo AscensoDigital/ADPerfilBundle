@@ -1,10 +1,14 @@
+imports:
+  - { resource: '../../../Resources/config/services.yml' }
+
 parameters:
   request_listener.http_port: 80
   request_listener.https_port: 443
 
 framework:
   router:
-    resource: "%kernel.root_dir%/config/routing.yml"
+    resource: "%kernel.root_dir%/config/routing.php"
+    strict_requirements: true
   secret: test
   test: ~
   session:
@@ -28,14 +32,18 @@ twig:
 doctrine:
   dbal:
     driver: pdo_sqlite
-    memory: true
+    path: "%kernel.cache_dir%/test.sqlite"
+
+
   orm:
     auto_generate_proxy_classes: true
     metadata_cache_driver: array
     query_cache_driver: array
     result_cache_driver: array
+
     resolve_target_entities:
       AscensoDigital\PerfilBundle\Model\UserInterface: Tests\AscensoDigital\PerfilBundle\Entity\Dummy\UserDummy
+      AscensoDigital\PerfilBundle\Model\PerfilInterface: Tests\AscensoDigital\PerfilBundle\Entity\Dummy\PerfilDummy
 
     mappings:
       ADPerfilBundle:
@@ -43,6 +51,12 @@ doctrine:
         is_bundle: true
         dir: Entity
         prefix: AscensoDigital\PerfilBundle\Entity
+
+      dummy_entities:
+        type: annotation
+        is_bundle: false
+        dir: tests/AscensoDigital/PerfilBundle/Entity/Dummy
+        prefix: Tests\AscensoDigital\PerfilBundle\Entity\Dummy
 
 
 ad_perfil:

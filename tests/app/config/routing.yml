@@ -1,3 +1,20 @@
-ad_perfil:
-    resource: "@ADPerfilBundle/Controller/"
-    type:     annotation
+ad_perfil_filtro:
+    resource: "%kernel.root_dir%/../../../Controller/FiltroController.php"
+    type: annotation
+
+ad_perfil_navegacion:
+    resource: "%kernel.root_dir%/../../../Controller/NavegacionController.php"
+    type: annotation
+
+ad_perfil_perfil:
+    resource: "%kernel.root_dir%/../../../Controller/PerfilController.php"
+    type: annotation
+
+ad_perfil_permiso:
+    resource: "%kernel.root_dir%/../../../Controller/PermisoController.php"
+    type: annotation
+
+ad_perfil_reporte:
+    resource: "%kernel.root_dir%/../../../Controller/ReporteController.php"
+    type: annotation
+

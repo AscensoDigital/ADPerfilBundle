@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-        bootstrap="vendor/autoload.php"
+        bootstrap="tests/bootstrap.php"
         colors="true"
         stopOnFailure="false"
         failOnWarning="true"
@@ -23,6 +23,8 @@
         <env name="KERNEL_DIR" value="tests/app" />
         <env name="KERNEL_CLASS" value="AppKernel"/>
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0"/>
+        <ini name="error_reporting" value="-1"/>
+        <ini name="display_errors" value="1"/>
     </php>
 
     <filter>

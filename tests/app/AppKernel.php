@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new TwigBundle(),
             new DoctrineBundle(),
             new ADPerfilBundle(),
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
         ];
     }
 
@@ -31,14 +32,24 @@ class AppKernel extends Kernel
         }
     }
 
-
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/symfony_app/cache/'.$this->environment;
+        return __DIR__ . '/../app/cache/' . $this->environment;
     }
 
     public function getLogDir()
     {
-        return sys_get_temp_dir().'/symfony_app/logs';
+        return __DIR__ . '/../app/logs';
     }
+
+    public function getKernelDir()
+    {
+        return __DIR__;
+    }
+
+    public function registerRoutes(\Symfony\Component\Routing\RouteCollectionBuilder $routes)
+    {
+        $routes->import(__DIR__.'/config/routing.php', '/', 'php');
+    }
+
 }
