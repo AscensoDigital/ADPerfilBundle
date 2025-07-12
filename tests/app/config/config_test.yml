@@ -65,5 +65,6 @@ ad_perfil:
   icon_path: 'tests/Fixtures/icono_dummy.png'
   icon_alt: 'Ícono de prueba'
   proveedor_id: 1
+  session_name: 'perfil_id'
   navegacion:
     homepage_title: 'Test'

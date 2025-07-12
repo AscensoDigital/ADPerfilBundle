@@ -1,25 +1,21 @@
 <?php
 
-use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
-use Symfony\Bundle\TwigBundle\TwigBundle;
-use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use AscensoDigital\PerfilBundle\ADPerfilBundle;
 
 class AppKernel extends Kernel
 {
     public function registerBundles()
     {
         return [
-            new FrameworkBundle(),
-            new SecurityBundle(),
-            new TwigBundle(),
-            new DoctrineBundle(),
-            new ADPerfilBundle(),
+            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+            new Symfony\Bundle\TwigBundle\TwigBundle(),
+            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new AscensoDigital\PerfilBundle\ADPerfilBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
         ];
     }
 
