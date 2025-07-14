@@ -34,7 +34,7 @@
         <div class="collapse navbar-collapse navbar-ex1-collapse" id="ts-navbar-collapse">
             {% if is_granted('ROLE_USER') %}
                 <ul class="nav navbar-nav navbar-right">
-                    <li>{{ render(controller('ADPerfilBundle:Perfil:showActive')) }}</li>
+                    <li>{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\PerfilController::showActiveAction')) }}</li>
                     <li class="dropdown">
                         <a href="" class="dropdown-toggle navbar-usuario" data-toggle="dropdown"><i class="fa fa-user"></i> {{ app.user }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
@@ -44,7 +44,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle navbar-nav" data-toggle="dropdown">Menú <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            {{ render(controller('ADPerfilBundle:Navegacion:menu', { 'lateral' : true })) }}
+                            {{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::menuAction', { 'lateral' : true })) }}
                         </ul>
                     </li>
                 </ul>
@@ -54,13 +54,13 @@
         </div>
     </nav>
     <div class="container">
-        {{ include('ADPerfilBundle:Navegacion:alert-flashes.html.twig') }}
+        {{ include('@ADPerfilBundle/Navegacion/alert-flashes.html.twig') }}
         {% block ad_perfil_content %}
         {% endblock ad_perfil_content %}
     </div>
 
     {%  if app.user %}
-        {{  render(controller('ADPerfilBundle:Perfil:showOption')) }}
+        {{  render(controller('AscensoDigital\\PerfilBundle\\Controller\\PerfilController::showOptionAction')) }}
     {% endif %}
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

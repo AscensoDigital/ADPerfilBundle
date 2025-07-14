@@ -1,10 +1,14 @@
+{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::breadcrumbsAction')) }}
+{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::menuAction')) }}
+{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::pageTitleAction')) }}
+
 <ul>
     {% for menu in menus if menu.visible and (menu.permiso is null or is_granted('permiso', menu.permiso.nombre)) %}
         <li {% if submenu is not defined %}class="col-md-6 col-sm-6 col-xs-12"{% endif %}>
             {% if menu.icono %}<i class="fa-fw {{ menu.icono }}"></i>&nbsp;{% endif %}
             <a href="{% if menu.route != '' %}{{ path(menu.route) }}{% else %}{{ path('ad_perfil_menu', {'menu_slug' : menu.slug}) }}{% endif %}">{{ menu.nombre | title }}</a>
             {% if menu.menuHijos | length %}
-                {{ include('ADPerfilBundle:Navegacion:mapa-sitio_content.html.twig',{'menus' : menu.menuHijos, 'submenu' : true}) }}
+                {{ include('@ADPerfilBundle/Navegacion/mapa-sitio_content.html.twig',{'menus' : menu.menuHijos, 'submenu' : true}) }}
             {% endif %}
         </li>
     {% endfor %}

@@ -1,7 +1,7 @@
-{% extends 'ADPerfilBundle::layout.html.twig' %}
+{% extends '@ADPerfilBundle/layout.html.twig' %}
 
 {% block ad_perfil_title %}Reportes{% endblock ad_perfil_title %}
 {% block ad_perfil_subtitle %}Crear Reporte{% endblock ad_perfil_subtitle %}
 {% block ad_perfil_content %}
-    {{ include('ADPerfilBundle:Reporte:new_content.html.twig') }}
+    {{ include('@ADPerfilBundle/Reporte/new_content.html.twig') }}
 {% endblock ad_perfil_content %}

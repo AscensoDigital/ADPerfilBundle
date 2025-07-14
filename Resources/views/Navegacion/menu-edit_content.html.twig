@@ -1,4 +1,7 @@
-{{ include('ADPerfilBundle:Navegacion:page-title.html.twig', {'icono': 'fa fa-edit', 'color': 'celeste', 'title': 'Editar Menu', 'subtitle': menu }) }}
+{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::breadcrumbsAction')) }}
+{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::menuAction')) }}
+{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::pageTitleAction')) }}
+
 <form method="post" class="form-horizontal">
     {{ form_widget(form) }}
     <button class="btn btn-primary" type="submit">Actualizar</button>

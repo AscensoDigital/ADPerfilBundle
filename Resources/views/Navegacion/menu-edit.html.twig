@@ -1,8 +1,8 @@
-{% extends 'ADPerfilBundle::layout.html.twig' %}
+{% extends '@ADPerfilBundle/layout.html.twig' %}
 
 {% block ad_perfil_title %}Editar Menu{% endblock ad_perfil_title %}
 {% block ad_perfil_subtitle %}{{ menu }}{% endblock ad_perfil_subtitle %}
 
 {% block ad_perfil_content %}
-    {{ include('ADPerfilBundle:Navegacion:menu-edit_content.html.twig') }}
+    {{ include('@ADPerfilBundle/Navegacion/menu-edit_content.html.twig') }}
 {% endblock ad_perfil_content %}

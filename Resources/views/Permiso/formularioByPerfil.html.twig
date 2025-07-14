@@ -1,9 +1,9 @@
-{% extends 'ADPerfilBundle::layout.html.twig' %}
+{% extends '@ADPerfilBundle/layout.html.twig' %}
 
 {% block ad_perfil_title %}Permisos{% endblock %}
 {% block ad_perfil_subtitle %}{{ subtitle }}{% endblock %}
 
 
 {% block ad_perfil_content %}
-    {{ include('ADPerfilBundle:Permiso:formularioByPerfil_content.html.twig') }}
+    {{ include('@ADPerfilBundle/Permiso/formularioByPerfil_content.html.twig') }}
 {% endblock %}

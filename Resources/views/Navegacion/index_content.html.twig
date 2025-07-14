@@ -1,6 +1,6 @@
-{{ render(controller('ADPerfilBundle:Navegacion:breadcrumbs')) }}
+{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::breadcrumbsAction')) }}
 
-{{ render(controller('ADPerfilBundle:Navegacion:pageTitle')) }}
+{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::pageTitleAction')) }}
 
 {% for menu in menus %}
     <div class="col-sm-6 col-md-3">
