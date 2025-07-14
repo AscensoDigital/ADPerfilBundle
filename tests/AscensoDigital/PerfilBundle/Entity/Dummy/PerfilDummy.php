@@ -29,6 +29,12 @@ class PerfilDummy implements PerfilInterface
      */
     private $slug = 'perfil-dummy';
 
+
+    public function __toString()
+    {
+       return $this->getNombre();
+    }
+
     public function getId()
     {
         return $this->id;
