@@ -91,7 +91,7 @@ class ReporteController extends Controller
             $this->addFlash('success','Se creo correctamente el reporte: '.$reporte);
             return $this->redirectToRoute('ad_perfil_reportes');
         }
-        return $this->render('ADPerfilBundle:Reporte:new.html.twig',['form' => $form->createView()]);
+        return $this->render('@ADPerfilBundle/Reporte/new.html.twig',['form' => $form->createView()]);
     }
 
     /**
@@ -102,7 +102,7 @@ class ReporteController extends Controller
     public function listAction()
     {
         $data=$this->get('ad_perfil.reporte_manager')->getDataReportesForList();
-        return $this->render('ADPerfilBundle:Reporte:list.html.twig', array(
+        return $this->render('@ADPerfilBundle/Reporte/list.html.twig', array(
             'data' => $data,
             'canEdit' => $this->isGranted('permiso','ad_perfil-rep-edit'),
             'canLoad' => $this->isGranted('permiso','ad_perfil-rep-load-estatico'),
@@ -150,7 +150,7 @@ class ReporteController extends Controller
             $this->addFlash('success','Se registro correctamente el archivo estatico para el reporte: '.$reporte);
             return $this->redirectToRoute('ad_perfil_reportes');
         }
-        return $this->render('ADPerfilBundle:Reporte:new.html.twig',['form' => $form->createView()]);
+        return $this->render('@ADPerfilBundle/Reporte/new.html.twig',['form' => $form->createView()]);
     }
 
     /**
@@ -170,7 +170,7 @@ class ReporteController extends Controller
             $this->addFlash('success','Se creo correctamente el reporte: '.$rp);
             return $this->redirectToRoute('ad_perfil_reportes');
         }
-        return $this->render('ADPerfilBundle:Reporte:new.html.twig',['form' => $form->createView()]);
+        return $this->render('@ADPerfilBundle/Reporte/new.html.twig',['form' => $form->createView()]);
     }
 
     /**
@@ -230,7 +230,7 @@ class ReporteController extends Controller
      * @return Response
      */
     protected function generarReporte($data,$nombre_base, $proveedor_id, $separador, $return_reporte=true, $fecha = null) {
-        $contenido=$this->renderView('ADPerfilBundle:Reporte:reporte.csv.twig', array('data' => $data, 'proveedor_id' => $proveedor_id, 'separador' => $separador));
+        $contenido=$this->renderView('@ADPerfilBundle/Reporte/reporte.csv.twig', array('data' => $data, 'proveedor_id' => $proveedor_id, 'separador' => $separador));
         $file=StrUtil::formatReport($contenido);
         $reporte=$this->saveReporte($nombre_base, $file, $fecha);
         if($return_reporte){

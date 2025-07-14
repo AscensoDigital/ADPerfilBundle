@@ -36,7 +36,7 @@ class PermisoController extends Controller
             $em->flush();
             return $this->redirectToRoute('ad_perfil_permiso_list');
         }
-        return $this->render('ADPerfilBundle:Permiso:formulario.html.twig',array('form' => $form->createView(), 'subtitle' => 'Editar'));
+        return $this->render('@ADPerfilBundle/Permiso/formulario.html.twig',array('form' => $form->createView(), 'subtitle' => 'Editar'));
     }
 
     /**
@@ -61,7 +61,7 @@ class PermisoController extends Controller
             $em->flush();
             return $this->redirectToRoute('ad_perfil_permiso_list');
         }
-        return $this->render('ADPerfilBundle:Permiso:formularioByPerfil.html.twig',array('form' => $form->createView(), 'subtitle' => 'Editar '.$perfil->getNombre()));
+        return $this->render('@ADPerfilBundle/Permiso/formularioByPerfil.html.twig',array('form' => $form->createView(), 'subtitle' => 'Editar '.$perfil->getNombre()));
     }
 
     /**
@@ -70,7 +70,7 @@ class PermisoController extends Controller
      * @Security("is_granted('permiso','ad_perfil-per-list')")
      */
     public function listAction() {
-        return $this->render('ADPerfilBundle:Permiso:list.html.twig');
+        return $this->render('@ADPerfilBundle/Permiso/list.html.twig');
     }
 
     /**
@@ -84,7 +84,7 @@ class PermisoController extends Controller
         $perfils=$this->get('ad_perfil.perfil_manager')->findByFiltro($filtros);
         $permisos=$em->getRepository('ADPerfilBundle:Permiso')->findByFiltro($filtros);
         $pxps=$em->getRepository('ADPerfilBundle:PerfilXPermiso')->findByFiltros($filtros);
-        return $this->render('ADPerfilBundle:Permiso:list-table.html.twig',array('permisos' => $permisos, 'perfils' => $perfils, 'pxps' => $pxps));
+        return $this->render('@ADPerfilBundle/Permiso/list-table.html.twig',array('permisos' => $permisos, 'perfils' => $perfils, 'pxps' => $pxps));
     }
 
     /**
@@ -107,7 +107,7 @@ class PermisoController extends Controller
             $this->addFlash('success','Se registro correctamente el permiso "'.$permiso.'"');
             return $this->redirectToRoute('ad_perfil_permiso_list');
         }
-        return $this->render('ADPerfilBundle:Permiso:formulario.html.twig',array('form' => $form->createView(), 'subtitle' => 'Crear'));
+        return $this->render('@ADPerfilBundle/Permiso/formulario.html.twig',array('form' => $form->createView(), 'subtitle' => 'Crear'));
     }
 
     /**
@@ -193,6 +193,6 @@ class PermisoController extends Controller
                 $this->addFlash('danger','No se pudo arbir el archivo cargado.');
             }
         }
-        return $this->render('ADPerfilBundle:Permiso:load.html.twig',array('form' => $form->createView()));
+        return $this->render('@ADPerfilBundle/Permiso/load.html.twig',array('form' => $form->createView()));
     }
 }
