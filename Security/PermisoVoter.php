@@ -25,21 +25,14 @@ class PermisoVoter extends Voter
     private $perfil_id;
     private $permisos;
 
+    private $em;
+    private $session;
+
     public function __construct(Session $session, EntityManager $em, $sessionName)
     {
-        $this->perfil_id = $session->get($sessionName,null);
-        try{
-            $menus = $em->getRepository('ADPerfilBundle:Menu')->findArrayPermisoByPerfil($this->perfil_id);
-            $this->permisos[self::MENU] = isset($menus[self::MENU]) ? $menus[self::MENU] : array();
-
-            if(!is_null($this->perfil_id)) {
-                $this->permisos[self::PERMISO] = $em->getRepository('ADPerfilBundle:PerfilXPermiso')->findArrayIdByPerfil($this->perfil_id);
-            }
-        } catch(DBALException $e) {
-            return;
-        } catch(\PDOException $e) {
-            return;
-        }
+        $this->session = $session;
+        $this->em = $em;
+        $this->perfil_id = $session->get($sessionName, null);
     }
 
 
@@ -74,39 +67,45 @@ class PermisoVoter extends Voter
      *
      * @return bool
      */
+
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        if(is_null($subject)){
+        if (is_null($subject)) {
             return true;
         }
 
-        switch($attribute){
+        if (null === $this->perfil_id) {
+            return false;
+        }
+
+        // ⚠️ Cargar permisos aquí si no están seteados aún
+        if (!isset($this->permisos)) {
+            try {
+                $menus = $this->em->getRepository('ADPerfilBundle:Menu')
+                    ->findArrayPermisoByPerfil($this->perfil_id);
+                $this->permisos[self::MENU] = $menus[self::MENU] ?? [];
+
+                $this->permisos[self::PERMISO] = $this->em
+                    ->getRepository('ADPerfilBundle:PerfilXPermiso')
+                    ->findArrayIdByPerfil($this->perfil_id);
+            } catch (\Exception $e) {
+                return false; // o loguea si prefieres
+            }
+        }
+
+        switch ($attribute) {
             case self::MENU:
                 /** @var Menu $subject */
-                if(isset($this->permisos[$attribute][Permiso::LIBRE]) && in_array($subject->getSlug(), $this->permisos[$attribute][Permiso::LIBRE])){
+                if (in_array($subject->getSlug(), $this->permisos[self::MENU][Permiso::LIBRE] ?? [])) {
                     return true;
                 }
-                if(!isset($this->permisos[$attribute][Permiso::RESTRICT])){
-                    return false;
-                }
-                return in_array($subject->getSlug(), $this->permisos[$attribute][Permiso::RESTRICT]);
+                return in_array($subject->getSlug(), $this->permisos[self::MENU][Permiso::RESTRICT] ?? []);
             case self::PERMISO:
-                if(!isset($this->permisos[$attribute])){
-                    return false;
-                }
-                return in_array($subject, $this->permisos[$attribute]);
+                return in_array($subject, $this->permisos[self::PERMISO] ?? []);
         }
 
-        $user = $token->getUser();
-        if (!is_object($user)) {
-            // the user must be logged in; if not, deny access
-            return false;
-        }
-
-        if(is_null($this->perfil_id)){
-            return false;
-        }
-
+        // ⚠️ Si llega aquí, el atributo es inválido: lanza la excepción como antes
         throw new \LogicException('El código no es reconocido!');
     }
+
 }
