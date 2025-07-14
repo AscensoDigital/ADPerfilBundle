@@ -34,7 +34,7 @@ class ReporteRepository extends EntityRepository
             ->addOrderBy('rpc.orden')
             ->addOrderBy('rp.orden')
             ->setParameter(':perfil',$perfil_id)
-            ->setParameter(':permitido','true')
+            ->setParameter(':permitido',true, \PDO::PARAM_BOOL)
             ->getQuery()->getResult();
         $ret=array('criterios' => array(), 'reportes' => array());
         /** @var Reporte $rep */

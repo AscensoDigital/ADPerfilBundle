@@ -40,7 +40,7 @@ class PerfilXPermisoRepository extends EntityRepository {
             ->join('adp_pxp.permiso','adp_prm')
             ->where('adp_pxp.perfil=:perfil and adp_pxp.acceso=:acceso')
             ->setParameter(':perfil',$perfil_id)
-            ->setParameter(':acceso','true')
+            ->setParameter(':acceso',true, \PDO::PARAM_BOOL)
             ->getQuery()->getScalarResult();
         $ret=array();
         foreach ($prms as $prm) {
@@ -73,7 +73,7 @@ class PerfilXPermisoRepository extends EntityRepository {
             ->join('adp_pxp.permiso','adp_prm')
             ->join('adp_pxp.perfil',$filtros->getPerfilTableAlias())
             ->where('adp_pxp.acceso=:acceso')
-            ->setParameter(':acceso','true');
+            ->setParameter(':acceso',true, \PDO::PARAM_BOOL);
         $rs=$filtros->getQueryBuilder($qb)->getQuery()->getResult();
         $ret=array();
         /** @var PerfilXPermiso $pxp */

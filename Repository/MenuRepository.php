@@ -27,12 +27,12 @@ class MenuRepository extends EntityRepository {
                 ->setParameter(':menu',$menu_id);
         }
         $qb->andWhere('adp_m.visible=:visible')
-            ->setParameter(':visible','true');
+            ->setParameter(':visible',true, \PDO::PARAM_BOOL);
         return $qb->getQuery()->getSingleScalarResult();
     }
 
     public function findArrayPermisoByPerfil($perfil_id) {
-        $ms=$this->getEntityManager()->createQueryBuilder()
+        $qb=$this->getEntityManager()->createQueryBuilder()
             ->select('adp_m.slug')
             ->addSelect('IDENTITY(adp_m.permiso) as permiso')
             ->from('ADPerfilBundle:Menu','adp_m')
@@ -40,8 +40,8 @@ class MenuRepository extends EntityRepository {
             ->leftJoin('adp_prm.perfilXPermisos','adp_pxp')
             ->where('adp_m.permiso IS NULL or (adp_pxp.perfil=:perfil AND adp_pxp.acceso=:permitido)')
             ->setParameter(':perfil',$perfil_id)
-            ->setParameter(':permitido','true')
-            ->getQuery()->getScalarResult();
+            ->setParameter(':permitido', true, \PDO::PARAM_BOOL);
+        $ms=$qb->getQuery()->getScalarResult();
         $ret=array();
         foreach ($ms as $m) {
             $libre=is_null($m['permiso']) ? Permiso::LIBRE : Permiso::RESTRICT;
@@ -63,8 +63,8 @@ class MenuRepository extends EntityRepository {
             ->andWhere('adp_m.visible=:visible')
             ->orderBy('adp_m.orden')
             ->setParameter('perfil',$perfil_id)
-            ->setParameter(':permitido','true')
-            ->setParameter(':visible', $visible ? 'true' : 'false');
+            ->setParameter(':permitido',true, \PDO::PARAM_BOOL)
+            ->setParameter(':visible', $visible, \PDO::PARAM_BOOL);
         if(!is_null($menu_id) && $menu_id>0){
             $qb->setParameter('menu',$menu_id);
         }
@@ -90,6 +90,6 @@ class MenuRepository extends EntityRepository {
             ->where('adp_m.visible=:visible')
             ->orderBy('adp_ms.nombre')
             ->addOrderBy('adp_m.nombre')
-            ->setParameter(':visible','true');
+            ->setParameter(':visible',true, \PDO::PARAM_BOOL);
     }
 }
