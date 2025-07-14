@@ -22,14 +22,14 @@ class ExtensionLoadTest extends WebTestCase
         $this->assertEquals('perfil_id', $container->getParameter('ad_perfil.session_name'));
 
         $this->assertTrue($container->hasParameter('ad_perfil.route_redirect'), 'Falta ad_perfil.route_redirect');
-        $this->assertEquals('homepage', $container->getParameter('ad_perfil.route_redirect'));
+        $this->assertEquals('ad_perfil_menu', $container->getParameter('ad_perfil.route_redirect'));
 
         $this->assertTrue($container->hasParameter('ad_perfil.csv_permisos_path'), 'Falta ad_perfil.csv_permisos_path');
         $this->assertStringContainsString('permisos.csv', $container->getParameter('ad_perfil.csv_permisos_path'));
 
         // Parámetros de navegación
         $this->assertTrue($container->hasParameter('ad_perfil.navegacion.homepage_route'), 'Falta homepage_route');
-        $this->assertEquals('homepage', $container->getParameter('ad_perfil.navegacion.homepage_route'));
+        $this->assertEquals('ad_perfil_menu', $container->getParameter('ad_perfil.navegacion.homepage_route'));
 
         $this->assertTrue($container->hasParameter('ad_perfil.navegacion.homepage_name'), 'Falta homepage_name');
         $this->assertEquals('Inicio', $container->getParameter('ad_perfil.navegacion.homepage_name'));
