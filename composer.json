@@ -31,7 +31,8 @@
         "doctrine/doctrine-fixtures-bundle": "^2.3",
         "phpunit/phpunit": "^7.5",
         "symfony/validator": "^2.1",
-        "doctrine/data-fixtures": "^1.3"
+        "doctrine/data-fixtures": "^1.3",
+      "ext-pdo": "*"
     },
     "autoload-dev": {
         "psr-4": {
