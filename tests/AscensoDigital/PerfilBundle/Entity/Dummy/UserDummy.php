@@ -2,25 +2,36 @@
 
 namespace Tests\AscensoDigital\PerfilBundle\Entity\Dummy;
 
-use AscensoDigital\PerfilBundle\Model\UserInterface as ADUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use AscensoDigital\PerfilBundle\Model\PerfilInterface;
+use AscensoDigital\PerfilBundle\Model\User as BaseUser;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user_dummy")
  */
-class UserDummy implements ADUserInterface, UserInterface
+class UserDummy extends BaseUser
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id = 1;
+    protected $id;
 
-    public function __toString()
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="Tests\AscensoDigital\PerfilBundle\Entity\Dummy\PerfilDummy")
+     * @ORM\JoinTable(name="user_dummy_perfil_dummy")
+     */
+    protected $perfils;
+
+    public function __construct()
     {
-       return $this->getUsername();
+        parent::__construct();
+        $this->perfils = new ArrayCollection();
     }
 
     public function getId()
@@ -28,27 +39,22 @@ class UserDummy implements ADUserInterface, UserInterface
         return $this->id;
     }
 
-    public function getRoles()
+    public function getPerfils(): Collection
     {
-        return ['ROLE_ADMIN'];
+        return $this->perfils;
     }
 
-    public function getPassword()
+    public function addPerfil(PerfilInterface $perfil): self
     {
-        return null;
+        if (!$this->perfils->contains($perfil)) {
+            $this->perfils[] = $perfil;
+        }
+
+        return $this;
     }
 
-    public function getSalt()
+    public function __toString(): string
     {
-        return null;
-    }
-
-    public function getUsername()
-    {
-        return 'admin';
-    }
-
-    public function eraseCredentials()
-    {
+        return 'UserDummy#' . $this->id;
     }
 }

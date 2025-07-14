@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Loader\AnnotationFileLoader;
 use Symfony\Component\Config\FileLocator;
@@ -22,5 +23,18 @@ foreach ([
          ] as $file) {
     $routes->addCollection($loader->load(__DIR__ . '/../../../Controller/' . $file));
 }
+
+/* foreach ($routes as $name => $route) {
+    if (strpos($route->getPath(), 'mapa') !== false || strpos($name, 'mapa') !== false) {
+        echo "\n🔎 Ruta cargada: $name => " . $route->getPath() . "\n";
+        echo "   Controller: " . $route->getDefault('_controller') . "\n";
+    }
+} */
+
+// 🛠️ Rutas dummy necesarias solo para test
+$routes->add('fos_user_security_login', new Route(
+    '/login-dummy',
+    ['_controller' => 'FrameworkBundle:Template:template', 'template' => '@Twig/Exception/error.html.twig']
+));
 
 return $routes;

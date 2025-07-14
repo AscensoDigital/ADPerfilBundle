@@ -6,6 +6,18 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 class AppKernel extends Kernel
 {
+    public function boot()
+    {
+        parent::boot();
+
+        if ($this->getContainer()->has('twig.loader')) {
+            $loader = $this->getContainer()->get('twig.loader');
+            if ($loader instanceof \Twig\Loader\FilesystemLoader) {
+                $loader->addPath(__DIR__ . '/../../Resources/views', 'ADPerfilBundle');
+            }
+        }
+    }
+
     public function registerBundles()
     {
         return [

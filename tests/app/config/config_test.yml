@@ -16,18 +16,24 @@ framework:
 
 security:
   providers:
-    in_memory:
-      memory: ~
+    test_users:
+      entity:
+        class: Tests\AscensoDigital\PerfilBundle\Entity\Dummy\UserDummy
+        property: id
   firewalls:
-    test:
+    main:
       pattern: ^/
       anonymous: true
+      context: main
+      logout: true
+      stateless: false
+      provider: test_users
 
 twig:
-  debug: '%kernel.debug%'
-  strict_variables: '%kernel.debug%'
+  debug: "%kernel.debug%"
+  strict_variables: "%kernel.debug%"
   paths:
-    "%kernel.root_dir%/../../Resources/views": ~
+    "%kernel.root_dir%/../../Resources/views": ADPerfilBundle
 
 doctrine:
   dbal:

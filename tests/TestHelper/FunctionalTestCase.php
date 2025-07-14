@@ -5,8 +5,6 @@ namespace Tests\TestHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -16,7 +14,6 @@ abstract class FunctionalTestCase extends WebTestCase
 {
     protected function setUp(): void
     {
-
         $path = __DIR__ . '/../app/cache/test/test.sqlite';
         if (file_exists($path)) {
             @chmod($path, 0666);
@@ -24,6 +21,11 @@ abstract class FunctionalTestCase extends WebTestCase
         }
 
         $client = static::createClient();
+
+        // ⚠️ Forzar recompilación del contenedor (evita errores en modo test)
+        $fs = new \Symfony\Component\Filesystem\Filesystem();
+        $fs->remove($client->getContainer()->getParameter('kernel.cache_dir'));
+
         /** @var EntityManagerInterface $em */
         $em = $client->getContainer()->get('doctrine')->getManager();
 
@@ -33,7 +35,9 @@ abstract class FunctionalTestCase extends WebTestCase
         $schemaTool->dropDatabase();
         $schemaTool->createSchema($metadata);
 
-        echo "\n🔧 Esquema creado con " . count($metadata) . " entidades.\n";
+        if (getenv('DEBUG_TESTS')) {
+            echo "\n🔧 Esquema creado con " . count($metadata) . " entidades.\n";
+        }
 
         // Verifica si Menu está en metadata
         $found = false;
@@ -43,7 +47,9 @@ abstract class FunctionalTestCase extends WebTestCase
                 break;
             }
         }
-        echo $found ? "✅ Entidad Menu encontrada.\n" : "❌ Menu no está en metadata.\n";
+        if (getenv('DEBUG_TESTS')) {
+            echo $found ? "✅ Entidad Menu encontrada.\n" : "❌ Menu no está en metadata.\n";
+        }
 
         // Cargar fixtures reales y de test
         $loader = new Loader();
@@ -53,31 +59,41 @@ abstract class FunctionalTestCase extends WebTestCase
         $executor = new ORMExecutor($em, new ORMPurger());
         $executor->execute($loader->getFixtures(), true);
 
-        // Buscar perfil de test
+        // Confirmación de perfil
         $perfil = $em->getRepository(PerfilDummy::class)->findOneBy([]);
         if (!$perfil) {
-            echo "❌ No se pudo cargar el perfil de test.\n";
+            if (getenv('DEBUG_TESTS')) {
+                echo "❌ No se pudo cargar el perfil de test.\n";
+            }
             return;
         }
 
-        echo "✅ Perfil Dummy ID: " . $perfil->getId() . "\n";
+        if (getenv('DEBUG_TESTS')) {
+            echo "✅ Perfil Dummy ID: " . $perfil->getId() . "\n";
+            echo "📂 Test DB path: $path\n";
+            echo "📄 Exists? " . (file_exists($path) ? 'YES' : 'NO') . "\n";
+        }
+    }
 
-        // Simula login con ROLE_ADMIN
-        $session = $client->getContainer()->get('session');
+    protected function logInAsAdmin($client): void
+    {
+        $container = $client->getContainer();
+        $session = $container->get('session');
         $firewallName = 'main';
 
-        $token = new UsernamePasswordToken('admin', null, $firewallName, ['ROLE_ADMIN']);
-        $session->set('_security_' . $firewallName, serialize($token));
+        /** @var \Doctrine\ORM\EntityManagerInterface $em */
+        $em = $container->get('doctrine')->getManager();
+        $user = $em->getRepository(UserDummy::class)->findOneBy([]);
+        $perfil = $em->getRepository(PerfilDummy::class)->findOneBy([]);
 
-        $sessionName = $client->getContainer()->getParameter('ad_perfil.session_name');
+        $token = new UsernamePasswordToken($user, null, $firewallName, ['ROLE_ADMIN']);
+        $container->get('security.token_storage')->setToken($token);
+
+        $session->set('_security_' . $firewallName, serialize($token));
+        $sessionName = $container->getParameter('ad_perfil.session_name');
         $session->set($sessionName, $perfil->getId());
         $session->save();
 
-        $client->getCookieJar()->set(
-            new Cookie($session->getName(), $session->getId())
-        );
-
-        echo "📂 Test DB path: $path\n";
-        echo "📄 Exists? " . (file_exists($path) ? 'YES' : 'NO') . "\n";
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
     }
 }
