@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AscensoDigital\PerfilBundle\Entity;
+namespace AscensoDigital\PerfilBundle\tests\Entity;
 
 use AscensoDigital\PerfilBundle\Entity\Archivo;
+use AscensoDigital\PerfilBundle\Model\UserInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use AscensoDigital\PerfilBundle\Model\UserInterface;
 
 class ArchivoTest extends TestCase
 {

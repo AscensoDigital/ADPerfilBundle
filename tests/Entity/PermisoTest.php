@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AscensoDigital\PerfilBundle\Entity;
+namespace AscensoDigital\PerfilBundle\tests\Entity;
 
-use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Entity\PerfilXPermiso;
+use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Model\PerfilInterface;
 use PHPUnit\Framework\TestCase;
 
