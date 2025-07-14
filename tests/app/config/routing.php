@@ -37,4 +37,9 @@ $routes->add('fos_user_security_login', new Route(
     ['_controller' => 'FrameworkBundle:Template:template', 'template' => '@Twig/Exception/error.html.twig']
 ));
 
+$routes->add('fos_user_security_logout', new Route(
+    '/logout-dummy',
+    ['_controller' => 'FrameworkBundle:Template:template', 'template' => '@Twig/Exception/error.html.twig']
+));
+
 return $routes;
