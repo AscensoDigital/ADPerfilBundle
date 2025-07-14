@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Tests\AscensoDigital\PerfilBundle\Entity\Dummy\UserDummy;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
-class LoadUserDummyData extends AbstractFixture
+class LoadTestUserDummyData extends AbstractFixture
 {
     public function load(ObjectManager $manager)
     {

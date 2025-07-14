@@ -2,16 +2,23 @@
 
 namespace Tests\TestHelper;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Tests\AscensoDigital\PerfilBundle\Entity\Dummy\PerfilDummy;
+use Tests\AscensoDigital\PerfilBundle\Entity\Dummy\UserDummy;
+use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\EntityManagerInterface;
 
 abstract class FunctionalTestCase extends WebTestCase
 {
+    /** @var Client */
+    protected $client;
+
     protected function setUp(): void
     {
         $path = __DIR__ . '/../app/cache/test/test.sqlite';
@@ -20,35 +27,35 @@ abstract class FunctionalTestCase extends WebTestCase
             unlink($path);
         }
 
-        $client = static::createClient();
+        $this->client = static::createClient();
 
         // ⚠️ Forzar recompilación del contenedor (evita errores en modo test)
         $fs = new \Symfony\Component\Filesystem\Filesystem();
-        $fs->remove($client->getContainer()->getParameter('kernel.cache_dir'));
+        $fs->remove($this->client->getContainer()->getParameter('kernel.cache_dir'));
+
+        $container = $this->client->getContainer();
 
         /** @var EntityManagerInterface $em */
-        $em = $client->getContainer()->get('doctrine')->getManager();
-
-        // Regenerar esquema
+        $em = $container->get('doctrine')->getManager();
         $schemaTool = new SchemaTool($em);
         $metadata = $em->getMetadataFactory()->getAllMetadata();
+
         $schemaTool->dropDatabase();
         $schemaTool->createSchema($metadata);
 
         if (getenv('DEBUG_TESTS')) {
-            echo "\n🔧 Esquema creado con " . count($metadata) . " entidades.\n";
+            echo "\n🔧 Esquema creado con " . count($metadata) . " entidades.";
         }
 
-        // Verifica si Menu está en metadata
-        $found = false;
+        $menuFound = false;
         foreach ($metadata as $meta) {
-            if ($meta->getName() === \AscensoDigital\PerfilBundle\Entity\Menu::class) {
-                $found = true;
+            if ($meta->getName() === 'AscensoDigital\\PerfilBundle\\Entity\\Menu') {
+                $menuFound = true;
+                if (getenv('DEBUG_TESTS')) {
+                    echo "\n✅ Entidad Menu encontrada.";
+                }
                 break;
             }
-        }
-        if (getenv('DEBUG_TESTS')) {
-            echo $found ? "✅ Entidad Menu encontrada.\n" : "❌ Menu no está en metadata.\n";
         }
 
         // Cargar fixtures reales y de test
@@ -75,25 +82,56 @@ abstract class FunctionalTestCase extends WebTestCase
         }
     }
 
-    protected function logInAsAdmin($client): void
+    protected function logInAsAdmin(): array
     {
-        $container = $client->getContainer();
+        $container = $this->client->getContainer();
         $session = $container->get('session');
         $firewallName = 'main';
 
         /** @var \Doctrine\ORM\EntityManagerInterface $em */
         $em = $container->get('doctrine')->getManager();
-        $user = $em->getRepository(UserDummy::class)->findOneBy([]);
+
+        /** @var UserDummy $user */
+        $user = $em->getRepository(UserDummy::class)->find(1);
         $perfil = $em->getRepository(PerfilDummy::class)->findOneBy([]);
+        if (getenv('DEBUG_TESTS')) {
+            echo "\nUSER ID: " . $user->getId();
+        }
 
-        $token = new UsernamePasswordToken($user, null, $firewallName, ['ROLE_ADMIN']);
+        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
         $container->get('security.token_storage')->setToken($token);
-
         $session->set('_security_' . $firewallName, serialize($token));
+
         $sessionName = $container->getParameter('ad_perfil.session_name');
         $session->set($sessionName, $perfil->getId());
         $session->save();
 
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        return ['user' => $user, 'perfil' => $perfil];
+    }
+
+    protected function logInWithoutPerfil(): array
+    {
+        $container = $this->client->getContainer();
+        $session = $container->get('session');
+        $firewallName = 'main';
+
+
+        $user = $container->get('doctrine')->getRepository(UserDummy::class)->find(1);
+        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
+        $container->get('security.token_storage')->setToken($token);
+        $session->set('_security_' . $firewallName, serialize($token));
+        $session->remove($container->getParameter('ad_perfil.session_name'));
+        $session->save();
+
+        $this->client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        return ['user' => $user];
+    }
+
+    protected function logInWithRestrictedPermiso(): array
+    {
+        // Aquí podrías cargar un segundo perfil con permisos limitados
+        // o ajustar los fixtures según necesidad. Por ahora retorna sin perfil válido.
+        return $this->logInWithoutPerfil();
     }
 }

@@ -25,7 +25,7 @@ class LoadTestPerfilXUserData extends AbstractFixture implements DependentFixtur
     public function getDependencies()
     {
         return [
-            \Tests\Fixtures\LoadUserDummyData::class,
+            \Tests\Fixtures\LoadTestUserDummyData::class,
             \Tests\Fixtures\LoadTestPerfilData::class,
         ];
     }
