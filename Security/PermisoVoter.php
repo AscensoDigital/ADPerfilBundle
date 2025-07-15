@@ -32,6 +32,7 @@ class PermisoVoter extends Voter
     {
         $this->session = $session;
         $this->em = $em;
+        $this->permisos = array();
         $this->perfil_id = $session->get($sessionName, null);
     }
 
@@ -78,29 +79,34 @@ class PermisoVoter extends Voter
             return false;
         }
 
-        // ⚠️ Cargar permisos aquí si no están seteados aún
-        if (!isset($this->permisos)) {
-            try {
-                $menus = $this->em->getRepository('ADPerfilBundle:Menu')
-                    ->findArrayPermisoByPerfil($this->perfil_id);
-                $this->permisos[self::MENU] = $menus[self::MENU] ?? [];
-
-                $this->permisos[self::PERMISO] = $this->em
-                    ->getRepository('ADPerfilBundle:PerfilXPermiso')
-                    ->findArrayIdByPerfil($this->perfil_id);
-            } catch (\Exception $e) {
-                return false; // o loguea si prefieres
-            }
-        }
-
         switch ($attribute) {
             case self::MENU:
+                // carga de permisos de menu, sino estan cargados
+                if (!isset($this->permisos[self::MENU])) {
+                    try {
+                        $menus = $this->em->getRepository('ADPerfilBundle:Menu')
+                            ->findArrayPermisoByPerfil($this->perfil_id);
+                        $this->permisos[self::MENU] = $menus[self::MENU] ?? [];
+                    } catch (\Exception $e) {
+                        return false; // o loguea si prefieres
+                    }
+                }
                 /** @var Menu $subject */
                 if (in_array($subject->getSlug(), $this->permisos[self::MENU][Permiso::LIBRE] ?? [])) {
                     return true;
                 }
                 return in_array($subject->getSlug(), $this->permisos[self::MENU][Permiso::RESTRICT] ?? []);
             case self::PERMISO:
+                // carga de permisos sino estan cargados
+                if (!isset($this->permisos[self::PERMISO])) {
+                    try {
+                        $this->permisos[self::PERMISO] = $this->em
+                            ->getRepository('ADPerfilBundle:PerfilXPermiso')
+                            ->findArrayIdByPerfil($this->perfil_id);
+                    } catch (\Exception $e) {
+                        return false; // o loguea si prefieres
+                    }
+                }
                 return in_array($subject, $this->permisos[self::PERMISO] ?? []);
         }
 
