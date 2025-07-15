@@ -35,16 +35,17 @@ class MenuManagerTest extends FunctionalTestCase
         $this->assertInstanceOf(Menu::class, $tree[0]);
 
         $queryCount = count($logger->queries);
-        echo "\n🔍 Consultas ejecutadas: $queryCount\n";
+        if (getenv('DEBUG_TESTS')) {
+            echo "\n🔍 Consultas ejecutadas: $queryCount\n";
 
-        foreach ($logger->queries as $i => $query) {
-            echo "\n--- Consulta #" . ($i) . " ---\n";
-            echo $query['sql'] . "\n";
-            if (!empty($query['params'])) {
-                echo '🔸 Params: ' . json_encode($query['params']) . "\n";
+            foreach ($logger->queries as $i => $query) {
+                echo "\n--- Consulta #" . ($i) . " ---\n";
+                echo $query['sql'] . "\n";
+                if (!empty($query['params'])) {
+                    echo '🔸 Params: ' . json_encode($query['params']) . "\n";
+                }
             }
         }
-
         $this->assertLessThanOrEqual(2, $queryCount, "Deben ejecutarse 2 o menos consultas SQL, se ejecutaron $queryCount.");
     }
 }
