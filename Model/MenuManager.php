@@ -68,6 +68,36 @@ class MenuManager {
         return is_null($this->menuActual) ? null : $this->menuActual->getSlug();
     }
 
+    public function getFullMenuTree()
+    {
+        if (isset($this->seccion['full_tree'])) {
+            return $this->seccion['full_tree'];
+        }
+
+        $menus = $this->em->getRepository('ADPerfilBundle:Menu')->findTreeByPerfil($this->perfil_id);
+
+        // Map de menús por ID
+        $menuMap = [];
+        foreach ($menus as $menu) {
+            $menuMap[$menu->getId()] = $menu;
+        }
+
+        // Construcción de árbol
+        $rootMenus = [];
+        foreach ($menus as $menu) {
+            $menuSuperior = $menu->getMenuSuperior();
+            if ($menuSuperior && isset($menuMap[$menuSuperior->getId()])) {
+                $menuMap[$menuSuperior->getId()]->addMenuHijo($menu);
+            } else {
+                $rootMenus[] = $menu;
+            }
+        }
+
+        $this->seccion['full_tree'] = $rootMenus;
+        return $rootMenus;
+    }
+
+
     public function setMenuActual(Menu $menu = null){
         $this->menuActual=$menu;
     }
