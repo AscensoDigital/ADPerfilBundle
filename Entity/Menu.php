@@ -404,5 +404,34 @@ class Menu
         return $this->menuHijos;
     }
 
+    /**
+     * @param Menu $menuHijo
+     * @return $this
+     */
+    public function addMenuHijo(Menu $menuHijo)
+    {
+        if (!$this->menuHijos->contains($menuHijo)) {
+            $this->menuHijos[] = $menuHijo;
+            $menuHijo->setMenuSuperior($this); // asegura la bidireccionalidad
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Menu $menuHijo
+     * @return $this
+     */
+    public function removeMenuHijo(Menu $menuHijo)
+    {
+        if ($this->menuHijos->contains($menuHijo)) {
+            $this->menuHijos->removeElement($menuHijo);
+            if ($menuHijo->getMenuSuperior() === $this) {
+                $menuHijo->setMenuSuperior(null);
+            }
+        }
+
+        return $this;
+    }
 
 }
