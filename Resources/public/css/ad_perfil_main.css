@@ -180,20 +180,48 @@ label.required:after {
 
 /* === Encabezado === */
 .menu-lateral-header {
-    padding: 10px 0;
+    padding: 0;
+    text-align: left; /* ✅ clave para que el botón quede pegado a la izquierda */
+    height: 46px;
     border-bottom: 1px solid #ccc;
+    background: #fff;
 }
 
 .menu-lateral .toggle-menu {
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
 }
 
-.menu-lateral.colapsado .toggle-menu .glyphicon-chevron-left {
-    display: none;
+.menu-lateral .toggle-menu i {
+    font-size: 14px;
 }
-.menu-lateral.colapsado .toggle-menu .glyphicon-chevron-right {
+
+.menu-icon-bars {
     display: inline-block;
+    vertical-align: middle;
+    margin-right: 4px;
 }
+
+.menu-icon-bars .icon-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background-color: #333;
+    margin: 2px 0;
+}
+
+/* Asegurar que no desaparezca al colapsar */
+.menu-lateral.colapsado .toggle-menu {
+    display: flex !important;
+}
+
 
 /* === Lista === */
 .menu-lateral ul {
