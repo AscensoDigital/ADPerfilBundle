@@ -14,7 +14,7 @@
     </div>
     <ul class="nav nav-pills nav-stacked">
         {% for menu in menus %}
-            <li class="{% if menu.id == menuActual.id %}activo{% endif %}">
+            <li class="{% if menuActual is not null and menu.id == menuActual.id %}activo{% endif %}">
                 <a href="{{ path(menu.route) }}">
                     <div class="icono icono-{{ menu.color|default('gris') | lower }}" title="{{ menu.nombre }}">
                         <i class="{{ menu.icono }}"></i>

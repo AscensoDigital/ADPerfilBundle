@@ -26,8 +26,20 @@ class LoadTestPerfilXPermisoData extends AbstractFixture implements DependentFix
         $pxp->setPerfil($perfil);
         $pxp->setPermiso($permiso);
         $pxp->setAcceso(true);
-
         $manager->persist($pxp);
+
+        /** @var Permiso|null $permisoCrear */
+        $permisoCrear = $manager->getRepository(Permiso::class)->findOneBy(['nombre' => 'ad_perfil-menu-new']);
+        if (!$permisoCrear) {
+            throw new \RuntimeException('❌ Permiso "ad_perfil-menu-new" no encontrado. Asegúrate de cargar LoadPermisoData antes.');
+        }
+
+        $pxpCrear = new PerfilXPermiso();
+        $pxpCrear->setPerfil($perfil);
+        $pxpCrear->setPermiso($permisoCrear);
+        $pxpCrear->setAcceso(true);
+        $manager->persist($pxpCrear);
+
         $manager->flush();
     }
 

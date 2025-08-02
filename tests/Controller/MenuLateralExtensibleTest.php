@@ -51,4 +51,20 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
         $this->assertNotEquals(200, $statusCode, 'Un usuario anónimo no debe poder acceder directamente.');
     }
 
+    public function testVistaProtegidaSinMenuAsociadoNoRompeRender()
+    {
+        $this->logInAsAdmin();
+
+        $crawler = $this->client->request('GET', '/index');
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La página protegida sin menú asociado debe cargar correctamente.');
+
+        // El menú lateral debe renderizarse igual
+        $this->assertCount(1, $crawler->filter('aside.menu-lateral'), 'El menú lateral debe estar presente.');
+
+        // No debe haber ningún menú marcado como activo
+        $this->assertCount(0, $crawler->filter('li.activo'), 'Ningún menú debe estar marcado como activo en rutas no asociadas a menú.');
+    }
+
+
 }
