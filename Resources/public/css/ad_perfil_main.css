@@ -171,8 +171,7 @@ label.required:after {
 .menu-lateral {
     width: 220px;
     transition: width 0.3s ease;
-    background-color: #f9f9f9;
-    padding: 10px 0;
+    overflow-x: hidden;
 }
 
 .menu-lateral.colapsado {
@@ -181,49 +180,27 @@ label.required:after {
 
 .menu-lateral ul {
     padding-left: 0;
-    margin-bottom: 0;
 }
 
 .menu-lateral li {
     list-style: none;
-    margin-bottom: 5px;
-    text-align: left;
-}
-
-.menu-lateral .list-group-item {
-    border: none;
-    padding: 6px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    line-height: 1.2;
-    text-decoration: none;
-}
-
-.menu-lateral .list-group-item:hover {
-    background-color: #eee;
-}
-
-.menu-lateral .list-group-item.activo {
-    background-color: #d9edf7;
-    font-weight: bold;
-    border-left: 4px solid #31708f;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .menu-lateral .icono {
-    font-size: 1.5em;
-    width: 38px;
-    height: 38px;
+    font-size: 2.2em;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 5px;
     border-radius: 50%;
-    text-align: center;
-    line-height: 38px;
-    flex-shrink: 0;
+    padding-top: 10px;
+    position: relative;
 }
 
 .menu-lateral .texto-menu {
-    display: inline-block;
+    display: block;
     transition: opacity 0.3s ease;
-    font-size: 0.95em;
     white-space: nowrap;
 }
 
@@ -233,64 +210,93 @@ label.required:after {
     overflow: hidden;
 }
 
+.menu-lateral.colapsado .list-group-item {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Activo */
+.menu-lateral li.activo {
+    background-color: #d9edf7;
+    border-left: 4px solid #31708f;
+}
+
+/* Encabezado */
+.menu-lateral-header {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.menu-lateral .toggle-menu {
+    margin: 0 auto;
+}
+
+.menu-lateral.colapsado .toggle-menu .glyphicon-chevron-left {
+    display: none;
+}
+.menu-lateral.colapsado .toggle-menu .glyphicon-chevron-right {
+    display: inline-block;
+}
+
+.menu-icon-bars {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.menu-icon-bars .icon-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background-color: #333;
+    margin: 3px 0;
+}
+
+/* Enlaces */
+.menu-lateral .list-group-item {
+    border: none;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.menu-lateral .list-group-item.activo {
+    background-color: #d9edf7;
+    font-weight: bold;
+    border-left: 4px solid #31708f;
+}
+
 /* Submenús */
 .menu-lateral .submenu {
     margin-left: 10px;
     border-left: 2px dashed #ccc;
-    padding-left: 12px;
 }
 
 .menu-lateral .submenu-item {
     font-size: 0.9em;
-    padding-left: 12px;
-    margin-top: 2px;
+    padding-left: 20px;
 }
 
-/* Item activo del menú lateral */
-.menu-lateral .list-group-item.activo,
-.menu-lateral li.activo {
-    background-color: #d9edf7;
-    font-weight: bold;
-    border-left: 4px solid #31708f;
-    color: #31708f;
-}
-
-/* Icono dentro del ítem activo */
-.menu-lateral .list-group-item.activo .icono,
-.menu-lateral li.activo .icono {
-    background-color: #31708f;
+/* Tooltip siempre visible cuando colapsado */
+.menu-lateral.colapsado .list-group-item .icono[title]::after {
+    content: attr(title);
+    position: absolute;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #333;
     color: #fff;
-}
-
-/* Texto del ítem activo (opcional para reforzar visibilidad) */
-.menu-lateral .list-group-item.activo .texto-menu,
-.menu-lateral li.activo .texto-menu {
-    color: #31708f;
-}
-
-/* Estilo base del menú lateral colapsado */
-.menu-lateral.colapsado {
-    width: 70px; /* ya está definido */
-    overflow-x: hidden;
+    padding: 2px 6px;
+    font-size: 0.75em;
+    border-radius: 3px;
     white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 999;
 }
 
-/* Centrar íconos vertical y horizontalmente */
-.menu-lateral.colapsado .list-group-item {
-    justify-content: center;
-}
-
-/* Ícono circular más pequeño para modo colapsado */
-.menu-lateral.colapsado .icono {
-    font-size: 1.5em;
-    width: 40px;
-    height: 40px;
-    padding-top: 8px;
-    border-radius: 50%;
-}
-
-/* Asegura que los submenús estén ocultos cuando colapsado */
-.menu-lateral.colapsado .submenu,
-.menu-lateral.colapsado .submenu-item {
-    display: none;
+.menu-lateral.colapsado .list-group-item:hover .icono[title]::after {
+    opacity: 1;
 }
