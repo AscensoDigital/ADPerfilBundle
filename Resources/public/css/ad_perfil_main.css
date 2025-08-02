@@ -167,10 +167,12 @@ label.required:after {
     content: ' *';
 }
 
-/* menu lateral */
+/* Bloque lateral ajustado */
 .menu-lateral {
     width: 220px;
     transition: width 0.3s ease;
+    background-color: #f9f9f9;
+    padding: 10px 0;
 }
 
 .menu-lateral.colapsado {
@@ -179,24 +181,50 @@ label.required:after {
 
 .menu-lateral ul {
     padding-left: 0;
+    margin-bottom: 0;
 }
 
 .menu-lateral li {
     list-style: none;
-    margin-bottom: 10px;
-    text-align: center;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.menu-lateral .list-group-item {
+    border: none;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.2;
+    text-decoration: none;
+}
+
+.menu-lateral .list-group-item:hover {
+    background-color: #eee;
+}
+
+.menu-lateral .list-group-item.activo {
+    background-color: #d9edf7;
+    font-weight: bold;
+    border-left: 4px solid #31708f;
 }
 
 .menu-lateral .icono {
-    font-size: 2.5em;
-    width: 50px;
-    height: 50px;
-    margin: 0 auto 5px;
+    font-size: 1.5em;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 38px;
+    flex-shrink: 0;
 }
 
 .menu-lateral .texto-menu {
-    display: block;
+    display: inline-block;
     transition: opacity 0.3s ease;
+    font-size: 0.95em;
+    white-space: nowrap;
 }
 
 .menu-lateral.colapsado .texto-menu {
@@ -205,38 +233,64 @@ label.required:after {
     overflow: hidden;
 }
 
-/* Activo */
+/* Submenús */
+.menu-lateral .submenu {
+    margin-left: 10px;
+    border-left: 2px dashed #ccc;
+    padding-left: 12px;
+}
+
+.menu-lateral .submenu-item {
+    font-size: 0.9em;
+    padding-left: 12px;
+    margin-top: 2px;
+}
+
+/* Item activo del menú lateral */
+.menu-lateral .list-group-item.activo,
 .menu-lateral li.activo {
     background-color: #d9edf7;
+    font-weight: bold;
     border-left: 4px solid #31708f;
+    color: #31708f;
 }
 
-.menu-lateral-header {
-    padding: 10px 0;
-    border-bottom: 1px solid #ccc;
+/* Icono dentro del ítem activo */
+.menu-lateral .list-group-item.activo .icono,
+.menu-lateral li.activo .icono {
+    background-color: #31708f;
+    color: #fff;
 }
 
-.menu-lateral .toggle-menu {
-    margin: 0 auto;
+/* Texto del ítem activo (opcional para reforzar visibilidad) */
+.menu-lateral .list-group-item.activo .texto-menu,
+.menu-lateral li.activo .texto-menu {
+    color: #31708f;
 }
 
-.menu-lateral.colapsado .toggle-menu .glyphicon-chevron-left {
+/* Estilo base del menú lateral colapsado */
+.menu-lateral.colapsado {
+    width: 70px; /* ya está definido */
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+/* Centrar íconos vertical y horizontalmente */
+.menu-lateral.colapsado .list-group-item {
+    justify-content: center;
+}
+
+/* Ícono circular más pequeño para modo colapsado */
+.menu-lateral.colapsado .icono {
+    font-size: 1.5em;
+    width: 40px;
+    height: 40px;
+    padding-top: 8px;
+    border-radius: 50%;
+}
+
+/* Asegura que los submenús estén ocultos cuando colapsado */
+.menu-lateral.colapsado .submenu,
+.menu-lateral.colapsado .submenu-item {
     display: none;
-}
-.menu-lateral.colapsado .toggle-menu .glyphicon-chevron-right {
-    display: inline-block;
-}
-
-.menu-icon-bars {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
-.menu-icon-bars .icon-bar {
-    display: block;
-    width: 18px;
-    height: 2px;
-    background-color: #333;
-    margin: 3px 0;
 }

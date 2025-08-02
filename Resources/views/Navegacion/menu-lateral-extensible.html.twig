@@ -1,55 +1,55 @@
-<aside class="menu-lateral hidden-xs {% if app.request.cookies.get('menu_colapsado') == '1' %}colapsado{% endif %}">
+<ul class="menu-lateral list-group hidden-xs"> {# se oculta en móviles #}
     <div class="menu-lateral-header text-center">
-        <button type="button"
-                class="btn btn-default btn-xs toggle-menu"
-                onclick="toggleMenuLateral(this)"
-                title="Expandir/Colapsar menú">
+        <button class="btn btn-default toggle-menu" onclick="toggleMenuLateral()">
             <span class="menu-icon-bars">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </span>
-            <span class="glyphicon glyphicon-chevron-left flecha-menu"></span>
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            <i class="glyphicon glyphicon-chevron-right" style="display:none;"></i>
         </button>
     </div>
-    <ul class="nav nav-pills nav-stacked">
-        {% for menu in menus %}
-            <li class="{% if menuActual is not null and menu.id == menuActual.id %}activo{% endif %}">
-                <a href="{{ menu.route ? path(menu.route) : (menu.slug ? path('ad_perfil_menu', { 'menu_slug': menu.slug }) : '#') }}">
-                    <div class="icono icono-{{ menu.color|default('gris') | lower }}" title="{{ menu.nombre }}">
-                        <i class="{{ menu.icono }}"></i>
-                    </div>
-                    <span class="texto-menu">{{ menu.nombre }}</span>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-</aside>
+
+    {% for menu in menus %}
+        <li class="list-group-item {% if menu.isActual(menuActual) %}activo{% endif %}">
+            <a href="{{ menu.route ? path(menu.route) : path('ad_perfil_menu', { 'menu_slug': menu.slug }) }}"
+               title="{{ menu.nombre }}">
+                <div class="icono icono-{{ menu.color|default('gris') | lower }}">
+                    <i class="{{ menu.icono|default('fa fa-square') }}"></i>
+                </div>
+                <span class="texto-menu">{{ menu.nombre }}</span>
+            </a>
+        </li>
+
+        {% if menu.menuHijos|length > 0 %}
+            <ul class="submenu">
+                {% for submenu in menu.menuHijos %}
+                    <li class="submenu-item {% if submenu.isActual(menuActual) %}activo{% endif %}">
+                        <a href="{{ submenu.route ? path(submenu.route) : path('ad_perfil_menu', { 'menu_slug': submenu.slug }) }}">
+                            <i class="{{ submenu.icono|default('fa fa-angle-right') }}"></i>
+                            <span class="texto-menu">{{ submenu.nombre }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+</ul>
 
 <script>
-    function toggleMenuLateral(button) {
-        var aside = button.closest('.menu-lateral');
-        var icon = button.querySelector('.flecha-menu');
-
+    function toggleMenuLateral() {
+        var aside = document.querySelector('.menu-lateral');
         aside.classList.toggle('colapsado');
-        document.cookie = "menu_colapsado=" + (aside.classList.contains('colapsado') ? "1" : "0");
 
+        var left = aside.querySelector('.glyphicon-chevron-left');
+        var right = aside.querySelector('.glyphicon-chevron-right');
         if (aside.classList.contains('colapsado')) {
-            icon.classList.remove('glyphicon-chevron-left');
-            icon.classList.add('glyphicon-chevron-right');
+            left.style.display = 'none';
+            right.style.display = 'inline-block';
         } else {
-            icon.classList.remove('glyphicon-chevron-right');
-            icon.classList.add('glyphicon-chevron-left');
+            left.style.display = 'inline-block';
+            right.style.display = 'none';
         }
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var aside = document.querySelector('.menu-lateral');
-        var icon = aside?.querySelector('.flecha-menu');
-
-        if (aside && aside.classList.contains('colapsado')) {
-            icon.classList.remove('glyphicon-chevron-left');
-            icon.classList.add('glyphicon-chevron-right');
-        }
-    });
 </script>

@@ -8,13 +8,13 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
 {
     public function testMenuLateralRenderizadoParaUsuarioAutenticado()
     {
-        $this->logInAsAdmin(); // ya usa $this->client internamente
+        $this->logInAsAdmin();
 
         $crawler = $this->client->request('GET', '/mapa-sitio');
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La página se debe cargar correctamente.');
 
-        $this->assertCount(1, $crawler->filter('aside.menu-lateral'), 'Debe existir el menú lateral.');
+        $this->assertCount(1, $crawler->filter('ul.menu-lateral'), 'Debe existir el menú lateral.');
 
         $this->assertCount(1, $crawler->filter('.toggle-menu'), 'Debe haber un botón para colapsar el menú.');
 
@@ -36,17 +36,13 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
         $iconClasses = $icon->attr('class');
         $this->assertStringContainsString('fa-sitemap', $iconClasses, 'El ícono debe contener fa-sitemap');
 
-        // Validar que tiene la clase de color correspondiente
         $iconoClass = $iconDiv->attr('class');
         $this->assertStringContainsString('icono-verde', $iconoClass, 'El menú activo debe tener la clase icono-verde');
     }
 
-
     public function testMenuLateralNoVisibleParaAnonimo()
     {
-        // NO llamamos a logInAsAdmin(), por lo que está anónimo
         $crawler = $this->client->request('GET', '/mapa-sitio');
-
         $statusCode = $this->client->getResponse()->getStatusCode();
         $this->assertNotEquals(200, $statusCode, 'Un usuario anónimo no debe poder acceder directamente.');
     }
@@ -54,15 +50,11 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
     public function testVistaProtegidaSinMenuAsociadoNoRompeRender()
     {
         $this->logInAsAdmin();
-
         $crawler = $this->client->request('GET', '/index');
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La página protegida sin menú asociado debe cargar correctamente.');
 
-        // El menú lateral debe renderizarse igual
-        $this->assertCount(1, $crawler->filter('aside.menu-lateral'), 'El menú lateral debe estar presente.');
-
-        // No debe haber ningún menú marcado como activo
+        $this->assertCount(1, $crawler->filter('ul.menu-lateral'), 'El menú lateral debe estar presente.');
         $this->assertCount(0, $crawler->filter('li.activo'), 'Ningún menú debe estar marcado como activo en rutas no asociadas a menú.');
     }
 
@@ -73,7 +65,7 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La vista debe cargar correctamente.');
 
-        $links = $crawler->filter('aside.menu-lateral a');
+        $links = $crawler->filter('ul.menu-lateral a');
         $this->assertGreaterThan(0, $links->count(), 'Debe haber al menos un enlace en el menú lateral.');
 
         foreach ($links as $a) {
@@ -81,6 +73,31 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
             $this->assertNotEmpty($href, 'El enlace del menú no debe estar vacío.');
             $this->assertNotEquals('#', $href, 'El enlace del menú no debe ser "#" a menos que sea necesario.');
             $this->assertStringStartsWith('/', $href, 'El href del enlace debe empezar con "/" o ser ruta válida.');
+        }
+    }
+
+    public function testSubmenusRenderizadosCorrectamente()
+    {
+        $this->logInAsAdmin();
+        $crawler = $this->client->request('GET', '/mapa-sitio');
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La vista debe cargar correctamente.');
+
+        // Verifica que hay al menos un submenú renderizado
+        $submenuItems = $crawler->filter('ul.menu-lateral ul.submenu li.submenu-item');
+        $this->assertGreaterThan(0, $submenuItems->count(), 'Debe haber al menos un submenú renderizado dentro de la estructura.');
+
+        foreach ($submenuItems as $item) {
+            $a = $item->getElementsByTagName('a')->item(0);
+            $this->assertNotNull($a, 'Cada submenú debe contener un enlace <a>.');
+
+            $href = $a->getAttribute('href');
+            $this->assertNotEmpty($href, 'El href del submenú no debe estar vacío.');
+            $this->assertNotEquals('#', $href, 'El href del submenú no debe ser "#" salvo que sea intencional.');
+            $this->assertStringStartsWith('/', $href, 'El href del submenú debe comenzar con "/".');
+
+            $text = trim($a->textContent);
+            $this->assertNotEmpty($text, 'El texto del submenú no debe estar vacío.');
         }
     }
 

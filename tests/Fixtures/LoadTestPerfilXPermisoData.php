@@ -40,6 +40,29 @@ class LoadTestPerfilXPermisoData extends AbstractFixture implements DependentFix
         $pxpCrear->setAcceso(true);
         $manager->persist($pxpCrear);
 
+        $permisos = [
+            'per-config-index',
+            'per-per-new',
+            'per-per-list',
+            'per-per-load',
+            'per-per-edit',
+            'per-menu-new',
+            'per-rep-list',
+            'per-rep-new',
+            'per-rep-edit',
+            'per-rep-load',
+        ];
+
+        foreach ($permisos as $ref) {
+            /** @var Permiso $permiso */
+            $permiso = $this->getReference($ref);
+            $pxp = new PerfilXPermiso();
+            $pxp->setPerfil($perfil);
+            $pxp->setPermiso($permiso);
+            $pxp->setAcceso(true);
+            $manager->persist($pxp);
+        }
+
         $manager->flush();
     }
 
