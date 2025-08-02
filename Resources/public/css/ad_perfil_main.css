@@ -173,6 +173,7 @@ label.required:after {
     transition: width 0.3s ease;
     overflow-x: hidden;
     flex-shrink: 0;
+    margin-right: 10px;
 }
 
 .adperfil-menu-lateral.colapsado {

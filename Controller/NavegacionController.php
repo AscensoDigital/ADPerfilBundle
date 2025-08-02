@@ -76,7 +76,7 @@ class NavegacionController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function menuAction($menu_id=null, $lateral=false) {
-        $menu_id= $lateral===true ? 0 : $menu_id;
+        $menu_id= $lateral===true ? null : $menu_id;
         $menus=$this->get('ad_perfil.menu_manager')->getMenusByMenuId($menu_id);
         return $this->render('@ADPerfilBundle/Navegacion/menu-'.(false===$lateral ? 'nav' : 'li').'.html.twig', [
             'menus' => $menus,
