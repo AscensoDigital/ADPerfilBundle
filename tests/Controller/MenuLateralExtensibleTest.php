@@ -27,8 +27,8 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
         $this->assertStringContainsString('Mapa del Sitio', $activeLink->text(), 'El texto del menú activo debe ser Mapa del Sitio');
 
         // Validar que contiene el ícono correcto
-        $iconDiv = $activeLink->filter('div.icono');
-        $this->assertGreaterThan(0, $iconDiv->count(), 'Debe haber un div con clase icono en el menú activo');
+        $iconDiv = $activeLink->filter('span.icono');
+        $this->assertGreaterThan(0, $iconDiv->count(), 'Debe haber un span con clase icono en el menú activo');
 
         $icon = $iconDiv->filter('i.fa');
         $this->assertGreaterThan(0, $icon->count(), 'Debe haber un <i> con clase .fa dentro del icono');
