@@ -15,7 +15,7 @@
     <ul class="nav nav-pills nav-stacked">
         {% for menu in menus %}
             <li class="{% if menuActual is not null and menu.id == menuActual.id %}activo{% endif %}">
-                <a href="{{ path(menu.route) }}">
+                <a href="{{ menu.route ? path(menu.route) : (menu.slug ? path('ad_perfil_menu', { 'menu_slug': menu.slug }) : '#') }}">
                     <div class="icono icono-{{ menu.color|default('gris') | lower }}" title="{{ menu.nombre }}">
                         <i class="{{ menu.icono }}"></i>
                     </div>

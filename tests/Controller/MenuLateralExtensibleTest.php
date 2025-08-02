@@ -66,5 +66,22 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
         $this->assertCount(0, $crawler->filter('li.activo'), 'Ningún menú debe estar marcado como activo en rutas no asociadas a menú.');
     }
 
+    public function testTodosLosMenusTienenHrefValido()
+    {
+        $this->logInAsAdmin();
+        $crawler = $this->client->request('GET', '/mapa-sitio');
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La vista debe cargar correctamente.');
+
+        $links = $crawler->filter('aside.menu-lateral a');
+        $this->assertGreaterThan(0, $links->count(), 'Debe haber al menos un enlace en el menú lateral.');
+
+        foreach ($links as $a) {
+            $href = $a->getAttribute('href');
+            $this->assertNotEmpty($href, 'El enlace del menú no debe estar vacío.');
+            $this->assertNotEquals('#', $href, 'El enlace del menú no debe ser "#" a menos que sea necesario.');
+            $this->assertStringStartsWith('/', $href, 'El href del enlace debe empezar con "/" o ser ruta válida.');
+        }
+    }
 
 }
