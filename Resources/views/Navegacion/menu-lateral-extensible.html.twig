@@ -15,9 +15,9 @@
         <li class="list-group-item {% if menu.isActual(menuActual) %}activo{% endif %}">
             <a href="{{ menu.route ? path(menu.route) : path('ad_perfil_menu', { 'menu_slug': menu.slug }) }}"
                title="{{ menu.nombre }}">
-                <div class="icono icono-{{ menu.color|default('gris') | lower }}">
-                    <i class="{{ menu.icono|default('fa fa-square') }}"></i>
-                </div>
+            <span class="icono icono-{{ menu.color|default('gris') | lower }}">
+                <i class="{{ menu.icono|default('fa fa-square') }}"></i>
+            </span>
                 <span class="texto-menu">{{ menu.nombre }}</span>
             </a>
         </li>
@@ -26,8 +26,11 @@
             <ul class="submenu">
                 {% for submenu in menu.menuHijos %}
                     <li class="submenu-item {% if submenu.isActual(menuActual) %}activo{% endif %}">
-                        <a href="{{ submenu.route ? path(submenu.route) : path('ad_perfil_menu', { 'menu_slug': submenu.slug }) }}">
+                        <a href="{{ submenu.route ? path(submenu.route) : path('ad_perfil_menu', { 'menu_slug': submenu.slug }) }}"
+                           title="{{ submenu.nombre }}">
+                        <span class="icono icono-{{ submenu.color|default('gris') | lower }}">
                             <i class="{{ submenu.icono|default('fa fa-angle-right') }}"></i>
+                        </span>
                             <span class="texto-menu">{{ submenu.nombre }}</span>
                         </a>
                     </li>
@@ -35,6 +38,7 @@
             </ul>
         {% endif %}
     {% endfor %}
+
 </ul>
 
 <script>

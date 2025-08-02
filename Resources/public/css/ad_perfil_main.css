@@ -167,7 +167,7 @@ label.required:after {
     content: ' *';
 }
 
-/* Bloque lateral ajustado */
+/* === Contenedor lateral === */
 .menu-lateral {
     width: 220px;
     transition: width 0.3s ease;
@@ -178,50 +178,7 @@ label.required:after {
     width: 70px;
 }
 
-.menu-lateral ul {
-    padding-left: 0;
-}
-
-.menu-lateral li {
-    list-style: none;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.menu-lateral .icono {
-    font-size: 2.2em;
-    width: 48px;
-    height: 48px;
-    margin: 0 auto 5px;
-    border-radius: 50%;
-    padding-top: 10px;
-    position: relative;
-}
-
-.menu-lateral .texto-menu {
-    display: block;
-    transition: opacity 0.3s ease;
-    white-space: nowrap;
-}
-
-.menu-lateral.colapsado .texto-menu {
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-}
-
-.menu-lateral.colapsado .list-group-item {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-/* Activo */
-.menu-lateral li.activo {
-    background-color: #d9edf7;
-    border-left: 4px solid #31708f;
-}
-
-/* Encabezado */
+/* === Encabezado === */
 .menu-lateral-header {
     padding: 10px 0;
     border-bottom: 1px solid #ccc;
@@ -234,51 +191,88 @@ label.required:after {
 .menu-lateral.colapsado .toggle-menu .glyphicon-chevron-left {
     display: none;
 }
+
 .menu-lateral.colapsado .toggle-menu .glyphicon-chevron-right {
     display: inline-block;
 }
 
-.menu-icon-bars {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 5px;
+/* === Lista === */
+.menu-lateral ul {
+    padding-left: 0;
 }
 
-.menu-icon-bars .icon-bar {
-    display: block;
-    width: 18px;
-    height: 2px;
-    background-color: #333;
-    margin: 3px 0;
+.menu-lateral li {
+    list-style: none;
+    margin-bottom: 10px;
 }
 
-/* Enlaces */
-.menu-lateral .list-group-item {
-    border: none;
-    padding: 8px 12px;
+/* === Ítems y subítems === */
+.menu-lateral .list-group-item,
+.menu-lateral .submenu-item {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 8px 12px;
+    text-align: left;
+    border: none;
 }
 
-.menu-lateral .list-group-item.activo {
+/* Submenú alineado igual que item normal */
+.menu-lateral .submenu-item {
+    font-size: 0.9em;
+    padding-left: 12px;
+}
+
+/* === Ícono circular e igual ancho === */
+.menu-lateral .icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    font-size: 1.2em;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background-color: #eaeaea;
+}
+
+/* === Texto alineado a la izquierda === */
+.menu-lateral .texto-menu {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    transition: opacity 0.3s ease;
+    text-align: left;
+}
+
+/* === Estilo activo === */
+.menu-lateral .list-group-item.activo,
+.menu-lateral .submenu-item.activo {
     background-color: #d9edf7;
     font-weight: bold;
     border-left: 4px solid #31708f;
 }
 
-/* Submenús */
+/* === Submenú container === */
 .menu-lateral .submenu {
-    margin-left: 10px;
+    margin-left: 0;
     border-left: 2px dashed #ccc;
+    padding-left: 10px;
 }
 
-.menu-lateral .submenu-item {
-    font-size: 0.9em;
-    padding-left: 20px;
+/* === Menú colapsado === */
+.menu-lateral.colapsado .texto-menu {
+    display: none;
 }
 
-/* Tooltip siempre visible cuando colapsado */
+.menu-lateral.colapsado .list-group-item {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* === Tooltip en colapsado === */
 .menu-lateral.colapsado .list-group-item .icono[title]::after {
     content: attr(title);
     position: absolute;
@@ -299,4 +293,19 @@ label.required:after {
 
 .menu-lateral.colapsado .list-group-item:hover .icono[title]::after {
     opacity: 1;
+}
+
+/* === Íconos de barra (menú hamburguesa) === */
+.menu-icon-bars {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.menu-icon-bars .icon-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background-color: #333;
+    margin: 3px 0;
 }
