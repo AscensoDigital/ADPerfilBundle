@@ -99,3 +99,28 @@ Tests Funcionales
 
         // Inserciones dummy...
     }
+
+Generar reporte de cobertura
+----------------------------
+
+Puedes generar un reporte HTML de cobertura de código ejecutando:
+
+.. code-block:: bash
+
+    composer test:coverage
+
+Este comando ejecuta todos los tests del proyecto y genera un reporte HTML en:
+
+.. code-block:: bash
+
+    tests/app/logs/coverage-report/index.html
+
+Puedes abrirlo directamente desde tu navegador para revisar qué archivos y líneas están cubiertas por tests.
+
+El script está definido en la sección `scripts` del archivo `composer.json` para facilitar su ejecución:
+
+.. code-block:: json
+
+    "scripts": {
+        "test:coverage": "./vendor/bin/phpunit --coverage-html tests/app/logs/coverage-report"
+    }

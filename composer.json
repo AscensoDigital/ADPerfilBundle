@@ -40,5 +40,8 @@
             "Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test:coverage": "./vendor/bin/phpunit --coverage-html tests/app/logs/coverage-report"
+    },
     "version": "1.5.0"
 }
