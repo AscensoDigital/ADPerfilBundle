@@ -43,5 +43,5 @@
     "scripts": {
         "test:coverage": "./vendor/bin/phpunit --coverage-html tests/app/logs/coverage-report"
     },
-    "version": "1.5.10"
+    "version": "1.5.11"
 }
