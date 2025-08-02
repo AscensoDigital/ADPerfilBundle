@@ -90,4 +90,29 @@ class MenuManagerTest extends FunctionalTestCase
 
         $this->assertLessThanOrEqual(2, $queryCount, "Deben ejecutarse 2 o menos consultas SQL, se ejecutaron $queryCount.");
     }
+
+    public function testMenusRaizCoincidenConFullTree()
+    {
+        $container = self::$kernel->getContainer();
+
+        // Simula login (esto setea el perfil en sesión de forma correcta)
+        $this->logInAsAdmin();
+
+        /** @var \AscensoDigital\PerfilBundle\Model\MenuManager $manager */
+        $manager = $container->get('ad_perfil.menu_manager');
+
+        // Verificamos que la estructura raíz no esté vacía
+        $menusRaiz = $manager->getMenusByMenuId(null);
+        $fullTree = $manager->getFullMenuTree();
+
+        $this->assertNotEmpty($menusRaiz, 'Los menús raíz no deben estar vacíos');
+        $this->assertEquals($fullTree, $menusRaiz, 'getMenusByMenuId(null) debe retornar lo mismo que getFullMenuTree()');
+
+        // Validar que ningún menú raíz tenga padre
+        foreach ($menusRaiz as $menu) {
+            $this->assertInstanceOf(Menu::class, $menu);
+            $this->assertNull($menu->getMenuSuperior(), 'Los menús raíz no deben tener menú superior');
+        }
+    }
+
 }

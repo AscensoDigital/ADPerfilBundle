@@ -63,6 +63,11 @@ class MenuManager
     public function getMenusByMenuId($menu_id)
     {
         $this->initializeMenus();
+
+        if (null === $menu_id) {
+            return $this->treeRoot;
+        }
+
         return isset($this->menusByPadre[$menu_id]) ? $this->menusByPadre[$menu_id] : [];
     }
 
