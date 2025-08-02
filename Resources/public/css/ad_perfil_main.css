@@ -191,7 +191,6 @@ label.required:after {
 .menu-lateral.colapsado .toggle-menu .glyphicon-chevron-left {
     display: none;
 }
-
 .menu-lateral.colapsado .toggle-menu .glyphicon-chevron-right {
     display: inline-block;
 }
@@ -203,7 +202,7 @@ label.required:after {
 
 .menu-lateral li {
     list-style: none;
-    margin-bottom: 10px;
+    margin-bottom: 4px; /* 🔧 Reducido */
 }
 
 /* === Ítems y subítems === */
@@ -212,31 +211,37 @@ label.required:after {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
+    padding: 6px 12px; /* 🔧 Más compacto */
     text-align: left;
     border: none;
 }
 
-/* Submenú alineado igual que item normal */
-.menu-lateral .submenu-item {
-    font-size: 0.9em;
-    padding-left: 12px;
+/* Submenús */
+.menu-lateral .submenu {
+    margin-left: 0;
+    border-left: 2px dashed #ccc;
+    padding-left: 10px;
 }
 
-/* === Ícono circular e igual ancho === */
+.menu-lateral .submenu-item {
+    font-size: 0.9em;
+}
+
+/* === Ícono alineado, sin fondo ni círculo === */
 .menu-lateral .icono {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     font-size: 1.2em;
-    border-radius: 50%;
     flex-shrink: 0;
-    background-color: #eaeaea;
+    /* 🔻 eliminamos fondo y borde circular */
+    background: none;
+    border-radius: 0;
 }
 
-/* === Texto alineado a la izquierda === */
+/* === Texto alineado === */
 .menu-lateral .texto-menu {
     display: inline-block;
     white-space: nowrap;
@@ -247,19 +252,12 @@ label.required:after {
     text-align: left;
 }
 
-/* === Estilo activo === */
+/* === Activo === */
 .menu-lateral .list-group-item.activo,
 .menu-lateral .submenu-item.activo {
     background-color: #d9edf7;
     font-weight: bold;
     border-left: 4px solid #31708f;
-}
-
-/* === Submenú container === */
-.menu-lateral .submenu {
-    margin-left: 0;
-    border-left: 2px dashed #ccc;
-    padding-left: 10px;
 }
 
 /* === Menú colapsado === */
@@ -272,7 +270,7 @@ label.required:after {
     padding-right: 10px;
 }
 
-/* === Tooltip en colapsado === */
+/* === Tooltip al pasar el mouse === */
 .menu-lateral.colapsado .list-group-item .icono[title]::after {
     content: attr(title);
     position: absolute;
@@ -295,7 +293,7 @@ label.required:after {
     opacity: 1;
 }
 
-/* === Íconos de barra (menú hamburguesa) === */
+/* === Icono de menú hamburguesa === */
 .menu-icon-bars {
     display: inline-block;
     vertical-align: middle;
@@ -308,4 +306,27 @@ label.required:after {
     height: 2px;
     background-color: #333;
     margin: 3px 0;
+}
+
+.layout-wrapper {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.menu-lateral {
+    width: 220px;
+    transition: width 0.3s ease;
+    flex-shrink: 0;
+}
+
+.menu-lateral.colapsado {
+    width: 70px;
+}
+
+#main {
+    flex-grow: 1;
+    padding: 15px;
+    transition: all 0.3s ease;
+    overflow-x: auto;
 }

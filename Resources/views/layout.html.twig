@@ -57,18 +57,16 @@
     </nav>
 
     <div class="container-fluid">
-        <div class="row">
+        <div class="layout-wrapper">
         {% if app.user %}
-            <div class="col-sm-3 col-md-2">
+            <aside class="menu-lateral">
                 {{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::menuLateralAction')) }}
-            </div>
-            <div class="col-sm-9 col-md-10" id="main">
-        {% else %}
-            <div class="col-md-12" id="main">
+            </aside>
         {% endif %}
+            <main id="main">
                 {{ include('@ADPerfilBundle/Navegacion/alert-flashes.html.twig') }}
                 {% block ad_perfil_content %}{% endblock %}
-            </div>
+            </main>
         </div>
     </div>
 
