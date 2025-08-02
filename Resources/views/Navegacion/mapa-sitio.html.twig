@@ -4,5 +4,9 @@
 {% block ad_perfil_subtitle %}{{ perfil }}{% endblock ad_perfil_subtitle %}
 
 {% block ad_perfil_content %}
+    {{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::breadcrumbsAction')) }}
+    {{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::menuAction')) }}
+    {{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::pageTitleAction')) }}
+
     {{ include('@ADPerfilBundle/Navegacion/mapa-sitio_content.html.twig') }}
 {% endblock ad_perfil_content %}
