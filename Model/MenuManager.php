@@ -1,123 +1,100 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: claudio
- * Date: 20-01-16
- * Time: 19:17
- */
 
 namespace AscensoDigital\PerfilBundle\Model;
-
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class MenuManager {
-
-    private $seccion;
-
-    /**
-     * @var Menu
-     */
-    private $menuActual;
-    
-    /**
-     * @var EntityManager
-     */
+class MenuManager
+{
     private $em;
-    
     private $perfil_id;
+    private $menuActual;
+    private $initialized = false;
+
+    /** @var Menu[] indexed by ID */
+    private $allMenus = [];
+
+    /** @var Menu[] raíz del árbol */
+    private $treeRoot = [];
+
+    /** @var Menu[][] submenús por ID padre */
+    private $menusByPadre = [];
 
     public function __construct(Session $session, EntityManager $em, $sessionName)
     {
         $this->em = $em;
-        $this->perfil_id = $session->get($sessionName,null);
+        $this->perfil_id = $session->get($sessionName, null);
     }
 
-    public function countItems(Menu $menu = null) {
-        $menu_id=is_null($menu) ? null : $menu->getId();
-        $this->setMenuActual($menu);
-        $cant=$this->em->getRepository('ADPerfilBundle:Menu')->countItems($menu_id);
-        return $cant;
-    }
-
-    public function getMenusByMenuId($menu_id){
-        $menu_sav_id=is_null($menu_id) ?
-            (is_null($this->getMenuActual()) ?
-                0 :
-                (is_null($this->getMenuActual()->getMenuSuperior()) ?
-                    0 :
-                    ($this->getMenuActual()->isVisible() ?
-                        $this->getMenuActual()->getMenuSuperior()->getId() :
-                        (is_null($this->getMenuActual()->getMenuSuperior()->getMenuSuperior()) ?
-                            $this->getMenuActual()->getMenuSuperior()->getId() :
-                            $this->getMenuActual()->getMenuSuperior()->getMenuSuperior()->getId()) ))) :
-            $menu_id;
-        if(!isset($this->seccion[$menu_sav_id])) {
-            $this->seccion[$menu_sav_id] = $this->em->getRepository('ADPerfilBundle:Menu')->findByPerfilMenu($this->perfil_id, $menu_sav_id);
+    private function initializeMenus()
+    {
+        if ($this->initialized) {
+            return;
         }
-        return $this->seccion[$menu_sav_id];
-    }
 
-    public function getMenuActual(){
-        return $this->menuActual;
-    }
+        $menus = $this->em->getRepository('ADPerfilBundle:Menu')->findAllByPerfil($this->perfil_id);
 
-    public function getSlugActual(){
-        return is_null($this->menuActual) ? null : $this->menuActual->getSlug();
+        foreach ($menus as $menu) {
+            $this->allMenus[$menu->getId()] = $menu;
+            $menu->setMenuHijos(new \Doctrine\Common\Collections\ArrayCollection());
+        }
+
+        foreach ($this->allMenus as $menu) {
+            $padre = $menu->getMenuSuperior();
+            if ($padre && isset($this->allMenus[$padre->getId()])) {
+                $this->allMenus[$padre->getId()]->addMenuHijo($menu);
+                $this->menusByPadre[$padre->getId()][] = $menu;
+            } else {
+                $this->treeRoot[] = $menu;
+            }
+        }
+
+        $this->initialized = true;
     }
 
     public function getFullMenuTree()
     {
-        if (isset($this->seccion['full_tree'])) {
-            return $this->seccion['full_tree'];
-        }
-
-        $menus = $this->em->getRepository('ADPerfilBundle:Menu')->findTreeByPerfil($this->perfil_id);
-
-        // Map de menús por ID
-        $menuMap = [];
-        foreach ($menus as $menu) {
-            $menuMap[$menu->getId()] = $menu;
-        }
-
-        // Construcción de árbol
-        $rootMenus = [];
-        foreach ($menus as $menu) {
-            $menuSuperior = $menu->getMenuSuperior();
-            if ($menuSuperior && isset($menuMap[$menuSuperior->getId()])) {
-                $menuMap[$menuSuperior->getId()]->addMenuHijo($menu);
-            } else {
-                $rootMenus[] = $menu;
-            }
-        }
-
-        $this->seccion['full_tree'] = $rootMenus;
-        return $rootMenus;
+        $this->initializeMenus();
+        return $this->treeRoot;
     }
 
-
-    public function setMenuActual(Menu $menu = null){
-        $this->menuActual=$menu;
+    public function getMenusByMenuId($menu_id)
+    {
+        $this->initializeMenus();
+        return isset($this->menusByPadre[$menu_id]) ? $this->menusByPadre[$menu_id] : [];
     }
 
-    public function getsubmenusByMenuId($menu_id){
-        $menu_sav_id=is_null($menu_id) ?
-            (is_null($this->getMenuActual()) ?
-                0 :
-                (is_null($this->getMenuActual()->getMenuSuperior()) ?
-                    0 :
-                    $this->getMenuActual()->getMenuSuperior()->getId() )) :
-            $menu_id;
-        if(!isset($this->seccion[$menu_sav_id])) {
-            $this->seccion[$menu_sav_id] = $this->em->getRepository('ADPerfilBundle:Menu')->findByPerfilMenu($this->perfil_id, $menu_sav_id, false);
-        }
-        return $this->seccion[$menu_sav_id];
+    public function getSubmenusByMenuId($menu_id)
+    {
+        return $this->getMenusByMenuId($menu_id);
     }
 
-    public function setMenuActualSinceRoute($route) {
-        $menus=$this->em->getRepository('ADPerfilBundle:Menu')->findBy(['route' => $route]);
+    public function countItems(Menu $menu = null)
+    {
+        $menu_id = is_null($menu) ? null : $menu->getId();
+        return count($this->getMenusByMenuId($menu_id));
+    }
+
+    public function getMenuActual()
+    {
+        return $this->menuActual;
+    }
+
+    public function setMenuActual(Menu $menu = null)
+    {
+        $this->menuActual = $menu;
+    }
+
+    public function getSlugActual()
+    {
+        return is_null($this->menuActual) ? null : $this->menuActual->getSlug();
+    }
+
+    public function setMenuActualSinceRoute($route)
+    {
+        $menus = $this->em->getRepository('ADPerfilBundle:Menu')->findBy(['route' => $route]);
         $this->setMenuActual(isset($menus[0]) ? $menus[0] : null);
     }
 }

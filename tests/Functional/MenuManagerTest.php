@@ -48,4 +48,46 @@ class MenuManagerTest extends FunctionalTestCase
         }
         $this->assertLessThanOrEqual(2, $queryCount, "Deben ejecutarse 2 o menos consultas SQL, se ejecutaron $queryCount.");
     }
+
+    public function testGetMenusByMenuIdExecutesSingleQuery()
+    {
+        $container = self::$kernel->getContainer();
+        $em = $container->get('doctrine')->getManager();
+
+        // 🔍 Logger SQL para verificar cantidad de consultas
+        $logger = new DebugStack();
+        $em->getConnection()->getConfiguration()->setSQLLogger($logger);
+
+        // 🧪 Login simulado
+        $result = $this->logInAsAdmin();
+
+        /** @var \AscensoDigital\PerfilBundle\Model\MenuManager $menuManager */
+        $menuManager = $container->get('ad_perfil.menu_manager');
+
+        // ⚠️ limpiar el logger antes de ejecutar
+        $logger->queries = [];
+
+        // 🔧 Acceder a los menús hijos de un menú padre (e.g., ID 1)
+        $menus = $menuManager->getMenusByMenuId(1);
+
+        // Validaciones
+        $this->assertIsArray($menus);
+        foreach ($menus as $menu) {
+            $this->assertInstanceOf(Menu::class, $menu);
+        }
+
+        $queryCount = count($logger->queries);
+        if (getenv('DEBUG_TESTS')) {
+            echo "\n🔍 Consultas ejecutadas: $queryCount\n";
+            foreach ($logger->queries as $i => $query) {
+                echo "\n--- Consulta #" . ($i) . " ---\n";
+                echo $query['sql'] . "\n";
+                if (!empty($query['params'])) {
+                    echo '🔸 Params: ' . json_encode($query['params']) . "\n";
+                }
+            }
+        }
+
+        $this->assertLessThanOrEqual(2, $queryCount, "Deben ejecutarse 2 o menos consultas SQL, se ejecutaron $queryCount.");
+    }
 }

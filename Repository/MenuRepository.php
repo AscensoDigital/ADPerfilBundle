@@ -83,21 +83,21 @@ class MenuRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function findTreeByPerfil($perfilId)
+    public function findAllByPerfil($perfilId)
     {
-        $qb = $this->createQueryBuilder('adp_m')
+        return $this->createQueryBuilder('adp_m')
             ->leftJoin('adp_m.permiso', 'adp_p')
             ->leftJoin('adp_p.perfilXPermisos', 'adp_pxp')
-            ->leftJoin('adp_m.menuSuperior', 'adp_ms') // para que Doctrine no haga lazy-load después
-            ->addSelect('adp_p', 'adp_pxp', 'adp_ms')
+            ->leftJoin('adp_m.color', 'adp_c')
+            ->leftJoin('adp_m.menuSuperior', 'adp_ms')
+            ->addSelect('adp_p', 'adp_pxp', 'adp_c', 'adp_ms')
             ->where('adp_m.visible = true')
             ->andWhere('adp_m.permiso IS NULL OR (adp_pxp.perfil = :perfilId AND adp_pxp.acceso = true)')
             ->orderBy('adp_m.orden', 'ASC')
-            ->setParameter('perfilId', $perfilId);
-
-        return $qb->getQuery()->getResult();
+            ->setParameter('perfilId', $perfilId)
+            ->getQuery()
+            ->getResult();
     }
-
 
     public function getQueryBuilderOrderNombre() {
         return $this->createQueryBuilder('adp_m')
