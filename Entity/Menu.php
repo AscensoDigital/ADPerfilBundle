@@ -109,7 +109,8 @@ class Menu
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Menu", mappedBy="menuSuperior", cascade={"persist"} )
+     * @ORM\OneToMany(targetEntity="Menu", mappedBy="menuSuperior", cascade={"persist"}, fetch="EXTRA_LAZY" )
+     * @ORM\OrderBy({"orden" = "ASC"})
      */
     protected $menuHijos;
 
