@@ -166,3 +166,77 @@ html {
 label.required:after {
     content: ' *';
 }
+
+/* menu lateral */
+.menu-lateral {
+    width: 220px;
+    transition: width 0.3s ease;
+}
+
+.menu-lateral.colapsado {
+    width: 70px;
+}
+
+.menu-lateral ul {
+    padding-left: 0;
+}
+
+.menu-lateral li {
+    list-style: none;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.menu-lateral .icono {
+    font-size: 2.5em;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 5px;
+}
+
+.menu-lateral .texto-menu {
+    display: block;
+    transition: opacity 0.3s ease;
+}
+
+.menu-lateral.colapsado .texto-menu {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+/* Activo */
+.menu-lateral li.activo {
+    background-color: #d9edf7;
+    border-left: 4px solid #31708f;
+}
+
+.menu-lateral-header {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.menu-lateral .toggle-menu {
+    margin: 0 auto;
+}
+
+.menu-lateral.colapsado .toggle-menu .glyphicon-chevron-left {
+    display: none;
+}
+.menu-lateral.colapsado .toggle-menu .glyphicon-chevron-right {
+    display: inline-block;
+}
+
+.menu-icon-bars {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.menu-icon-bars .icon-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background-color: #333;
+    margin: 3px 0;
+}

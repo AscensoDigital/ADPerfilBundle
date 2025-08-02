@@ -85,6 +85,24 @@ class NavegacionController extends Controller
     }
 
     /**
+     * Acción interna para renderizar el menú lateral extensible (icono + texto o solo icono).
+     * Uso: {{ render(controller('ADPerfilBundle:Navegacion:menuLateral')) }}
+     * @param bool $modoColapsado Controlado desde la vista por clase JS/CSS, no usado aquí directamente.
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function menuLateralAction()
+    {
+        $menus = $this->get('ad_perfil.menu_manager')->getFullMenuTree();
+
+        return $this->render('@ADPerfilBundle/Navegacion/menu-lateral-extensible.html.twig', [
+            'menus' => $menus,
+            'menuActual' => $this->get('ad_perfil.menu_manager')->getMenuActual()
+        ]);
+    }
+
+
+
+    /**
      * @param Request $request
      * @param Menu|null $menu
      * @param array|null $options
