@@ -57,14 +57,14 @@
     </nav>
 
     <div class="container-fluid">
-        <div class="layout-wrapper">
+        <div class="adperfil-layout-wrapper">
         {% if app.user %}
             {{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::menuLateralAction')) }}
         {% endif %}
-            <main id="main">
-                {{ include('@ADPerfilBundle/Navegacion/alert-flashes.html.twig') }}
-                {% block ad_perfil_content %}{% endblock %}
-            </main>
+        <main id="adperfil-main">
+            {{ include('@ADPerfilBundle/Navegacion/alert-flashes.html.twig') }}
+            {% block ad_perfil_content %}{% endblock %}
+        </main>
         </div>
     </div>
 

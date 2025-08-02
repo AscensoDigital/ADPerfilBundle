@@ -11,7 +11,7 @@ html {
 #wrap {
     min-height: 100%;
 }
-#main {
+#adperfil-main {
     overflow: auto;
     padding-bottom: 50px;
 }
@@ -168,26 +168,27 @@ label.required:after {
 }
 
 /* === Contenedor lateral === */
-.menu-lateral {
+.adperfil-menu-lateral {
     width: 220px;
     transition: width 0.3s ease;
     overflow-x: hidden;
+    flex-shrink: 0;
 }
 
-.menu-lateral.colapsado {
+.adperfil-menu-lateral.colapsado {
     width: 70px;
 }
 
 /* === Encabezado === */
-.menu-lateral-header {
+.adperfil-menu-lateral-header {
     padding: 0;
-    text-align: left; /* ✅ clave para que el botón quede pegado a la izquierda */
+    text-align: left;
     height: 46px;
     border-bottom: 1px solid #ccc;
     background: #fff;
 }
 
-.menu-lateral .toggle-menu {
+.adperfil-menu-lateral .adperfil-toggle-menu {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -199,17 +200,17 @@ label.required:after {
     box-shadow: none;
 }
 
-.menu-lateral .toggle-menu i {
+.adperfil-menu-lateral .adperfil-toggle-menu i {
     font-size: 14px;
 }
 
-.menu-icon-bars {
+.adperfil-menu-icon-bars {
     display: inline-block;
     vertical-align: middle;
     margin-right: 4px;
 }
 
-.menu-icon-bars .icon-bar {
+.adperfil-menu-icon-bars .adperfil-icon-bar {
     display: block;
     width: 18px;
     height: 2px;
@@ -217,51 +218,49 @@ label.required:after {
     margin: 2px 0;
 }
 
-/* Asegurar que no desaparezca al colapsar */
-.menu-lateral.colapsado .toggle-menu {
+.adperfil-menu-lateral.colapsado .adperfil-toggle-menu {
     display: flex !important;
 }
 
-
 /* === Lista === */
-.menu-lateral ul {
+.adperfil-menu-lateral ul {
     padding-left: 0;
 }
 
-.menu-lateral li {
+.adperfil-menu-lateral li {
     list-style: none;
-    margin-bottom: 4px; /* 🔧 Reducido */
+    margin-bottom: 4px;
 }
 
-.menu-lateral a {
+.adperfil-menu-lateral a {
     display: flex;
     align-items: center;
 }
 
 /* === Ítems y subítems === */
-.menu-lateral .list-group-item,
-.menu-lateral .submenu-item {
+.adperfil-menu-lateral .list-group-item,
+.adperfil-menu-lateral .adperfil-submenu-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 12px; /* 🔧 Más compacto */
+    padding: 6px 12px;
     text-align: left;
     border: none;
 }
 
 /* Submenús */
-.menu-lateral .submenu {
+.adperfil-menu-lateral .adperfil-submenu {
     margin-left: 0;
     border-left: 2px dashed #ccc;
     padding-left: 10px;
 }
 
-.menu-lateral .submenu-item {
+.adperfil-menu-lateral .adperfil-submenu-item {
     font-size: 0.9em;
 }
 
-/* === Ícono alineado, sin fondo ni círculo === */
-.menu-lateral .icono {
+/* === Ícono alineado === */
+.adperfil-menu-lateral .adperfil-icono {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -269,14 +268,13 @@ label.required:after {
     height: 24px;
     font-size: 1.2em;
     flex-shrink: 0;
-    /* 🔻 eliminamos fondo y borde circular */
     background: none;
     border-radius: 0;
     padding-top: 0;
 }
 
 /* === Texto alineado === */
-.menu-lateral .texto-menu {
+.adperfil-menu-lateral .adperfil-texto-menu {
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
@@ -287,25 +285,25 @@ label.required:after {
 }
 
 /* === Activo === */
-.menu-lateral .list-group-item.activo,
-.menu-lateral .submenu-item.activo {
+.adperfil-menu-lateral .list-group-item.activo,
+.adperfil-menu-lateral .adperfil-submenu-item.activo {
     background-color: #d9edf7;
     font-weight: bold;
     border-left: 4px solid #31708f;
 }
 
 /* === Menú colapsado === */
-.menu-lateral.colapsado .texto-menu {
+.adperfil-menu-lateral.colapsado .adperfil-texto-menu {
     display: none;
 }
 
-.menu-lateral.colapsado .list-group-item {
+.adperfil-menu-lateral.colapsado .list-group-item {
     padding-left: 10px;
     padding-right: 10px;
 }
 
-/* === Tooltip al pasar el mouse === */
-.menu-lateral.colapsado .list-group-item .icono[title]::after {
+/* === Tooltip === */
+.adperfil-menu-lateral.colapsado .list-group-item .adperfil-icono[title]::after {
     content: attr(title);
     position: absolute;
     left: 60px;
@@ -323,18 +321,12 @@ label.required:after {
     z-index: 999;
 }
 
-.menu-lateral.colapsado .list-group-item:hover .icono[title]::after {
+.adperfil-menu-lateral.colapsado .list-group-item:hover .adperfil-icono[title]::after {
     opacity: 1;
 }
 
-/* === Icono de menú hamburguesa === */
-.menu-icon-bars {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
-.menu-icon-bars .icon-bar {
+/* === Icono menú hamburguesa === */
+.adperfil-menu-icon-bars .adperfil-icon-bar {
     display: block;
     width: 18px;
     height: 2px;
@@ -342,23 +334,13 @@ label.required:after {
     margin: 3px 0;
 }
 
-.layout-wrapper {
+.adperfil-layout-wrapper {
     display: flex;
     flex-direction: row;
     height: 100%;
 }
 
-.menu-lateral {
-    width: 220px;
-    transition: width 0.3s ease;
-    flex-shrink: 0;
-}
-
-.menu-lateral.colapsado {
-    width: 70px;
-}
-
-#main {
+#adperfil-main {
     flex-grow: 1;
     padding: 15px;
     transition: all 0.3s ease;

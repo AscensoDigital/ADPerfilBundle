@@ -1,11 +1,11 @@
-<aside class="menu-lateral hidden-xs">
-    <ul class="menu-lateral list-group"> {# se oculta en móviles #}
-        <div class="menu-lateral-header text-center">
-            <button class="btn btn-default toggle-menu" onclick="toggleMenuLateral()">
-                <span class="menu-icon-bars">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+<aside class="adperfil-menu-lateral hidden-xs">
+    <ul class="adperfil-menu-lateral list-group">
+        <div class="adperfil-menu-lateral-header text-center">
+            <button class="btn btn-default adperfil-toggle-menu" onclick="toggleMenuLateral()">
+                <span class="adperfil-menu-icon-bars">
+                    <span class="adperfil-icon-bar"></span>
+                    <span class="adperfil-icon-bar"></span>
+                    <span class="adperfil-icon-bar"></span>
                 </span>
                 <i class="glyphicon glyphicon-chevron-left"></i>
                 <i class="glyphicon glyphicon-chevron-right" style="display:none;"></i>
@@ -16,23 +16,23 @@
             <li class="list-group-item {% if menu.isActual(menuActual) %}activo{% endif %}">
                 <a href="{{ menu.route ? path(menu.route) : path('ad_perfil_menu', { 'menu_slug': menu.slug }) }}"
                    title="{{ menu.nombre }}">
-                    <span class="icono icono-{{ menu.color|default('gris') | lower }}">
+                    <span class="adperfil-icono adperfil-icono-{{ menu.color|default('gris') | lower }}">
                         <i class="{{ menu.icono|default('fa fa-square') }}"></i>
                     </span>
-                    <span class="texto-menu">{{ menu.nombre }}</span>
+                    <span class="adperfil-texto-menu">{{ menu.nombre }}</span>
                 </a>
             </li>
 
             {% if menu.menuHijos|length > 0 %}
-                <ul class="submenu">
+                <ul class="adperfil-submenu">
                     {% for submenu in menu.menuHijos %}
-                        <li class="submenu-item {% if submenu.isActual(menuActual) %}activo{% endif %}">
+                        <li class="adperfil-submenu-item {% if submenu.isActual(menuActual) %}activo{% endif %}">
                             <a href="{{ submenu.route ? path(submenu.route) : path('ad_perfil_menu', { 'menu_slug': submenu.slug }) }}"
                                title="{{ submenu.nombre }}">
-                                <span class="icono icono-{{ submenu.color|default('gris') | lower }}">
+                                <span class="adperfil-icono adperfil-icono-{{ submenu.color|default('gris') | lower }}">
                                     <i class="{{ submenu.icono|default('fa fa-angle-right') }}"></i>
                                 </span>
-                                <span class="texto-menu">{{ submenu.nombre }}</span>
+                                <span class="adperfil-texto-menu">{{ submenu.nombre }}</span>
                             </a>
                         </li>
                     {% endfor %}
@@ -43,7 +43,7 @@
 </aside>
 <script>
     function toggleMenuLateral() {
-        var aside = document.querySelector('.menu-lateral');
+        var aside = document.querySelector('.adperfil-menu-lateral');
         aside.classList.toggle('colapsado');
 
         var left = aside.querySelector('.glyphicon-chevron-left');
