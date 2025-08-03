@@ -2,7 +2,7 @@
 {{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::menuAction')) }}
 {{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\NavegacionController::pageTitleAction')) }}
 
-<div class="row">{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\FiltroContrller::permisoAction')) }}</div>
+<div class="row">{{ render(controller('AscensoDigital\\PerfilBundle\\Controller\\FiltroController::permisoAction')) }}</div>
 {% if is_granted('permiso','ad_perfil-per-download-permisos') %}
     <div class="alert"><a class="btn btn-primary btn-sm" href="{{ path('ad_perfil_download_permisos') }}">Descargar Permisos</a></div>
 {% endif %}
