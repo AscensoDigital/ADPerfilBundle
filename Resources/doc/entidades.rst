@@ -10,6 +10,10 @@ PERFIL
 - id: INTEGER (PK)
 - nombre: VARCHAR(100)
 - slug: VARCHAR(100)
+- routeInit: VARCHAR(100) (nullable)  ← NUEVO
+
+Este campo permite definir una ruta inicial personalizada para el perfil. Si se configura,
+el sistema redirigirá automáticamente a esa ruta tras el login o el cambio de perfil.
 
 AD_PERFIL_PERMISO
 -----------------

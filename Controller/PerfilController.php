@@ -16,20 +16,22 @@ class PerfilController extends Controller
      * @Route("/change-perfil/{perfil_id}", name="ad_perfil_perfil_change")
      */
     public function changeAction(Request $request, $perfil_id){
-        $user=$this->getUser();
-        if($user){
-            if(isset($user->getPerfils()[$perfil_id])){
-                $request->getSession()->set($this->getParameter('ad_perfil.session_name'),$perfil_id);
-                $this->removeFiltros($request);
-                $this->addFlash('success','Ha cambiado a su perfil de <strong>'.$user->getPerfils()[$perfil_id]->getNombre().'</strong>');
+        $user = $this->getUser();
+        if ($user && $user->getPerfil($perfil_id)) {
+            $perfil = $user->getPerfil($perfil_id);
+            $request->getSession()->set($this->getParameter('ad_perfil.session_name'), $perfil_id);
+            $this->removeFiltros($request);
+            $this->addFlash('success', 'Ha cambiado a su perfil de <strong>' . $perfil->getNombre() . '</strong>');
+
+            $routeInit = $perfil->getRouteInit();
+            if ($routeInit) {
+                return $this->redirectToRoute($routeInit);
             }
-            else{
-                $this->addFlash('danger','No tiene acceso al Perfil seleccionado');
-            }
+
+            return $this->redirectToRoute($this->getParameter('ad_perfil.route_redirect'));
         }
-        else{
-            $this->addFlash('warning','Se cerró la sessión, ingrese nuevamente.');
-        }
+
+        $this->addFlash($user ? 'danger' : 'warning', $user ? 'No tiene acceso al Perfil seleccionado' : 'Se cerró la sesión, ingrese nuevamente.');
         return $this->redirectToRoute($this->getParameter('ad_perfil.route_redirect'));
     }
 
@@ -39,14 +41,13 @@ class PerfilController extends Controller
         if($this->getUser()){
             $perfil_id=$request->getSession()->get($this->getParameter('ad_perfil.session_name'));
             if(!is_null($perfil_id)) {
-                $perfils=$this->getUser()->getPerfils();
                 /** @var PerfilInterface $perfil */
-                if(!isset($perfils[$perfil_id])) {
+                $perfil=$this->getUser()->getPerfil($perfil_id);
+                if(!$perfil) {
                     $this->addFlash('danger', 'No tiene acceso al Perfil seleccionado');
                     $request->getSession()->remove($this->getParameter('ad_perfil.session_name'));
                 }
                 else{
-                    $perfil=$perfils[$perfil_id];
                     $perfilStr=$perfil->getSlug();
                 }
             }

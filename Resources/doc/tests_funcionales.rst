@@ -124,3 +124,14 @@ El script está definido en la sección `scripts` del archivo `composer.json` pa
     "scripts": {
         "test:coverage": "./vendor/bin/phpunit --coverage-html tests/app/logs/coverage-report"
     }
+
+Redirección post login y cambio de perfil
+-----------------------------------------
+
+El bundle incluye una acción especial `NavegacionController::loginRedirectAction`, accesible en `/login-redirect`,
+que gestiona la redirección tras el login en base al perfil activo.
+
+- Si el perfil tiene un valor definido en `getRouteInit()`, se redirige allí.
+- Si no, se redirige a la ruta de fallback definida por `ad_perfil.route_redirect`.
+
+Esta lógica también se aplica al cambiar de perfil mediante `PerfilController::changeAction`.

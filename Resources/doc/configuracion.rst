@@ -18,7 +18,7 @@ Parámetros opcionales:
 
 .. code-block:: yaml
 
-    route_redirect: 'homepage'
+    route_redirect: 'ad_perfil_menu'  # Fallback cuando no hay routeInit o el perfil no es válido
     session_name: 'ad_perfil.perfil_id'
     valor_true: '1'
     valor_false: '0'
@@ -30,3 +30,8 @@ Parámetros opcionales:
         homepage_name: 'Inicio'
         homepage_icono: 'fa fa-home'
         homepage_color: 'blanco'
+
+Notas:
+
+- Si el perfil activo tiene el atributo `routeInit` definido, el sistema redirige automáticamente a dicha ruta.
+- Si no se encuentra el perfil o el atributo es `null`, se redirige a la ruta definida por `route_redirect`.

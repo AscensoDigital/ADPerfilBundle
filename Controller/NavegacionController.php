@@ -4,6 +4,7 @@ namespace AscensoDigital\PerfilBundle\Controller;
 
 use AscensoDigital\PerfilBundle\Entity\Menu;
 use AscensoDigital\PerfilBundle\Form\Type\MenuFormType;
+use AscensoDigital\PerfilBundle\Model\PerfilInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -12,6 +13,34 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NavegacionController extends Controller
 {
+    /**
+     * @Route("/login-redirect", name="ad_perfil_login_redirect")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function loginRedirectAction(Request $request)
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+
+        $perfilId = $request->getSession()->get($this->getParameter('ad_perfil.session_name'));
+
+        /** @var PerfilInterface $perfil */
+        $perfil = $user->getPerfil($perfilId);
+        if (!$perfil) {
+            $this->addFlash('danger', 'Perfil inválido o no asignado.');
+            return $this->redirectToRoute($this->getParameter('ad_perfil.route_redirect'));
+        }
+
+        $routeInit = $perfil->getRouteInit();
+        if ($routeInit) {
+            return $this->redirectToRoute($routeInit);
+        }
+
+        return $this->redirectToRoute('ad_perfil_menu');
+    }
+
     /**
      * @param Menu|null $menu
      * @return \Symfony\Component\HttpFoundation\Response

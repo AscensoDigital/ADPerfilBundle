@@ -13,6 +13,7 @@ class LoadTestPerfilData extends AbstractFixture
     public function load(ObjectManager $manager)
     {
         $perfil = new PerfilDummy();
+        $perfil->setRouteInit('ad_perfil_mapa_sitio');
         $manager->persist($perfil);
         $manager->flush();
 

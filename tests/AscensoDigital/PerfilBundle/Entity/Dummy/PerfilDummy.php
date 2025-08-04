@@ -29,10 +29,14 @@ class PerfilDummy implements PerfilInterface
      */
     private $slug = 'perfil-dummy';
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $routeInit;
 
     public function __toString()
     {
-       return $this->getNombre();
+        return $this->getNombre();
     }
 
     public function getId()
@@ -61,4 +65,14 @@ class PerfilDummy implements PerfilInterface
         return $this;
     }
 
+    public function getRouteInit()
+    {
+        return $this->routeInit;
+    }
+
+    public function setRouteInit(?string $routeInit)
+    {
+        $this->routeInit = $routeInit;
+        return $this;
+    }
 }

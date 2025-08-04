@@ -57,4 +57,14 @@ class UserDummy extends BaseUser
     {
         return 'UserDummy#' . $this->id;
     }
+
+    public function getPerfil($perfilId)
+    {
+        foreach ($this->getPerfils() as $p) {
+            if ($p->getId() == $perfilId) {
+                return $p;
+            }
+        }
+        return false;
+    }
 }
