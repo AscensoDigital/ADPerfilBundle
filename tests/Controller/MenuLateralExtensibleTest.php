@@ -14,9 +14,9 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La página se debe cargar correctamente.');
 
-        $this->assertCount(1, $crawler->filter('ul.menu-lateral'), 'Debe existir el menú lateral.');
+        $this->assertCount(1, $crawler->filter('ul.adperfil-menu-lateral'), 'Debe existir el menú lateral.');
 
-        $this->assertCount(1, $crawler->filter('.toggle-menu'), 'Debe haber un botón para colapsar el menú.');
+        $this->assertCount(1, $crawler->filter('.adperfil-toggle-menu'), 'Debe haber un botón para colapsar el menú.');
 
         $this->assertGreaterThan(0, $crawler->filter('li.activo')->count(), 'Debe haber un menú marcado como activo.');
 
@@ -27,7 +27,7 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
         $this->assertStringContainsString('Mapa del Sitio', $activeLink->text(), 'El texto del menú activo debe ser Mapa del Sitio');
 
         // Validar que contiene el ícono correcto
-        $iconDiv = $activeLink->filter('span.icono');
+        $iconDiv = $activeLink->filter('span.adperfil-icono');
         $this->assertGreaterThan(0, $iconDiv->count(), 'Debe haber un span con clase icono en el menú activo');
 
         $icon = $iconDiv->filter('i.fa');
@@ -54,7 +54,7 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La página protegida sin menú asociado debe cargar correctamente.');
 
-        $this->assertCount(1, $crawler->filter('ul.menu-lateral'), 'El menú lateral debe estar presente.');
+        $this->assertCount(1, $crawler->filter('ul.adperfil-menu-lateral'), 'El menú lateral debe estar presente.');
         $this->assertCount(0, $crawler->filter('li.activo'), 'Ningún menú debe estar marcado como activo en rutas no asociadas a menú.');
     }
 
@@ -65,7 +65,7 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La vista debe cargar correctamente.');
 
-        $links = $crawler->filter('ul.menu-lateral a');
+        $links = $crawler->filter('ul.adperfil-menu-lateral a');
         $this->assertGreaterThan(0, $links->count(), 'Debe haber al menos un enlace en el menú lateral.');
 
         foreach ($links as $a) {
@@ -84,7 +84,7 @@ class MenuLateralExtensibleTest extends FunctionalTestCase
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), 'La vista debe cargar correctamente.');
 
         // Verifica que hay al menos un submenú renderizado
-        $submenuItems = $crawler->filter('ul.menu-lateral ul.submenu li.submenu-item');
+        $submenuItems = $crawler->filter('ul.adperfil-menu-lateral ul.adperfil-submenu li.adperfil-submenu-item');
         $this->assertGreaterThan(0, $submenuItems->count(), 'Debe haber al menos un submenú renderizado dentro de la estructura.');
 
         foreach ($submenuItems as $item) {
