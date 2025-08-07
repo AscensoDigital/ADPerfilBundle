@@ -55,11 +55,17 @@ class LoadCsvPermisosCommand extends ContainerAwareCommand
                 if ($readEncabezado && !in_array($datos[0], ["sep=", "sep=;"])) {
                     foreach ($datos as $key => $perfilSlug) {
                         if ($key > 1) {
+                            $encontrado=false;
                             /** @var PerfilInterface $perfil */
                             foreach ($perfils as $perfil) {
-                                if (StrUtil::ucwords(StrUtil::strtolower($perfil->getSlug())) == $perfilSlug) {
+                                if (StrUtil::strtolower($perfil->getSlug()) == StrUtil::strtolower($perfilSlug)) {
                                     $arrPerfilSlugs[$key] = $perfil;
+                                    $encontrado=true;
+                                    break;
                                 }
+                            }
+                            if($encontrado==false){
+                                $output->writeln("PerfilSlug no encontrado: ".$perfilSlug);
                             }
                         }
                     }
