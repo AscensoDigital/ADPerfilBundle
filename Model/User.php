@@ -23,4 +23,14 @@ abstract class User extends BaseUser implements UserInterface
 
         $this->perfils=array();
     }
+
+    public function getPerfil($perfilId)
+    {
+        foreach ($this->getPerfils() as $p) {
+            if ($p->getId() == $perfilId) {
+                return $p;
+            }
+        }
+        return false;
+    }
 }
