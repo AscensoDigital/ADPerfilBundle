@@ -55,11 +55,12 @@ class FiltroManager{
         $null_request=is_null($request);
         $route= is_null($route) ? (is_null($this->route) ? ($null_request ? '' : $request->attributes->get('_route')) : $this->route) : $route;
         $filtros= $null_request ? array() : $request->get('ad_perfil_filtros',$request->get('filtros_'.$route,$request->getSession()->get('filtros_'.$route,array())));
-        if(false===$null_request){
-            $request->getSession()->set('filtros_'.$route, $filtros);
-        }
+        $filtrosLimpios=$this->pruneEmptyValues($filtros);
 
-        return $filtros;
+        if(false===$null_request){
+            $request->getSession()->set('filtros_'.$route, $filtrosLimpios);
+        }
+        return $filtrosLimpios;
     }
 
     public function getFiltrosValor($route=null) {
@@ -242,12 +243,12 @@ class FiltroManager{
 
     private function procesaValor($valor,$type) {
         if(is_array($valor)){
-            if(count($valor)>1 || $valor[0]>0){
-                if($valor[0]=="") {
-                    unset($valor[0]);
+            foreach ($valor as $key => $item) {
+                if(trim($valor[$key]) == "") {
+                    unset($valor[$key]);
                 }
-                return $valor;
             }
+            return count($valor) == 0 ? null : $valor;
         }
         elseif(!empty($valor)){
             switch($type) {
@@ -261,6 +262,26 @@ class FiltroManager{
             }
         }
         return null;
+    }
+
+    private function pruneEmptyValues(array $arr)
+    {
+        foreach ($arr as $k => $v) {
+            if (is_array($v)) {
+                $v = $this->pruneEmptyValues($v);          // limpiar hijos
+                if ($v === []) {
+                    unset($arr[$k]);                // quitar arrays vacíos
+                } else {
+                    $arr[$k] = $v;
+                }
+            } else {
+                $isEmptyString = is_string($v) && trim($v) === ''; // '' o solo espacios
+                if ($isEmptyString || $v === null) {
+                    unset($arr[$k]);                // quitar null y strings vacíos/espacios
+                }
+            }
+        }
+        return $arr;
     }
 
     public function getSqlWhere(QueryBuilder $qb, $excludes = null, $isNull=false){
