@@ -75,10 +75,6 @@ class PermisoVoter extends Voter
             return true;
         }
 
-        if (null === $this->perfil_id) {
-            return false;
-        }
-
         switch ($attribute) {
             case self::MENU:
                 // carga de permisos de menu, sino estan cargados
@@ -97,6 +93,9 @@ class PermisoVoter extends Voter
                 }
                 return in_array($subject->getSlug(), $this->permisos[self::MENU][Permiso::RESTRICT] ?? []);
             case self::PERMISO:
+                if (null === $this->perfil_id) {
+                    return false;
+                }
                 // carga de permisos sino estan cargados
                 if (!isset($this->permisos[self::PERMISO])) {
                     try {

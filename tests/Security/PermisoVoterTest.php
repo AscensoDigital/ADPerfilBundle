@@ -190,5 +190,40 @@ class PermisoVoterTest extends TestCase
 
         $this->assertFalse($this->callVote($voter, PermisoVoter::MENU, $menu));
     }
+    public function testVoteMenuLibrePermitidoSinPerfil()
+    {
+        // Menú público (libre)
+        $menu = new Menu();
+        $menu->setSlug('publico');
+
+        // Sesión sin perfil activo
+        $session = $this->createMock(Session::class);
+        $session->method('get')->willReturn(null);
+
+        // El repositorio de Menu devuelve el slug dentro de LIBRE
+        $repoMenu = $this->createMock(MenuRepository::class);
+        $repoMenu->method('findArrayPermisoByPerfil')
+            ->with(null)
+            ->willReturn([
+                'menu' => [Permiso::LIBRE => ['publico']]
+            ]);
+
+        // Repositorio de permisos (no relevante para MENU, pero se mapea igual)
+        $repoPermiso = $this->createMock(PerfilXPermisoRepository::class);
+        $repoPermiso->method('findArrayIdByPerfil')->willReturn([]);
+
+        // EntityManager con el mapeo de repositorios
+        $em = $this->createMock(EntityManager::class);
+        $em->method('getRepository')->willReturnMap([
+            ['ADPerfilBundle:Menu', $repoMenu],
+            ['ADPerfilBundle:PerfilXPermiso', $repoPermiso],
+        ]);
+
+        $voter = new PermisoVoter($session, $em, 'perfil');
+
+        // Debe permitir acceso porque el slug está marcado como LIBRE,
+        // independiente de que no exista perfil en sesión.
+        $this->assertTrue($this->callVote($voter, PermisoVoter::MENU, $menu));
+    }
 
 }
