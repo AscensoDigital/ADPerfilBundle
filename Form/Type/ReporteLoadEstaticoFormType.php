@@ -3,6 +3,7 @@
 namespace AscensoDigital\PerfilBundle\Form\Type;
 
 use AscensoDigital\PerfilBundle\Entity\Reporte;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +13,7 @@ class ReporteLoadEstaticoFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('reporte','entity',[
+        $builder->add('reporte',EntityType::class,[
             'class' => Reporte::class,
             'read_only' => true
         ])
@@ -29,8 +30,13 @@ class ReporteLoadEstaticoFormType extends AbstractType
         $resolver->setRequired('criterio_choices');
     }
 
+    public function getBlockPrefix()
+    {
+        return 'ad_perfil_reporte_load_estatico';
+    }
+
     public function getName()
     {
-        return 'reporte_load_estatico';
+        return 'ad_perfil_reporte_load_estatico';
     }
 }

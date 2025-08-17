@@ -28,8 +28,13 @@ class PermisosFormType extends AbstractType
             ));
     }
 
+    public function getBlockPrefix()
+    {
+        return 'ad_perfil_permisos';
+    }
+
     public function getName()
     {
-        return 'permisos';
+        return 'ap_perfil_permisos';
     }
 }

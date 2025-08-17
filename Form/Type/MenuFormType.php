@@ -3,6 +3,9 @@
 namespace AscensoDigital\PerfilBundle\Form\Type;
 
 use AscensoDigital\ComponentBundle\Form\Type\IconType;
+use AscensoDigital\PerfilBundle\Entity\Color;
+use AscensoDigital\PerfilBundle\Entity\Menu;
+use AscensoDigital\PerfilBundle\Entity\Permiso;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Doctrine\ORM\EntityRepository;
@@ -18,7 +21,7 @@ class MenuFormType extends AbstractType
     {
         $builder->add('menuSuperior',EntityType::class,[
             'placeholder' => 'Homepage',
-            'class' => 'AscensoDigital\PerfilBundle\Entity\Menu',
+            'class' => Menu::class,
             'required' => false,
             'query_builder' => function (EntityRepository $er) {
                 return $er->getQueryBuilderOrderNombre();
@@ -30,7 +33,7 @@ class MenuFormType extends AbstractType
             ->add('icono',IconType::class)
             ->add('color',EntityType::class,[
                 'placeholder' => '',
-                'class' => 'AscensoDigital\PerfilBundle\Entity\Color',
+                'class' => Color::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->getQueryBuilderOrderNombre();
                 }
@@ -41,7 +44,7 @@ class MenuFormType extends AbstractType
             ])
                 ->add('permiso', EntityType::class, [
                     'placeholder' => '',
-                    'class' => 'AscensoDigital\PerfilBundle\Entity\Permiso',
+                    'class' => Permiso::class,
                     'required' => false,
                     'query_builder' => function (EntityRepository $er) {
                         return $er->getQueryBuilderOrderNombre();

@@ -28,17 +28,17 @@ class PerfilXPermisoType extends AbstractType
     {
         $resolver->setDefined(array('label_entity'));
         $resolver->setDefaults(array(
-            'data_class' => 'AscensoDigital\PerfilBundle\Entity\PerfilXPermiso',
+            'data_class' => PerfilXPermiso::class,
             'label_entity' => 'Perfil'));
     }
 
     public function getBlockPrefix()
     {
-        return 'perfil_x_permiso';
+        return 'ad_perfil_perfil_x_permiso';
     }
 
     public function getName()
     {
-        return 'perfil_x_permiso';
+        return 'ad_perfil_perfil_x_permiso';
     }
 }

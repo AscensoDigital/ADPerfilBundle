@@ -5,7 +5,10 @@ namespace AscensoDigital\PerfilBundle\Form\Type;
 use AscensoDigital\PerfilBundle\Entity\Permiso;
 use AscensoDigital\PerfilBundle\Entity\ReporteCriterio;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,13 +16,13 @@ class ReporteFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('reporteSeccion')
-            ->add('reporteCategoria')
-            ->add('reporteCriterio','entity',[
+        $builder->add('reporteSeccion',EntityType::class )
+            ->add('reporteCategoria',EntityType::class )
+            ->add('reporteCriterio',EntityType::class, [
                 'required' => false,
                 'class' => ReporteCriterio::class
             ])
-            ->add('permiso','entity',[
+            ->add('permiso',EntityType::class,[
                 'required' => false,
                 'class' => Permiso::class,
                 'query_builder' => function (EntityRepository $er) {
@@ -30,20 +33,20 @@ class ReporteFormType extends AbstractType
             ->add('nombre')
             ->add('codigo')
             ->add('descripcion')
-            ->add('route','text',[
+            ->add('route',TextType::class,[
                 'required' => false
             ])
             ->add('orden')
-            ->add('manager', 'text', [
+            ->add('manager', TextType::class, [
                 'required' => false
             ])
-            ->add('repositorio','text',[
+            ->add('repositorio',TextType::class,[
                 'required' => false
             ])
-            ->add('metodo','text',[
+            ->add('metodo',TextType::class,[
                 'required' => false
             ])
-            ->add('sql','text', [
+            ->add('sql',TextareaType::class, [
                 'required' => false
             ]);
     }
@@ -55,8 +58,13 @@ class ReporteFormType extends AbstractType
         ]);
     }
 
+    public function getBlockPrefix()
+    {
+        return 'ad_perfil_reporte';
+    }
+
     public function getName()
     {
-        return 'reporte';
+        return 'ad_perfil_reporte';
     }
 }
