@@ -3,7 +3,9 @@
 namespace AscensoDigital\PerfilBundle\Form\Type;
 
 use AscensoDigital\PerfilBundle\Entity\Permiso;
+use AscensoDigital\PerfilBundle\Entity\ReporteCategoria;
 use AscensoDigital\PerfilBundle\Entity\ReporteCriterio;
+use AscensoDigital\PerfilBundle\Entity\ReporteSeccion;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -16,8 +18,12 @@ class ReporteFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('reporteSeccion',EntityType::class )
-            ->add('reporteCategoria',EntityType::class )
+        $builder->add('reporteSeccion',EntityType::class, [
+                'class' => ReporteSeccion::class,
+            ])
+            ->add('reporteCategoria',EntityType::class, [
+                'class' => ReporteCategoria::class
+            ])
             ->add('reporteCriterio',EntityType::class, [
                 'required' => false,
                 'class' => ReporteCriterio::class
