@@ -73,9 +73,15 @@ class LoadCsvPermisosCommand extends ContainerAwareCommand
                     continue;
                 }
 
-                /** @var Permiso $permiso */
+                /** @var Permiso|bool $permiso */
                 $permiso = isset($permisos[$datos[0]]) ? $permisos[$datos[0]] : false;
-
+                if(false === $permiso) {
+                    $permiso = new Permiso();
+                    $permiso->setNombre($datos[0]);
+                    $permiso->setDescripcion(utf8_encode($datos[1]));
+                    $em->persist($permiso);
+                    $output->writeln("Permiso creado: ".$datos[0]);
+                }
                 if ($permiso) {
                     // $output->writeln('permisoNombre: '.$permiso->getNombre());
                     foreach ($datos as $key => $acceso) {
