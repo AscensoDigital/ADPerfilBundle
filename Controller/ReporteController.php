@@ -59,7 +59,8 @@ class ReporteController extends Controller
             $data[$fila] = ['permiso' => $permiso->getNombre(), 'descripcion' => $permiso->getDescripcion()];
             /** @var PerfilInterface $perfil */
             foreach ($perfils as $perfil) {
-                $data[$fila][$perfil->getSlug()] = isset($pxps[$permiso->getId()]) && isset($pxps[$permiso->getId()][$perfil->getId()]) && $pxps[$permiso->getId()][$perfil->getId()] ? 1 : '';
+                $perfilSlug=implode('-', [$perfil->getSlug(), $perfil->getId()]);
+                $data[$fila][$perfilSlug] = isset($pxps[$permiso->getId()]) && isset($pxps[$permiso->getId()][$perfil->getId()]) && $pxps[$permiso->getId()][$perfil->getId()] ? 1 : '';
             }
             $fila++;
         }
