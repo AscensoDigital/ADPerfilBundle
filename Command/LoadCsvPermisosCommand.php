@@ -60,7 +60,7 @@ class LoadCsvPermisosCommand extends ContainerAwareCommand
                             $encontrado=false;
                             /** @var PerfilInterface $perfil */
                             foreach ($perfils as $perfil) {
-                                if ($perfilId===$perfil->getId() ||
+                                if ($perfilId==$perfil->getId() ||
                                     StrUtil::strtolower($perfil->getSlug()) == StrUtil::strtolower($perfilSlug)) {
                                     $arrPerfilSlugs[$key] = $perfil;
                                     $encontrado=true;
