@@ -71,7 +71,7 @@ class PermisoVoter extends Voter
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        if (is_null($subject)) {
+        if (is_null($subject) || empty($subject)) {
             return true;
         }
 
