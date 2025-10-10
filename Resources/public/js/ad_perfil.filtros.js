@@ -64,9 +64,22 @@ $(document).ready(function(){
         return false;
     });
 
-    $('#reset').on('click', function(){
-        frm_filtro.find(':input').each(function() {
-            $(this).val('');
+    $('#reset').on('click', function () {
+        frm_filtro.find(':input').each(function () {
+            const $input = $(this);
+
+            // Si es un select2
+            if ($input.hasClass('select2-hidden-accessible')) {
+                $input.val(null).trigger('change'); // importante: trigger('change')
+            }
+            // Si es un checkbox o radio
+            else if ($input.is(':checkbox') || $input.is(':radio')) {
+                $input.prop('checked', false);
+            }
+            // Si es otro tipo de input (text, number, hidden, etc.)
+            else {
+                $input.val('');
+            }
         });
     });
 
